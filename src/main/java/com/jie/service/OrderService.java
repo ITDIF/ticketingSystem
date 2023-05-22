@@ -1,2 +1,4 @@
-package com.jie.service;public interface OrderService {
+package com.jie.service;
+
+public interface OrderService {
 }

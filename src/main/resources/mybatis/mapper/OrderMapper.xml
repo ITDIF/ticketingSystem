@@ -5,25 +5,29 @@
 
 <mapper namespace="com.jie.mapper.OrderMapper">
 
-    <select id="queryUserList" resultType="User">
-        select * from user;
+    <select id="queryOrderList" resultType="Order">
+        select * from orderinfo;
     </select>
 
-    <select id="queryUserById" resultType="User" parameterType="int">
-        select * from user where id = #{id};
+    <select id="queryOrderById" resultType="Order" parameterType="int">
+        select * from orderinfo where id = #{id};
     </select>
 
-    <insert id="addUser" parameterType="User">
-        insert into user (id,account,password,username,phone_number,id_type,id_number,district,registration_time)
-        values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{registration_time})
+    <insert id="addOrder" parameterType="Order">
+        insert into orderinfo
+            (id,order_number,username,route_number,id_number,departure_time,
+             from_station,to_station,seat_type,seat_id,price,order_time,state,pay_time)
+        values
+            (#{id},#{order_number},#{username},#{route_number},#{id_number},#{departure_time},
+             #{from_station},#{to_station},#{seat_type},#{seat_id},#{price},#{order_time},#{state},#{pay_time})
     </insert>
 
-    <update id="updateUser" parameterType="User">
-        update user set name=#{name},pwd=#{pwd} where id=#{id}
+    <update id="updateUser" parameterType="Order">
+
     </update>
 
-    <delete id="deleteUserById" parameterType="int">
-        delete from user where id = #{id}
+    <delete id="deleteOrderById" parameterType="int">
+        delete from orderinfo where id = #{id}
     </delete>
 
 </mapper>

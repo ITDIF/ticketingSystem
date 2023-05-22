@@ -1,6 +1,7 @@
-package com.jie.service;
+package com.jie.service.Impl;
 
 import com.jie.pojo.MailRequest;
+import com.jie.service.SendMailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

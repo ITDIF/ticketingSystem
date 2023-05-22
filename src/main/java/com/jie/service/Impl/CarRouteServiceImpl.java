@@ -1,16 +1,27 @@
-package com.jie.service;
+package com.jie.service.Impl;
 
+import com.jie.mapper.CarMapper;
 import com.jie.mapper.CarRouteMapper;
+import com.jie.mapper.TicketMapper;
 import com.jie.pojo.CarRoute;
+import com.jie.service.CarRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author jie
+ */
 @Service
-public class CarRouteServiceImpl implements CarRouteService{
+public class CarRouteServiceImpl implements CarRouteService {
     @Autowired
     CarRouteMapper carRouteMapper;
+    @Autowired
+    TicketMapper ticketMapper;
+
+    @Autowired
+    CarMapper carMapper;
 
     @Override
     public List<CarRoute> queryCarRouteList() {
@@ -23,8 +34,23 @@ public class CarRouteServiceImpl implements CarRouteService{
     }
 
     @Override
-    public List<CarRoute> queryCarRouteByRoute(String start, String end) {
-        return carRouteMapper.queryCarRouteByRoute(start,end);
+    public List<CarRoute> queryCarRouteBySE(String start, String end, String date) {
+        List<CarRoute> list = carRouteMapper.queryCarRouteBySE(start,end);
+        for(CarRoute e : list){
+            String route_number = e.getRoute_number();
+            System.out.println("e "+e+" "+route_number+" "+date);
+            String result = ticketMapper.queryRemainingTicket(route_number, date);
+            int remainingTicket = 0;
+            if(result == null){
+                remainingTicket = ticketMapper.queryPassengerCapacityByRouteNumber(route_number);
+                ticketMapper.insertRemainingTicketInfo(route_number,String.valueOf(remainingTicket),date);
+            }else{
+                remainingTicket = Integer.parseInt(result);
+            }
+            e.setRemaining_tickets(remainingTicket);
+            e.setSeat_type(carMapper.querySeatByCarNumber(e.getCar_number()));
+        }
+        return list;
     }
 
     @Override

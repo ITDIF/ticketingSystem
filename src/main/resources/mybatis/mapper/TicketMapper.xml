@@ -5,13 +5,45 @@
 
 <mapper namespace="com.jie.mapper.TicketMapper">
 
-    <select id="queryUserList" resultType="User">
-        select * from user;
+    <select id="queryTicketList" resultType="Ticket">
+        select * from ticket;
     </select>
 
-    <select id="queryUserById" resultType="User" parameterType="int">
-        select * from user where id = #{id};
+    <select id="queryTicketById" resultType="Ticket" parameterType="int">
+        select * from ticket where id = #{id};
     </select>
+    <select id="tableIsTrue" resultType="String" parameterType="String">
+        SHOW TABLES LIKE #{table}
+    </select>
+    <select id="queryRemainingTicket" parameterType="String" resultType="String">
+        select remaining_tickets from route_remaining_ticket where route_number = #{route_number} and route_date = #{route_date}
+    </select>
+
+    <select id="queryPassengerCapacityByRouteNumber" parameterType="String" resultType="int">
+        SELECT passenger_capacity FROM car,car_route
+            WHERE car.`car_number` = car_route.`car_number` AND route_number = #{route_number}
+    </select>
+    <insert id="insertRemainingTicketInfo" parameterType="String">
+        insert into route_remaining_ticket (route_number, remaining_tickets, route_date)
+            values (#{route_number},#{remaining_tickets},#{route_date})
+    </insert>
+
+    <update id="createTableIsNotExist" parameterType="String">
+        CREATE TABLE IF NOT EXISTS `${table}` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `order_number` VARCHAR(20) DEFAULT NULL,
+            `username` VARCHAR(20) DEFAULT NULL,
+            `id_number` VARCHAR(20) DEFAULT NULL,
+            `from_station` VARCHAR(20) DEFAULT NULL,
+            `to_station` VARCHAR(20) DEFAULT NULL,
+            `seat_type` VARCHAR(20) DEFAULT NULL,
+            `seat_id` INT DEFAULT NULL,
+            `price` DECIMAL(7,4) DEFAULT NULL,
+            `ticket_issuance_time` DATETIME DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `order_number` (`order_number`)
+        ) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    </update>
 
     <insert id="addUser" parameterType="User">
         insert into user (id,account,password,username,phone_number,id_type,id_number,district,registration_time)
@@ -19,7 +51,7 @@
     </insert>
 
     <update id="updateUser" parameterType="User">
-        update user set name=#{name},pwd=#{pwd} where id=#{id}
+#         update user set name=#{name},pwd=#{pwd} where id=#{id}
     </update>
 
     <delete id="deleteUserById" parameterType="int">

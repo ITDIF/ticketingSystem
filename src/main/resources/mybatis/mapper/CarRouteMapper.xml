@@ -5,25 +5,31 @@
 
 <mapper namespace="com.jie.mapper.CarRouteMapper">
 
-    <select id="queryUserList" resultType="User">
-        select * from user;
+    <select id="queryCarRouteList" resultType="CarRoute">
+        select * from car_route;
     </select>
 
-    <select id="queryUserById" resultType="User" parameterType="int">
-        select * from user where id = #{id};
+    <select id="queryCarRouteById" resultType="CarRoute" parameterType="int">
+        select * from car_route where id = #{id};
     </select>
 
-    <insert id="addUser" parameterType="User">
-        insert into user (id,account,password,username,phone_number,id_type,id_number,district,registration_time)
-        values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{registration_time})
+    <select id="queryCarRouteBySE" resultType="CarRoute" parameterType="String">
+        SELECT * FROM car_route WHERE from_station LIKE CONCAT('%',#{start},'%') AND to_station LIKE concat('%',#{end},'%')
+    </select>
+
+
+
+    <insert id="addCarRoute" parameterType="CarRoute">
+        insert into car_route (id,route_number,car_number,from_station,to_station,departure_time,shift,mileage,price)
+        values (#{id},#{route_number},#{car_number},#{from_station},#{to_station},#{departure_time},#{shift},#{mileage},#{price})
     </insert>
 
-    <update id="updateUser" parameterType="User">
-        update user set name=#{name},pwd=#{pwd} where id=#{id}
+    <update id="updateCarRouteTime" parameterType="CarRoute">
+        update car_route set departure_time=#{departure_time} where id=#{id}
     </update>
 
-    <delete id="deleteUserById" parameterType="int">
-        delete from user where id = #{id}
+    <delete id="deleteCarRouteById" parameterType="int">
+        delete from car_route where id = #{id}
     </delete>
 
 </mapper>

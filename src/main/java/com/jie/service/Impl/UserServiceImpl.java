@@ -1,14 +1,18 @@
-package com.jie.service;
+package com.jie.service.Impl;
 
 import com.jie.mapper.UserMapper;
 import com.jie.pojo.User;
+import com.jie.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author jie
+ */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
@@ -17,6 +21,7 @@ public class UserServiceImpl implements UserService{
     public String loginCheck(String account, String password) {
         User user;
         System.out.println("login: " + account+" "+password);
+        //判断账号是手机号登录还是账号登录
         if(account.charAt(0)>='0' && account.charAt(0)<='9' && account.length()==11){
             user = userMapper.queryUserByNumber(Long.parseLong(account));
         }else{
@@ -31,6 +36,19 @@ public class UserServiceImpl implements UserService{
 
         return "密码错误！";
     }
+
+    @Override
+    public User login(String account) {
+        User user;
+        //判断账号是手机号登录还是账号登录
+        if(account.charAt(0)>='0' && account.charAt(0)<='9' && account.length()==11){
+            user = userMapper.queryUserByNumber(Long.parseLong(account));
+        }else{
+            user = userMapper.queryUserByAccount(account);
+        }
+        return user;
+    }
+
     @Override
     public List<User> queryUserList(){
         return userMapper.queryUserList();
@@ -39,11 +57,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean queryAccount(String account) {
         int ans = userMapper.queryAccount(account);
-        if(ans == 1){
-            return true;
-        }else{
-            return false;
-        }
+        return ans == 1;
     }
 
     public User queryUserById(Integer id){
