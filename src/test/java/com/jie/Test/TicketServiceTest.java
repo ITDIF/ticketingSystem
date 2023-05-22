@@ -1,14 +1,18 @@
 package com.jie.Test;
 
+import com.jie.mapper.TicketMapper;
 import com.jie.service.TicketService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.annotation.Resource;
 
 @SpringBootTest
 public class TicketServiceTest {
-    @Autowired
+    @Resource
     TicketService ticketService;
+
+    TicketMapper ticketMapper;
 
     @Test
     public void tableIsTrue(){
@@ -16,7 +20,7 @@ public class TicketServiceTest {
     }
     @Test
     public void createTableIsNotExist(){
-        System.out.println(ticketService.createTableIsNotExist("ticket_c"));
+        System.out.println(ticketService.createTableIsNotExist("ticket_20230520"));
     }
     @Test
     public void queryRemainingTicket(){

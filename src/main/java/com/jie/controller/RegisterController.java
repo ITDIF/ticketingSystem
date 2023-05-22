@@ -3,12 +3,12 @@ package com.jie.controller;
 import com.alibaba.fastjson2.JSON;
 import com.jie.pojo.User;
 import com.jie.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 
 /**
@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @CrossOrigin
 @RequestMapping("/register")
 public class RegisterController {
-    @Autowired
+    @Resource
     UserService userService;
 
     @RequestMapping("/queryAccount")

@@ -28,6 +28,15 @@
             values (#{route_number},#{remaining_tickets},#{route_date})
     </insert>
 
+    <insert id="addUser" parameterType="User">
+        insert into user (id,account,password,username,phone_number,id_type,id_number,district,registration_time)
+        values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{registration_time})
+    </insert>
+    <insert id="addTicket">
+        insert into ${table} (id, order_number, username, id_number, from_station, to_station, seat_type, seat_id, price, ticket_issuance_time)
+        values (#{ticket.id}, #{ticket.order_number}, #{ticket.username}, #{ticket.id_number}, #{ticket.from_station}, #{ticket.to_station}, #{ticket.seat_type}, #{ticket.seat_id}, #{ticket.price}, #{ticket.ticket_issuance_time})
+    </insert>
+
     <update id="createTableIsNotExist" parameterType="String">
         CREATE TABLE IF NOT EXISTS `${table}` (
             `id` INT NOT NULL AUTO_INCREMENT,
@@ -45,10 +54,6 @@
         ) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     </update>
 
-    <insert id="addUser" parameterType="User">
-        insert into user (id,account,password,username,phone_number,id_type,id_number,district,registration_time)
-        values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{registration_time})
-    </insert>
 
     <update id="updateUser" parameterType="User">
 #         update user set name=#{name},pwd=#{pwd} where id=#{id}

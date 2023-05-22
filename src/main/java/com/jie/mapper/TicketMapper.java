@@ -1,6 +1,8 @@
 package com.jie.mapper;
 
+import com.jie.pojo.Ticket;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -46,4 +48,12 @@ public interface TicketMapper {
      * @return 客车容量
      */
     int queryPassengerCapacityByRouteNumber(String route_number);
+
+    /**
+     * 添加车票到table表中
+     * @param table
+     * @param ticket
+     * @return int
+     */
+    int addTicket(@Param("table") String table, @Param("ticket") Ticket ticket);
 }

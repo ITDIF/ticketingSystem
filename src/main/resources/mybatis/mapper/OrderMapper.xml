@@ -22,12 +22,25 @@
              #{from_station},#{to_station},#{seat_type},#{seat_id},#{price},#{order_time},#{state},#{pay_time})
     </insert>
 
+    <insert id="addOrderTemporary" parameterType="OrderTemporary">
+        insert into orderinfo_temporary
+        (id,order_number,username,route_number,id_number,departure_time,
+         from_station,to_station,seat_type,seat_id,price,order_time,state)
+        values
+            (#{id},#{order_number},#{username},#{route_number},#{id_number},#{departure_time},
+             #{from_station},#{to_station},#{seat_type},#{seat_id},#{price},#{order_time},#{state})
+    </insert>
+
     <update id="updateUser" parameterType="Order">
 
     </update>
 
     <delete id="deleteOrderById" parameterType="int">
         delete from orderinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderTemporaryById" parameterType="int">
+        delete from orderinfo_temporary where id = #{id}
     </delete>
 
 </mapper>

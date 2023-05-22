@@ -2,6 +2,9 @@ package com.jie.service;
 
 import com.jie.pojo.MailRequest;
 
+/**
+ * @author jie
+ */
 public interface SendMailService {
 
     /**

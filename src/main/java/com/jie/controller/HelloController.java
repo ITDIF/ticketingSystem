@@ -1,9 +1,10 @@
 package com.jie.controller;
 
 import com.jie.service.Impl.MailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @author jie
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @Autowired
+    @Resource
     MailService mailService;
 
     @GetMapping("/hello")
