@@ -7,6 +7,7 @@ import com.jie.pojo.CarRoute;
 import com.jie.service.CarRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class CarRouteServiceImpl implements CarRouteService {
     }
 
     @Override
-    public List<CarRoute> queryCarRouteBySE(String start, String end, String date) {
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
+    public List<CarRoute> queryCarRouteBySED(String start, String end, String date) {
         List<CarRoute> list = carRouteMapper.queryCarRouteBySE(start,end);
         for(CarRoute e : list){
             String route_number = e.getRoute_number();

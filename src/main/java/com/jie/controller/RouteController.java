@@ -18,10 +18,10 @@ public class RouteController {
     @Resource
     CarRouteService carRouteService;
 
-    @RequestMapping("/queryCarRouteBySE")
+    @RequestMapping("/queryCarRouteBySED")
     @ResponseBody
-    public List<CarRoute> queryCarRouteBySE(String start, String end, String date){
-        System.out.println("queryCarRouteBySE "+start+" "+end+" "+date);
-        return carRouteService.queryCarRouteBySE(start,end,date);
+    public List<CarRoute> queryCarRouteBySED(String start, String end, String date){
+        System.out.println("queryCarRouteBySED "+start+" "+end+" "+date);
+        return carRouteService.queryCarRouteBySED(start,end,date);
     }
 }

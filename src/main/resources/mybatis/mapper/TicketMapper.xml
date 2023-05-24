@@ -23,24 +23,25 @@
         SELECT passenger_capacity FROM car,car_route
             WHERE car.`car_number` = car_route.`car_number` AND route_number = #{route_number}
     </select>
+    <select id="querySeat" parameterType="String" resultType="int">
+        select seat_id
+        from ${ticket} where route_number=#{route_number} ORDER BY seat_id;
+    </select>
     <insert id="insertRemainingTicketInfo" parameterType="String">
         insert into route_remaining_ticket (route_number, remaining_tickets, route_date)
             values (#{route_number},#{remaining_tickets},#{route_date})
     </insert>
 
-    <insert id="addUser" parameterType="User">
-        insert into user (id,account,password,username,phone_number,id_type,id_number,district,registration_time)
-        values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{registration_time})
-    </insert>
     <insert id="addTicket">
-        insert into ${table} (id, order_number, username, id_number, from_station, to_station, seat_type, seat_id, price, ticket_issuance_time)
-        values (#{ticket.id}, #{ticket.order_number}, #{ticket.username}, #{ticket.id_number}, #{ticket.from_station}, #{ticket.to_station}, #{ticket.seat_type}, #{ticket.seat_id}, #{ticket.price}, #{ticket.ticket_issuance_time})
+        insert into ${table} (id, order_number,route_number, username, id_number, from_station, to_station, seat_type, seat_id, price, ticket_issuance_time)
+        values (#{ticket.id}, #{ticket.order_number}, #{ticket.route_number}, #{ticket.username}, #{ticket.id_number}, #{ticket.from_station}, #{ticket.to_station}, #{ticket.seat_type}, #{ticket.seat_id}, #{ticket.price}, #{ticket.ticket_issuance_time})
     </insert>
 
     <update id="createTableIsNotExist" parameterType="String">
         CREATE TABLE IF NOT EXISTS `${table}` (
             `id` INT NOT NULL AUTO_INCREMENT,
             `order_number` VARCHAR(20) DEFAULT NULL,
+            `route_number` VARCHAR(20) DEFAULT NULL,
             `username` VARCHAR(20) DEFAULT NULL,
             `id_number` VARCHAR(20) DEFAULT NULL,
             `from_station` VARCHAR(20) DEFAULT NULL,
@@ -53,14 +54,16 @@
             UNIQUE KEY `order_number` (`order_number`)
         ) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     </update>
-
+    <update id="updateRemainingTicket" parameterType="String">
+        update route_remaining_ticket set remaining_tickets=#{remaining_tickets} where route_number = #{route_number} and route_date = #{route_date}
+    </update>
 
     <update id="updateUser" parameterType="User">
 #         update user set name=#{name},pwd=#{pwd} where id=#{id}
     </update>
 
-    <delete id="deleteUserById" parameterType="int">
-        delete from user where id = #{id}
+    <delete id="deleteTicketByOrderNumber" parameterType="String">
+        delete from ${table} where order_number=#{order_number}
     </delete>
 
 </mapper>

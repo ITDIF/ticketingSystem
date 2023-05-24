@@ -20,7 +20,7 @@ public class TicketServiceTest {
     }
     @Test
     public void createTableIsNotExist(){
-        System.out.println(ticketService.createTableIsNotExist("ticket_20230520"));
+        System.out.println(ticketService.createTableIsNotExist("ticket_20230521"));
     }
     @Test
     public void queryRemainingTicket(){

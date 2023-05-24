@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * car 车
  * @author jie
  */
 @Data

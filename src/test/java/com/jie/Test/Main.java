@@ -7,8 +7,9 @@ public class Main {
 //        System.out.println(new Timestamp(new Date().getTime()));
 //        System.out.println(timeStamp);
 //        String s = Integer.toBinaryString(1);
-        long mod = 1000000007L;
-        long ans = 1000000000;
-        System.out.println(ans * ans % mod * ans);
+        System.out.println(0&0);
+        System.out.println(0&1);
+        System.out.println(1&1);
+        System.out.println(1&0);
     }
 }

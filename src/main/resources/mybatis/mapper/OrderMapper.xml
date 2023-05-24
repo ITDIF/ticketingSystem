@@ -8,9 +8,16 @@
     <select id="queryOrderList" resultType="Order">
         select * from orderinfo;
     </select>
+    <select id="queryOrderTimeByOrderNumber" resultType="String" parameterType="String">
+        select order_time from orderinfo_temporary where order_number=#{order_number}
+    </select>
 
     <select id="queryOrderById" resultType="Order" parameterType="int">
         select * from orderinfo where id = #{id};
+    </select>
+    <select id="queryRouteNumberByOrderNumber" resultType="String" parameterType="String">
+        select route_number
+        from orderinfo_temporary where order_number=#{order_number};
     </select>
 
     <insert id="addOrder" parameterType="Order">
@@ -37,6 +44,9 @@
 
     <delete id="deleteOrderById" parameterType="int">
         delete from orderinfo where id = #{id}
+    </delete>
+    <delete id="deleteOrderTemporaryByOrderNumber" parameterType="String">
+        delete from orderinfo_temporary where order_number=#{order_number}
     </delete>
 
     <delete id="deleteOrderTemporaryById" parameterType="int">

@@ -18,11 +18,19 @@ public class OrderController {
 
     @RequestMapping("/temporary")
     @ResponseBody
-    public String temporary(String a){
+    public String temporary(String route_number, String route_date, String account){
 
-
-
-        return "1";
+        return orderService.addOrderTemporary(route_number,route_date,account);
+    }
+    @RequestMapping("/queryOrderTimeByOrderNumber")
+    @ResponseBody
+    public String queryOrderTimeByOrderNumber(String order_number){
+        return orderService.queryOrderTimeByOrderNumber(order_number);
+    }
+    @RequestMapping("/deleteOrderTemporaryAndTicket")
+    @ResponseBody
+    public int deleteOrderTemporaryAndTicket(String order_number, String date){
+        return orderService.deleteOrderTemporaryAndTicket(order_number,date);
     }
 
 }

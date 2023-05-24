@@ -13,6 +13,7 @@
         select * from user where id = #{id};
     </select>
 
+
     <select id="queryAccount" resultType="int" parameterType="String">
         select count(*) from user where account = #{account};
     </select>
@@ -31,7 +32,7 @@
     </insert>
 
     <update id="updateUser" parameterType="User">
-        update user set name=#{name},pwd=#{pwd} where id=#{id}
+
     </update>
 
     <delete id="deleteUserById" parameterType="int">

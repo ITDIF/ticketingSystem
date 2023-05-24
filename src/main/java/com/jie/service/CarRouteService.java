@@ -10,7 +10,7 @@ public interface CarRouteService {
 
     CarRoute queryCarRouteById(Integer id);
 
-    List<CarRoute> queryCarRouteBySE(String start, String end, String date);
+    List<CarRoute> queryCarRouteBySED(String start, String end, String date);
 
     int addCarRoute(CarRoute carRoute);
 

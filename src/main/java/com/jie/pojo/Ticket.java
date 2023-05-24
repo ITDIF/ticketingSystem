@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 public class Ticket {
     private Integer id;
     private String order_number;
+    private String route_number;
     private String username;
     private String id_number;
     private String from_station;
@@ -24,5 +25,4 @@ public class Ticket {
     private Integer seat_id;
     private BigDecimal price;
     private Timestamp ticket_issuance_time;
-
 }

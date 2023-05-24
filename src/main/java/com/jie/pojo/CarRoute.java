@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 /**
+ * CarRoute 车次/线路
  * @author jie
  */
 @Data
@@ -21,6 +22,7 @@ public class CarRoute {
     private String departure_time;
     private Integer mileage;
     private BigDecimal price;
+    private String shift;
     private Integer remaining_tickets;
     private String seat_type;
 }

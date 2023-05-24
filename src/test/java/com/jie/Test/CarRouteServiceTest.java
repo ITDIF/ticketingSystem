@@ -12,6 +12,6 @@ public class CarRouteServiceTest {
 
     @Test
     public void query(){
-        System.out.println(carRouteService.queryCarRouteBySE("新余","赣州","2023-05-20"));
+        System.out.println(carRouteService.queryCarRouteBySED("新余","赣州","2023-05-20"));
     }
 }

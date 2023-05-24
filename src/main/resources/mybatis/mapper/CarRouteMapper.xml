@@ -13,6 +13,10 @@
         select * from car_route where id = #{id};
     </select>
 
+    <select id="queryCarRouteByRouteNumber" resultType="CarRoute" parameterType="String">
+        select * from car_route where route_number=#{route_number};
+    </select>
+
     <select id="queryCarRouteBySE" resultType="CarRoute" parameterType="String">
         SELECT * FROM car_route WHERE from_station LIKE CONCAT('%',#{start},'%') AND to_station LIKE concat('%',#{end},'%')
     </select>

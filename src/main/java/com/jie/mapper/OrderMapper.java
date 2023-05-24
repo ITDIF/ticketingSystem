@@ -12,6 +12,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderMapper {
     /**
+     * 根据订单号查询下单时间
+     * @param order_number 订单号
+     * @return 下单时间
+     */
+    String queryOrderTimeByOrderNumber(String order_number);
+
+    /**
+     * 根据订单号查询车次编号
+     * @param order_number 订单号
+     * @return 车次编号
+     */
+    String queryRouteNumberByOrderNumber(String order_number);
+    /**
      * 添加订单
      * @param order
      * @return 结果
@@ -34,9 +47,17 @@ public interface OrderMapper {
 
     /**
      * 删除临时订单
-     * @param id
+     * @param id id
      * @return 结果
      */
     int deleteOrderTemporaryById(int id);
+
+    /**
+     * 根据订单编号删除订单
+     * @param order_number 订单编号
+     * @return int
+     */
+    int deleteOrderTemporaryByOrderNumber(String order_number);
+
 
 }
