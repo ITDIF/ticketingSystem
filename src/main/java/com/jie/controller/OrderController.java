@@ -32,5 +32,10 @@ public class OrderController {
     public int deleteOrderTemporaryAndTicket(String order_number, String date){
         return orderService.deleteOrderTemporaryAndTicket(order_number,date);
     }
+    @RequestMapping("/addOrderAndDelTemporary")
+    @ResponseBody
+    public int addOrderAndDelTemporary(String order_number){
+        return orderService.addOrderAndDelTemporary(order_number);
+    }
 
 }

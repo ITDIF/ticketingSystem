@@ -19,6 +19,13 @@ public interface OrderMapper {
     String queryOrderTimeByOrderNumber(String order_number);
 
     /**
+     * 根据临时订单编号查询
+     * @param order_number 订单编号
+     * @return 临时订单信息
+     */
+    OrderTemporary queryOrderTemporary(String order_number);
+
+    /**
      * 根据订单号查询车次编号
      * @param order_number 订单号
      * @return 车次编号
@@ -26,14 +33,14 @@ public interface OrderMapper {
     String queryRouteNumberByOrderNumber(String order_number);
     /**
      * 添加订单
-     * @param order
+     * @param order 订单
      * @return 结果
      */
     int addOrder(Order order);
 
     /**
-     * 添加临时表
-     * @param orderTemporary
+     * 添加临时订单
+     * @param orderTemporary 临时订单
      * @return 结果
      */
     int addOrderTemporary(OrderTemporary orderTemporary);

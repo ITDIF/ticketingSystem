@@ -21,6 +21,13 @@ public interface OrderService {
     String queryOrderTimeByOrderNumber(String order_number);
 
     /**
+     * 添加订单同时删除临时订单（支付成功操作）
+     * @param orderNumber 临时订单编号
+     * @return int
+     */
+    int addOrderAndDelTemporary(String orderNumber);
+
+    /**
      * 删除临时订单和车票（取消订单操作）
      * @param order_number 订单编号
      * @param date 订单时间

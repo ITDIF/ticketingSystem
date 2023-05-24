@@ -15,6 +15,9 @@
     <select id="queryOrderById" resultType="Order" parameterType="int">
         select * from orderinfo where id = #{id};
     </select>
+    <select id="queryOrderTemporary" parameterType="String" resultType="OrderTemporary">
+        select * from orderinfo_temporary where order_number=${order_number}
+    </select>
     <select id="queryRouteNumberByOrderNumber" resultType="String" parameterType="String">
         select route_number
         from orderinfo_temporary where order_number=#{order_number};
