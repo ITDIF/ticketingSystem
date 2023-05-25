@@ -43,12 +43,14 @@ public class WebSocket {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam(value="userId")String userId) {
+
         try {
             this.session = session;
             this.userId = userId;
             webSockets.add(this);
             sessionPool.put(userId, session);
             log.info("【websocket消息】有新的连接，总数为:"+webSockets.size());
+            System.out.println("【websocket消息】有新的连接，总数为:"+webSockets.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,6 +107,7 @@ public class WebSocket {
      * 此为单点消息
      */
     public void sendOneMessage(String userId, String message) {
+        System.out.println("sendOneMessage:"+userId+" "+message);
         Session session = sessionPool.get(userId);
         if (session != null&&session.isOpen()) {
             try {
