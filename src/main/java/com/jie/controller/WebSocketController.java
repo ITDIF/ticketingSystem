@@ -1,6 +1,6 @@
 package com.jie.controller;
 
-import com.jie.service.Impl.WebSocket;
+import com.jie.webSocket.WebSocket;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

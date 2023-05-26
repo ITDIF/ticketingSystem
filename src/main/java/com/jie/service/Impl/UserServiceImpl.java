@@ -30,10 +30,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return "账户不存在!";
         }else if (user.getPassword().equals(password)) {
-            System.out.println("登录成功s！");
+            System.out.println("登录成功！");
             return "登录成功!";
         }
-
         return "密码错误！";
     }
 
@@ -70,6 +69,12 @@ public class UserServiceImpl implements UserService {
     public User queryUserByAccount(String account){
         return userMapper.queryUserByAccount(account);
     }
+
+    @Override
+    public String queryUsernameByAccount(String account) {
+        return userMapper.queryUsernameByAccount(account);
+    }
+
     public int addUser(User user){
         return userMapper.addUser(user);
     }

@@ -41,6 +41,8 @@ public interface UserService {
      */
     User queryUserByAccount(String account);
 
+    String queryUsernameByAccount(String account);
+
     int addUser(User user);
 
     int updateUser(User user);

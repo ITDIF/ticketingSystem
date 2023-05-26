@@ -13,6 +13,9 @@
         select * from user where id = #{id};
     </select>
 
+    <select id="queryUsernameByAccount" resultType="String" parameterType="String">
+        select username from user where account=#{account}
+    </select>
 
     <select id="queryAccount" resultType="int" parameterType="String">
         select count(*) from user where account = #{account};

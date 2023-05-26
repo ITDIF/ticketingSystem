@@ -19,6 +19,8 @@ public interface UserMapper {
 
     User queryUserByNumber(long number);
 
+    String queryUsernameByAccount(String account);
+
     int queryAccount(String account);
     User queryUserByAccount(String account);
     int addUser(User user);

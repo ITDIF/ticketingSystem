@@ -29,4 +29,9 @@ public class LoginController {
         System.out.println("login:"+account);
         return userService.login(account);
     }
+    @RequestMapping("/username")
+    @ResponseBody
+    public String queryUsername(String account) {
+        return userService.queryUsernameByAccount(account);
+    }
 }
