@@ -1,15 +1,16 @@
 package com.jie.service.Impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 public class MailService {
 
     // JavaMailSender 在Mail 自动配置类 MailSenderAutoConfiguration 中已经导入，这里直接注入使用即可
-    @Autowired
+    @Resource
     JavaMailSender javaMailSender;
 
     //方法5个参数分别表示：邮件发送者、收件人、抄送人、邮件主题以及邮件内容
@@ -22,5 +23,23 @@ public class MailService {
         simpMsg.setSubject(subject);
         simpMsg.setText(content);
         javaMailSender.send(simpMsg);
+    }
+    public void sendTextEmail(String text, String to, String subject) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject(subject);
+        simpleMailMessage.setText(text);
+        simpleMailMessage.setFrom("2084220263@QQ.com");
+        simpleMailMessage.setTo(to);
+
+        javaMailSender.send(simpleMailMessage);
+    }
+    public void ticketSuccessInform(String toPeo, String start, String end, String time) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject("出票成功");
+        simpleMailMessage.setText("您已成功购买"+time+"从"+start+"到"+end+"的车票");
+        simpleMailMessage.setFrom("2084220263@QQ.com");
+        simpleMailMessage.setTo(toPeo);
+
+        javaMailSender.send(simpleMailMessage);
     }
 }

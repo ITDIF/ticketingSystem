@@ -24,4 +24,8 @@ public class HelloController {
                 "我是邮件的标题",
                 "sb周显乐");
     }
+    @GetMapping("ticket")
+    public void ticket(){
+        mailService.sendTextEmail("您买了一张车票","3059880893@qq.com","购买车票成功!");
+    }
 }

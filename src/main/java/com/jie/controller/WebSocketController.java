@@ -21,6 +21,7 @@ public class WebSocketController {
     }
     @RequestMapping("/w2")
     public void sentMessage(){
+        webSocket.sendOneMessage("1","00000000");
         System.out.println("连接成功！");
     }
 

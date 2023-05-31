@@ -25,6 +25,9 @@
         select * from user where phone_number = #{number};
     </select>
 
+    <select id="queryQQByIdNumber" resultType="String" parameterType="String">
+        select email from user where id_number = #{id_number}
+    </select>
     <select id="queryUserByAccount" resultType="User" parameterType="String">
         select * from user where account = #{account};
     </select>

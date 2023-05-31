@@ -14,9 +14,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Component
 @Slf4j
-@ServerEndpoint("/websocket/{userId}")  // 接口路径 ws://localhost:8087/webSocket/userId;
+@ServerEndpoint("/ticket/{userId}")  // 接口路径 ws://localhost:8087/webSocket/userId;
 
-public class WebSocket {
+public class TicketWebSocket {
 
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -32,7 +32,7 @@ public class WebSocket {
     /**
      * 注：底下WebSocket是当前类名
      */
-    private static final CopyOnWriteArraySet<WebSocket> webSockets =new CopyOnWriteArraySet<>();
+    private static final CopyOnWriteArraySet<TicketWebSocket> webSockets =new CopyOnWriteArraySet<>();
     /**
      * 用来存在线连接用户信息
      */
@@ -49,8 +49,8 @@ public class WebSocket {
             this.userId = userId;
             webSockets.add(this);
             sessionPool.put(userId, session);
-            log.info("【websocket消息】有新的连接，总数为:"+webSockets.size());
-            System.out.println("【websocket消息】有新的连接，总数为:"+webSockets.size());
+            log.info("【ticket消息】有新的连接，总数为:"+webSockets.size());
+            System.out.println("【ticket消息】有新的连接，总数为:"+webSockets.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ public class WebSocket {
         try {
             webSockets.remove(this);
             sessionPool.remove(this.userId);
-            log.info("【websocket消息】连接断开，总数为:"+webSockets.size());
+            log.info("【ticket消息】连接断开，总数为:"+webSockets.size());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,11 +75,12 @@ public class WebSocket {
      */
     @OnMessage
     public void onMessage(String message) throws InterruptedException {
-        log.info("【websocket消息】收到客户端消息:"+message);
+        log.info("【ticketWebsocket消息】收到客户端消息:"+message);
+        System.out.println("ticketWebsocket消息:"+message);
 //        session.getAsyncRemote().sendText("来自服务端的消息！+_+ ");
         for(int i = 0; i < 100; i++){
             synchronized (session){
-                session.getAsyncRemote().sendText("来自服务端的消息！+_+ "+i);
+                session.getAsyncRemote().sendText("+_+ "+i);
                 Thread.sleep(500);
             }
 
@@ -93,57 +94,6 @@ public class WebSocket {
 
         log.error("用户错误,原因:"+error.getMessage());
         error.printStackTrace();
-    }
-
-    /**
-     * 此为广播消息
-     */
-    public void sendAllMessage(String message) {
-        log.info("【websocket消息】广播消息:"+message);
-        for(WebSocket webSocket : webSockets) {
-            try {
-                if(webSocket.session.isOpen()) {
-                    webSocket.session.getAsyncRemote().sendText(message);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 此为单点消息
-     */
-    public void sendOneMessage(String userId, String message) {
-        System.out.println("sendOneMessage:"+userId+" "+message);
-        Session session = sessionPool.get(userId);
-        if (session != null&&session.isOpen()) {
-            try {
-                log.info("【websocket消息】 单点消息:"+message);
-                session.getAsyncRemote().sendText(message);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    /**
-     * 此为单点消息(多人)
-     */
-    public void sendMoreMessage(String[] userIds, String message) {
-        for(String userId:userIds) {
-            Session session = sessionPool.get(userId);
-            if (session != null&&session.isOpen()) {
-                try {
-                    log.info("【websocket消息】 单点消息:"+message);
-                    session.getAsyncRemote().sendText(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
     }
 
 }

@@ -25,6 +25,8 @@ public class OrderServiceImpl implements OrderService {
     UserMapper userMapper;
     @Resource
     CarMapper carMapper;
+    @Resource
+    MailService mailService;
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class, IllegalArgumentException.class})
@@ -84,6 +86,8 @@ public class OrderServiceImpl implements OrderService {
                 orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
                 orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
                 "已付款",new Timestamp(System.currentTimeMillis()));
+        String QQ = userMapper.queryQQByIdNumber(orderTemporary.getId_number());
+        mailService.ticketSuccessInform(QQ,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
         return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) |
                 orderMapper.addOrder(order);
     }
