@@ -27,6 +27,12 @@ spring:
             required: false
           #开启debug模式，这样邮件发送过程的日志会在控制台打印出来，方便排查错误
         debug: true
+  #配置rabbitMq 服务器
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 mybatis:
   type-aliases-package: com.jie.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml
