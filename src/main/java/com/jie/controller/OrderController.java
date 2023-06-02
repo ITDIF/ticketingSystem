@@ -1,5 +1,6 @@
 package com.jie.controller;
 
+import com.jie.service.Impl.RabbitService;
 import com.jie.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +16,17 @@ import javax.annotation.Resource;
 public class OrderController {
     @Resource
     OrderService orderService;
+    @Resource
+    RabbitService rabbitService;
 
     @RequestMapping("/temporary")
     @ResponseBody
     public String temporary(String route_number, String route_date, String account){
-
-        return orderService.addOrderTemporary(route_number,route_date,account);
+        String orderId = orderService.addOrderTemporary(route_number,route_date,account);
+        if(!"-1".equals(orderId)){
+            rabbitService.cancelOrder(orderId,route_date);
+        }
+        return orderId;
     }
     @RequestMapping("/queryOrderTimeByOrderNumber")
     @ResponseBody
@@ -37,5 +43,6 @@ public class OrderController {
     public int addOrderAndDelTemporary(String order_number){
         return orderService.addOrderAndDelTemporary(order_number);
     }
+
 
 }

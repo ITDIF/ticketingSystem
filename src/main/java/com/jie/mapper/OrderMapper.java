@@ -26,6 +26,13 @@ public interface OrderMapper {
     OrderTemporary queryOrderTemporary(String order_number);
 
     /**
+     * 查询该订单号的车票是否存在
+     * @param order_number 订单号
+     * @return int
+     */
+    int queryOrderByOrderNumber(String order_number);
+
+    /**
      * 根据订单号查询车次编号
      * @param order_number 订单号
      * @return 车次编号

@@ -11,6 +11,10 @@
     <select id="queryOrderTimeByOrderNumber" resultType="String" parameterType="String">
         select order_time from orderinfo_temporary where order_number=#{order_number}
     </select>
+    <select id="queryOrderByOrderNumber" resultType="int" parameterType="String">
+        select count(*)
+        from orderinfo_temporary where order_number = #{order_number};
+    </select>
 
     <select id="queryOrderById" resultType="Order" parameterType="int">
         select * from orderinfo where id = #{id};

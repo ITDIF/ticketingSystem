@@ -72,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
         Ticket ticket = new Ticket(null,orderId,route_number,user.getUsername(),user.getId_number(),carRoute.getFrom_station(),carRoute.getTo_station(),
                 seatType,seat,carRoute.getPrice(),new Timestamp(System.currentTimeMillis()));
         ticketMapper.addTicket(ticketTable,ticket);
+
         return orderId;
     }
 
@@ -101,6 +102,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
     public int deleteOrderTemporaryAndTicket(String order_number, String date) {
         String table = "ticket_"+date.replaceAll("-","");
+        if(orderMapper.queryOrderByOrderNumber(order_number) == 0){
+            return 1;
+        }
         String route_number = orderMapper.queryRouteNumberByOrderNumber(order_number);
         String result = ticketMapper.queryRemainingTicket(route_number, date);
         int remainingTicket = Integer.parseInt(result);

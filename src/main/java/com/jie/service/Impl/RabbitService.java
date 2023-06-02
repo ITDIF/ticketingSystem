@@ -1,5 +1,6 @@
 package com.jie.service.Impl;
 
+import com.jie.config.RabbitMqConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+/**
+ * @author jie
+ */
 @Component
 public class RabbitService {
     @Resource
@@ -22,8 +26,19 @@ public class RabbitService {
         Map<String,Object> map=new HashMap<>();
         map.put("createTime",createTime);
         map.put("orderNumber", orderNumber);
-        //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
         rabbitTemplate.convertAndSend("TicketSuccessExchange", "TicketSuccess", map);
         return "ok";
     }
+    public int cancelOrder(String order_number, String date) {
+        Map<String,Object> map=new HashMap<>();
+        map.put("date",date);
+        map.put("orderNumber", order_number);
+        rabbitTemplate.convertAndSend(RabbitMqConfig.DELAY_EXCHANGE_NAME, RabbitMqConfig.DELAY_ROUTING_KEY, map, message -> {
+            //消息延迟10分钟
+            message.getMessageProperties().setHeader("x-delay", 1000*60*10);
+            return message;
+        });
+        return 1;
+    }
+
 }
