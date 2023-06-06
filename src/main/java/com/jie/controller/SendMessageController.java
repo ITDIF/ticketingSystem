@@ -49,11 +49,24 @@ public class SendMessageController {
         String msg = "this is a test";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("消息发送时间：" + sdf.format(new Date()));
-        rabbitTemplate.convertAndSend(RabbitMqConfig.DELAY_EXCHANGE_NAME, RabbitMqConfig.DELAY_ROUTING_KEY, msg, message -> {
+        Map<String,Object> map=new HashMap<>();
+        map.put("date","date");
+        map.put("orderNumber", "order_number");
+        rabbitTemplate.convertAndSend(RabbitMqConfig.DELAY_EXCHANGE_NAME, RabbitMqConfig.DELAY_ROUTING_KEY, map, message -> {
             //消息延迟5秒
             message.getMessageProperties().setHeader("x-delay", 5000);
             return message;
         });
+//        rabbitTemplate.convertAndSend(RabbitMqConfig.DELAY_EXCHANGE_NAME, RabbitMqConfig.DELAY_ROUTING_KEY, map, message -> {
+//            //消息延迟5秒
+//            message.getMessageProperties().setHeader("x-delay", 5000*2);
+//            return message;
+//        });
+//        rabbitTemplate.convertAndSend(RabbitMqConfig.DELAY_EXCHANGE_NAME, RabbitMqConfig.DELAY_ROUTING_KEY, map, message -> {
+//            //消息延迟5秒
+//            message.getMessageProperties().setHeader("x-delay", 5000*3);
+//            return message;
+//        });
     }
 
     @RequestMapping("/cancelOrder")

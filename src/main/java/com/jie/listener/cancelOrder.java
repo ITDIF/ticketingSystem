@@ -21,7 +21,7 @@ public class cancelOrder {
     @RabbitListener(queues = RabbitMqConfig.DELAY_QUEUE_NAME)
     public void receive(Map map) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(sdf.format(new Date())+"取消订单");
+        System.out.println(sdf.format(new Date())+"订单超时 "+map.get("orderNumber"));
         orderService.deleteOrderTemporaryAndTicket((String) map.get("orderNumber"), (String) map.get("date"));
     }
 }

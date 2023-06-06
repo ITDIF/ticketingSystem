@@ -9,9 +9,17 @@ public interface OrderService {
      * @param route_number 车次编号
      * @param route_date 车次发车时间
      * @param account 账户
-     * @return 结果 -1 不成功、1 成功
+     * @return 结果 -1 不成功、订单号
      */
     String addOrderTemporary(String route_number, String route_date, String account);
+
+    /**
+     * 查询已有候补数量
+     * @param route_number 线路编号
+     * @param departure_time 出发时间
+     * @return 数量
+     */
+    int queryExistCandidateCount(String route_number, String departure_time);
 
     /**
      * 根据订单编号查询下单时间
@@ -26,6 +34,15 @@ public interface OrderService {
      * @return int
      */
     int addOrderAndDelTemporary(String orderNumber);
+
+    /**
+     * 候补
+     * @param route_number 线路编号
+     * @param route_date 线路发车时间
+     * @param account 账户
+     * @return 订单号
+     */
+    String addCandidate(String route_number, String route_date, String account);
 
     /**
      * 删除临时订单和车票（取消订单操作）

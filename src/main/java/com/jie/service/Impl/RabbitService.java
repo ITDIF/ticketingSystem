@@ -35,7 +35,7 @@ public class RabbitService {
         map.put("orderNumber", order_number);
         rabbitTemplate.convertAndSend(RabbitMqConfig.DELAY_EXCHANGE_NAME, RabbitMqConfig.DELAY_ROUTING_KEY, map, message -> {
             //消息延迟10分钟
-            message.getMessageProperties().setHeader("x-delay", 1000*60*10);
+            message.getMessageProperties().setHeader("x-delay", 1000*60*10+10);
             return message;
         });
         return 1;

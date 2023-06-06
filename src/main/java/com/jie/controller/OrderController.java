@@ -44,5 +44,15 @@ public class OrderController {
         return orderService.addOrderAndDelTemporary(order_number);
     }
 
+    @RequestMapping("/candidate")
+    @ResponseBody
+    public String candidate(String route_number, String route_date, String account){
+        return orderService.addCandidate(route_number, route_date, account);
+    }
+    @RequestMapping("/existCandidate")
+    @ResponseBody
+    public int existCandidate(String route_number, String departure_time){
+        return orderService.queryExistCandidateCount(route_number,departure_time);
+    }
 
 }

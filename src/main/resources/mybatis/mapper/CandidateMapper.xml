@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jie.mapper.CandidateMapper">
+
+    <select id="queryCandidateList" resultType="Candidate">
+        select * from candidate;
+    </select>
+    <select id="queryExistCandidateCount" resultType="int">
+        SELECT COUNT(*) FROM candidate WHERE route_number = #{route_number} AND departure_time = #{departure_time}
+    </select>
+
+    <select id="queryCandidateByOrderNumber" resultType="Candidate" parameterType="int">
+        select * from Candidate where order_number = #{order_number};
+    </select>
+    <insert id="addCandidate" parameterType="Candidate">
+        insert into candidate (id, route_number, order_number, id_number, departure_time, candidate_time)
+        values (#{id}, #{route_number}, #{order_number}, #{id_number}, #{departure_time}, #{candidate_time})
+    </insert>
+
+    <update id="updateCar" parameterType="Candidate">
+
+    </update>
+
+    <delete id="deleteCandidateByOrderNumber" parameterType="int">
+        delete from candidate where order_number = #{order_number};
+    </delete>
+
+</mapper>
