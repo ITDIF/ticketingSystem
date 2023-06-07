@@ -36,13 +36,21 @@ public interface OrderService {
     int addOrderAndDelTemporary(String orderNumber);
 
     /**
+     * 添加订单同时删除临时订单（候补支付成功操作）
+     * @param orderNumber 临时订单编号
+     * @return int
+     */
+    int candidateSuccess(String orderNumber);
+
+    /**
      * 候补
      * @param route_number 线路编号
      * @param route_date 线路发车时间
      * @param account 账户
+     * @param deadline 截止兑换时间
      * @return 订单号
      */
-    String addCandidate(String route_number, String route_date, String account);
+    String addCandidate(String route_number, String route_date, String account, int deadline);
 
     /**
      * 删除临时订单和车票（取消订单操作）
@@ -51,5 +59,12 @@ public interface OrderService {
      * @return 结果
      */
     int deleteOrderTemporaryAndTicket(String order_number, String date);
+
+    /**
+     * 删除临时订单和候补（取消候补订单操作）
+     * @param order_number 订单编号
+     * @return 结果
+     */
+    int deleteOrderTemporaryAndCandidate(String order_number);
 
 }

@@ -1,5 +1,6 @@
 package com.jie.Test;
 
+import com.jie.mapper.CandidateMapper;
 import com.jie.mapper.OrderMapper;
 import com.jie.mapper.TicketMapper;
 import com.jie.pojo.Order;
@@ -19,6 +20,8 @@ public class MapperTest {
 
     @Resource
     OrderMapper orderMapper;
+    @Resource
+    CandidateMapper candidateMapper;
     @Test
     public void Test(){
         System.out.println(ticketMapper.queryRemainingTicket("tt0001","2023-05-18"));
@@ -55,6 +58,12 @@ public class MapperTest {
     @Test
     public void queryOrderTime(){
         System.out.println(orderMapper.queryOrderTimeByOrderNumber("1684832607019"));
+    }
+    @Test
+    public void delCandidateAndOrderT(){
+        String id = "1686108176739";
+        System.out.println(candidateMapper.deleteCandidateByOrderNumber(id)
+                | orderMapper.deleteOrderTemporaryByOrderNumber(id));
     }
 
 }

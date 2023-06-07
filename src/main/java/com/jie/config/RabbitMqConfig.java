@@ -27,10 +27,18 @@ public class RabbitMqConfig {
     public Queue queue() {
         return new Queue(DELAY_QUEUE_NAME, true);
     }
+    @Bean
+    public Queue candidateQueue() {
+        return new Queue("candidateQueue", true);
+    }
 
     @Bean
     public Binding binding(Queue queue, CustomExchange delayExchange) {
         return BindingBuilder.bind(queue).to(delayExchange).with(DELAY_ROUTING_KEY).noargs();
+    }
+    @Bean
+    public Binding candidateBinding(Queue candidateQueue, CustomExchange delayExchange) {
+        return BindingBuilder.bind(candidateQueue).to(delayExchange).with("candidate_queue_key").noargs();
     }
 
     // 队列 起名：TestDirectQueue
@@ -47,7 +55,10 @@ public class RabbitMqConfig {
     public Queue TicketSuccessQueue(){
         return new Queue("TicketSuccessQueue",true);
     }
-
+    @Bean
+    public Queue CandidateSuccessQueue(){
+        return new Queue("CandidateSuccessQueue",true);
+    }
 
 
     //Direct交换机 起名：TestDirectExchange
@@ -73,6 +84,11 @@ public class RabbitMqConfig {
     Binding bindingDirectTicket() {
         return BindingBuilder.bind(TicketSuccessQueue()).to(TicketSuccessExchange()).with("TicketSuccess");
     }
+    @Bean
+    Binding candidateSuccessBinding() {
+        return BindingBuilder.bind(CandidateSuccessQueue()).to(TicketSuccessExchange()).with("candidate_success_key");
+    }
+
 
 
     @Bean

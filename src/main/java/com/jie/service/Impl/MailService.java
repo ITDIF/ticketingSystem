@@ -34,9 +34,25 @@ public class MailService {
         javaMailSender.send(simpleMailMessage);
     }
     public void ticketSuccessInform(String toPeo, String start, String end, String time) {
+        if(toPeo.indexOf("@qq.com")==-1) {
+            return;
+        }
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setSubject("出票成功");
         simpleMailMessage.setText("您已成功购买"+time+"从"+start+"到"+end+"的车票");
+        simpleMailMessage.setFrom("2084220263@QQ.com");
+        simpleMailMessage.setTo(toPeo);
+
+        javaMailSender.send(simpleMailMessage);
+    }
+    public void candidateSuccessInform(String toPeo, String start, String end, String time) {
+        if(toPeo.indexOf("@qq.com")==-1) {
+            return;
+        }
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject("支付成功");
+        simpleMailMessage.setText("您已成功下单"+time+"从"+start+"到"+end+"的候补车票，" +
+                "系统有票时将优先为您分配车票，请耐心等待。若在截止兑换时间还未兑现成功，将自动返还票款至付款账号。");
         simpleMailMessage.setFrom("2084220263@QQ.com");
         simpleMailMessage.setTo(toPeo);
 

@@ -25,6 +25,13 @@ public interface CandidateMapper {
     Candidate queryCandidateByOrderNumber(String order_number);
 
     /**
+     * 根据订单号查询截止兑现时间
+     * @param order_number 订单号
+     * @return 截止兑现时间
+     */
+    int queryDeadlineByOrderNumber(String order_number);
+
+    /**
      * 添加候补信息
      * @param candidate 候补
      * @return int
@@ -37,5 +44,7 @@ public interface CandidateMapper {
      * @return int
      */
     int deleteCandidateByOrderNumber(String order_number);
+
+
 
 }

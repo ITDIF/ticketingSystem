@@ -54,6 +54,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int queryIdNumberByAccount(String account) {
+        String idNumber = userMapper.queryIdNumberByAccount(account);
+        int gender = idNumber.charAt(idNumber.length()-2)-'0';
+        if(gender % 2 == 0) {
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
     public boolean queryAccount(String account) {
         int ans = userMapper.queryAccount(account);
         return ans == 1;

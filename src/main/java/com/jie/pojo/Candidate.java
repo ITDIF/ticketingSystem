@@ -20,4 +20,5 @@ public class Candidate {
     private String id_number;
     private Timestamp departure_time;
     private Timestamp candidate_time;
+    private Integer deadline;
 }

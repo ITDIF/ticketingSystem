@@ -24,6 +24,8 @@ public interface UserService {
     User login(String account);
     List<User> queryUserList();
 
+    int queryIdNumberByAccount(String account);
+
     boolean queryAccount(String account);
     User queryUserById(Integer id);
 

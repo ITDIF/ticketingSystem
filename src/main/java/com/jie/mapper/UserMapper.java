@@ -15,6 +15,13 @@ public interface UserMapper {
 
     List<User> queryUserList();
 
+    /**
+     * 通过账号查身份证号
+     * @param account 账号
+     * @return 身份证号
+     */
+    String queryIdNumberByAccount(String account);
+
     User queryUserById(Integer id);
 
     User queryUserByNumber(long number);

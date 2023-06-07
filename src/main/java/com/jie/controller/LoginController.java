@@ -34,4 +34,9 @@ public class LoginController {
     public String queryUsername(String account) {
         return userService.queryUsernameByAccount(account);
     }
+    @RequestMapping("/gender")
+    @ResponseBody
+    public int gender(String account) {
+        return userService.queryIdNumberByAccount(account);
+    }
 }

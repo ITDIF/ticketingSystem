@@ -12,6 +12,10 @@
     <select id="queryUserById" resultType="User" parameterType="int">
         select * from user where id = #{id};
     </select>
+    <select id="queryIdNumberByAccount" parameterType="String" resultType="String">
+        select id_number
+        from user where account=#{account};
+    </select>
 
     <select id="queryUsernameByAccount" resultType="String" parameterType="String">
         select username from user where account=#{account}

@@ -26,7 +26,7 @@ public class UserServiceTest {
     @Test
     public void queryUser(){
 //        System.out.println(userService.queryUserByNumber(10000)==null);
-        System.out.println(userService.queryUserByAccount("123"));
+        System.out.println(userService.queryUserByAccount("s123"));
     }
     @Test
     public void addUser(){

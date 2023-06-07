@@ -104,21 +104,27 @@ public class OrderServiceImpl implements OrderService {
         rabbitService.sendDirectMessageTicket(orderNumber);
         return 1;
     }
+    @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
+    public int candidateSuccess(String orderNumber) {
+        rabbitService.sendDirectMessageCandidate(orderNumber);
+        return 1;
+    }
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-    public String addCandidate(String route_number, String route_date, String account) {
+    public String addCandidate(String route_number, String route_date, String account, int deadline) {
         User user = userMapper.queryUserByAccount(account);
-        String order_number = String.valueOf(System.currentTimeMillis());
+        String orderNumber = String.valueOf(System.currentTimeMillis());
         CarRoute carRoute = carRouteMapper.queryCarRouteByRouteNumber(route_number);
         String departureTime = route_date+" "+carRoute.getDeparture_time()+":00";
-        Candidate candidate = new Candidate(null,route_number,order_number,user.getId_number(), Timestamp.valueOf(departureTime), new Timestamp(System.currentTimeMillis()));
+        Candidate candidate = new Candidate(null,route_number,orderNumber,user.getId_number(), Timestamp.valueOf(departureTime), new Timestamp(System.currentTimeMillis()), deadline);
         candidateMapper.addCandidate(candidate);
-        OrderTemporary orderTemporary = new OrderTemporary(null,order_number,user.getUsername(),route_number,user.getId_number(),
+        OrderTemporary orderTemporary = new OrderTemporary(null,orderNumber,user.getUsername(),route_number,user.getId_number(),
                 Timestamp.valueOf(departureTime),carRoute.getFrom_station(),carRoute.getTo_station(),null,null,carRoute.getPrice(),
-                new Timestamp(System.currentTimeMillis()),"未付款");
+                new Timestamp(System.currentTimeMillis()),"未付款(候补)");
         orderMapper.addOrderTemporary(orderTemporary);
-        return order_number;
+        return orderNumber;
     }
 
     @Override
@@ -134,5 +140,15 @@ public class OrderServiceImpl implements OrderService {
         ticketMapper.updateRemainingTicket(String.valueOf(remainingTicket+1),route_number,date);
         return orderMapper.deleteOrderTemporaryByOrderNumber(order_number) |
                 ticketMapper.deleteTicketByOrderNumber(table,order_number);
+    }
+
+    @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
+    public int deleteOrderTemporaryAndCandidate(String order_number) {
+        if(orderMapper.queryOrderByOrderNumber(order_number) == 0){
+            return 1;
+        }
+        return orderMapper.deleteOrderTemporaryByOrderNumber(order_number) &
+                candidateMapper.deleteCandidateByOrderNumber(order_number);
     }
 }
