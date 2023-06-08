@@ -18,7 +18,7 @@
     </select>
 
     <select id="queryCarRouteBySE" resultType="CarRoute" parameterType="String">
-        SELECT * FROM car_route WHERE from_station LIKE CONCAT('%',#{start},'%') AND to_station LIKE concat('%',#{end},'%')
+        SELECT * FROM car_route WHERE from_station LIKE CONCAT('%',#{start},'%') AND to_station LIKE concat('%',#{end},'%') order by departure_time
     </select>
 
 
