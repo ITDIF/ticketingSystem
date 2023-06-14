@@ -6,38 +6,38 @@
 <mapper namespace="com.jie.mapper.UserMapper">
 
     <select id="queryUserList" resultType="User">
-        select * from user;
+        select * from userinfo;
     </select>
 
     <select id="queryUserById" resultType="User" parameterType="int">
-        select * from user where id = #{id};
+        select * from userinfo where id = #{id};
     </select>
     <select id="queryIdNumberByAccount" parameterType="String" resultType="String">
         select id_number
-        from user where account=#{account};
+        from userinfo where account=#{account};
     </select>
 
     <select id="queryUsernameByAccount" resultType="String" parameterType="String">
-        select username from user where account=#{account}
+        select username from userinfo where account=#{account}
     </select>
 
     <select id="queryAccount" resultType="int" parameterType="String">
-        select count(*) from user where account = #{account};
+        select count(*) from userinfo where account = #{account};
     </select>
 
     <select id="queryUserByNumber" resultType="User" parameterType="long">
-        select * from user where phone_number = #{number};
+        select * from userinfo where phone_number = #{number};
     </select>
 
     <select id="queryQQByIdNumber" resultType="String" parameterType="String">
-        select email from user where id_number = #{id_number}
+        select email from userinfo where id_number = #{id_number}
     </select>
     <select id="queryUserByAccount" resultType="User" parameterType="String">
-        select * from user where account = #{account};
+        select * from userinfo where account = #{account};
     </select>
 
     <insert id="addUser" parameterType="User">
-        insert into user (id,account,password,username,phone_number,id_type,id_number,district,email,registration_time)
+        insert into userinfo (id,account,password,username,phone_number,id_type,id_number,district,email,registration_time)
         values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{email},#{registration_time})
     </insert>
 
@@ -46,7 +46,7 @@
     </update>
 
     <delete id="deleteUserById" parameterType="int">
-        delete from user where id = #{id}
+        delete from userinfo where id = #{id}
     </delete>
 
 </mapper>

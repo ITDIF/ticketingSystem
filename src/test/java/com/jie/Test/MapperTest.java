@@ -65,5 +65,9 @@ public class MapperTest {
         System.out.println(candidateMapper.deleteCandidateByOrderNumber(id)
                 | orderMapper.deleteOrderTemporaryByOrderNumber(id));
     }
+    @Test
+    public void queryOrderTimeAndSeat(){
+        System.out.println(orderMapper.queryOrderTimeAndSeatByOrderNumber("1686533578981"));
+    }
 
 }

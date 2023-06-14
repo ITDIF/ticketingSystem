@@ -1,5 +1,11 @@
 package com.jie.service;
 
+import com.jie.pojo.Order;
+import com.jie.pojo.OrderTemporary;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author jie
  */
@@ -27,6 +33,40 @@ public interface OrderService {
      * @return 下单时间
      */
     String queryOrderTimeByOrderNumber(String order_number);
+    /**
+     * 查询所有的未完成订单
+     * @param account 账户
+     * @return 订单
+     */
+    List<OrderTemporary> queryOrderTemporaryByAccount(String account);
+
+    /**
+     * 查询历史订单（候补除外）
+     * @param account 身份证
+     * @return 历史订单
+     */
+    List<Order> queryHistoricalOrderByAccount(String account);
+    /**
+     * 根据身份证查询历史订单分页
+     * @param account 账户
+     * @param start 起点
+     * @param count count条订单
+     * @return 订单
+     */
+    List<Order> queryHistoricalOrderPaging(String account, String start, String count);
+    /**
+     * 查询历史订单数量（候补订单除外）
+     * @param account 账户
+     * @return 数量
+     */
+    int queryHistoricalOrderCount(String account);
+
+    /**
+     * 根据订单编号查询下单时间和座位
+     * @param order_number 订单编号
+     * @return 下单时间
+     */
+    Map<String, Object> queryOrderTimeAndSeatByOrderNumber(String order_number);
 
     /**
      * 添加订单同时删除临时订单（支付成功操作）

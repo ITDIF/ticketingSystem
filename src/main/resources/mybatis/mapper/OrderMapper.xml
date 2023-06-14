@@ -8,9 +8,44 @@
     <select id="queryOrderList" resultType="Order">
         select * from orderinfo;
     </select>
+    <select id="queryHistoricalOrderByAccount" resultType="Order">
+        SELECT orderinfo.*
+        FROM orderinfo
+            JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
+        ORDER BY orderinfo.order_time DESC
+    </select>
+    <select id="queryHistoricalOrderPaging" resultType="Order">
+        SELECT orderinfo.*
+        FROM orderinfo
+            JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
+        ORDER BY orderinfo.order_time DESC
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryHistoricalOrderCount" resultType="int">
+        SELECT count(*)
+        FROM orderinfo
+                 JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
+    </select>
+    <select id="queryOrderTemporaryByAccount" resultType="OrderTemporary">
+        SELECT orderinfo_temporary.*
+        FROM orderinfo_temporary
+            JOIN userinfo ON orderinfo_temporary.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo_temporary.seat_id IS NOT NULL
+        ORDER BY orderinfo_temporary.order_time DESC
+    </select>
     <select id="queryOrderTimeByOrderNumber" resultType="String" parameterType="String">
         select order_time from orderinfo_temporary where order_number=#{order_number}
     </select>
+    <select id="queryOrderTimeAndSeatByOrderNumber" resultMap="orderTimeAndSeat" parameterType="String">
+        select seat_id,order_time from orderinfo_temporary where order_number=#{order_number}
+    </select>
+    <resultMap id="orderTimeAndSeat" type="HashMap">
+        <result column="seat_id" property="seat_id" javaType="int" />
+        <result column="order_time" property="order_time" javaType="String" />
+    </resultMap>
     <select id="queryOrderByOrderNumber" resultType="int" parameterType="String">
         select count(*)
         from orderinfo_temporary where order_number = #{order_number};
@@ -49,8 +84,8 @@
 
     </update>
 
-    <delete id="deleteOrderById" parameterType="int">
-        delete from orderinfo where id = #{id}
+    <delete id="deleteOrderByOrderNumber" parameterType="String">
+        delete from orderinfo where order_number = #{order_number}
     </delete>
     <delete id="deleteOrderTemporaryByOrderNumber" parameterType="String">
         delete from orderinfo_temporary where order_number=#{order_number}

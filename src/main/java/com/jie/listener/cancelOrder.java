@@ -2,6 +2,7 @@ package com.jie.listener;
 
 import com.jie.config.RabbitMqConfig;
 import com.jie.mapper.CandidateMapper;
+import com.jie.mapper.OrderMapper;
 import com.jie.service.OrderService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ public class cancelOrder {
     OrderService orderService;
     @Resource
     CandidateMapper candidateMapper;
+    @Resource
+    OrderMapper orderMapper;
     @RabbitListener(queues = RabbitMqConfig.DELAY_QUEUE_NAME)
     public void receive(Map map) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -38,6 +41,7 @@ public class cancelOrder {
         }else{
             System.out.println(sdf.format(new Date())+"候补订单未兑现 "+order_number);
             candidateMapper.deleteCandidateByOrderNumber(order_number);
+            orderMapper.deleteOrderByOrderNumber(order_number);
         }
 
     }

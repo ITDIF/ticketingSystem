@@ -1,5 +1,7 @@
 package com.jie.controller;
 
+import com.jie.pojo.Order;
+import com.jie.pojo.OrderTemporary;
 import com.jie.service.Impl.RabbitService;
 import com.jie.service.OrderService;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jie
@@ -33,6 +37,16 @@ public class OrderController {
     public String queryOrderTimeByOrderNumber(String order_number){
         return orderService.queryOrderTimeByOrderNumber(order_number);
     }
+    @RequestMapping("/queryOrderTimeAndSeatByOrderNumber")
+    @ResponseBody
+    public Map<String,Object> queryOrderTimeAndSeat(String order_number){
+        return orderService.queryOrderTimeAndSeatByOrderNumber(order_number);
+    }
+    @RequestMapping("/queryOrderTemporaryByAccount")
+    @ResponseBody
+    public List<OrderTemporary> queryOrderTemporaryByAccount(String account){
+        return orderService.queryOrderTemporaryByAccount(account);
+    }
     @RequestMapping("/deleteOrderTemporaryAndTicket")
     @ResponseBody
     public int deleteOrderTemporaryAndTicket(String order_number, String date){
@@ -48,7 +62,21 @@ public class OrderController {
     public int candidateSuccess(String order_number){
         return orderService.candidateSuccess(order_number);
     }
-
+    @RequestMapping("/queryHistoricalOrderByAccount")
+    @ResponseBody
+    public List<Order> queryHistoricalOrderByAccount(String account){
+        return orderService.queryHistoricalOrderByAccount(account);
+    }
+    @RequestMapping("/queryHistoricalOrderPaging")
+    @ResponseBody
+    public List<Order> queryHistoricalOrderPaging(String account, String start, String count){
+        return orderService.queryHistoricalOrderPaging(account,start,count);
+    }
+    @RequestMapping("/queryHistoricalOrderCount")
+    @ResponseBody
+    public int queryHistoricalOrderCount(String account){
+        return orderService.queryHistoricalOrderCount(account);
+    }
     @RequestMapping("/candidate")
     @ResponseBody
     public String candidate(String route_number, String route_date, String account,int deadline){

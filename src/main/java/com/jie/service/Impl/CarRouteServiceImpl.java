@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -38,9 +39,18 @@ public class CarRouteServiceImpl implements CarRouteService {
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
     public List<CarRoute> queryCarRouteBySED(String start, String end, String date) {
         List<CarRoute> list = carRouteMapper.queryCarRouteBySE(start,end);
-        for(CarRoute e : list){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        String nowTime = sdf.format(System.currentTimeMillis());
+        boolean flag = date.equals(sdf2.format(System.currentTimeMillis()));
+        for(int i = list.size()-1; i >= 0; i--){
+            CarRoute e = list.get(i);
+            String routeTime = e.getDeparture_time();
+            if(flag && nowTime.compareTo(routeTime) > 0){
+                list.remove(i);
+                continue;
+            }
             String route_number = e.getRoute_number();
-            System.out.println("e "+e+" "+route_number+" "+date);
             String result = ticketMapper.queryRemainingTicket(route_number, date);
             int remainingTicket = 0;
             if(result == null){

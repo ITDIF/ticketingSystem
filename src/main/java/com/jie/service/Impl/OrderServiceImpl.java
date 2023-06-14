@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jie
@@ -86,6 +87,31 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String queryOrderTimeByOrderNumber(String order_number) {
         return orderMapper.queryOrderTimeByOrderNumber(order_number);
+    }
+
+    @Override
+    public List<OrderTemporary> queryOrderTemporaryByAccount(String account) {
+        return orderMapper.queryOrderTemporaryByAccount(account);
+    }
+
+    @Override
+    public List<Order> queryHistoricalOrderByAccount(String account) {
+        return orderMapper.queryHistoricalOrderByAccount(account);
+    }
+
+    @Override
+    public List<Order> queryHistoricalOrderPaging(String account, String start, String count) {
+        return orderMapper.queryHistoricalOrderPaging(account,start,count);
+    }
+
+    @Override
+    public int queryHistoricalOrderCount(String account) {
+        return orderMapper.queryHistoricalOrderCount(account);
+    }
+
+    @Override
+    public Map<String, Object> queryOrderTimeAndSeatByOrderNumber(String order_number) {
+        return orderMapper.queryOrderTimeAndSeatByOrderNumber(order_number);
     }
 
     @Override
