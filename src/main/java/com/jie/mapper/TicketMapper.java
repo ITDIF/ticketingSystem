@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jie
@@ -34,6 +35,14 @@ public interface TicketMapper {
      * @return 余票数
      */
     String queryRemainingTicket(String route_number, String route_date);
+
+    /**
+     *根据订单号查询待查日期的线路余票情况和线路编号（多表）
+     * @param order_number 订单号
+     * @param route_date 查询日期
+     * @return map
+     */
+    Map<String, Object> queryRemainingTicketAndRouteNumber(String order_number, String route_date);
 
     /**
      * 在route_remaining_ticket表中添加一行信息

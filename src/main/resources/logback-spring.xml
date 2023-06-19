@@ -42,17 +42,17 @@
         如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
         的日志改名为今天的日期。即，<File> 的日志都是当天的。
         -->
-        <File>${logPath}/log_demo.log</File>
-        <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个
-            磁盘空间-->
-            <FileNamePattern>${logPath}/log_demo_%d{yyyy-MM-dd}.log</FileNamePattern>
-            <!--只保留最近90天的日志-->
-            <maxHistory>90</maxHistory>
-            <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
-            <!--<totalSizeCap>1GB</totalSizeCap>-->
-        </rollingPolicy>
+<!--        <File>${logPath}/log_demo.log</File>-->
+<!--        &lt;!&ndash;滚动策略，按照时间滚动 TimeBasedRollingPolicy&ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个-->
+<!--            磁盘空间&ndash;&gt;-->
+<!--            <FileNamePattern>${logPath}/log_demo_%d{yyyy-MM-dd}.log</FileNamePattern>-->
+<!--            &lt;!&ndash;只保留最近90天的日志&ndash;&gt;-->
+<!--            <maxHistory>90</maxHistory>-->
+<!--            &lt;!&ndash;用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志&ndash;&gt;-->
+<!--            &lt;!&ndash;<totalSizeCap>1GB</totalSizeCap>&ndash;&gt;-->
+<!--        </rollingPolicy>-->
         <!--日志输出编码格式化-->
         <encoder>
             <charset>UTF-8</charset>
@@ -69,17 +69,17 @@
         如果同时有<File>和<FileNamePattern>，那么当天日志是<File>，明天会自动把今天
         的日志改名为今天的日期。即，<File> 的日志都是当天的。
         -->
-        <File>${logPath}/error.log</File>
-        <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个
-            磁盘空间-->
-            <FileNamePattern>${logPath}/error_%d{yyyy-MM-dd}.log</FileNamePattern>
-            <!--只保留最近90天的日志-->
-            <maxHistory>90</maxHistory>
-            <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
-            <!--<totalSizeCap>1GB</totalSizeCap>-->
-        </rollingPolicy>
+<!--        <File>${logPath}/error.log</File>-->
+<!--        &lt;!&ndash;滚动策略，按照时间滚动 TimeBasedRollingPolicy&ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;文件路径,定义了日志的切分方式——把每一天的日志归档到一个文件中,以防止日志填满整个-->
+<!--            磁盘空间&ndash;&gt;-->
+<!--            <FileNamePattern>${logPath}/error_%d{yyyy-MM-dd}.log</FileNamePattern>-->
+<!--            &lt;!&ndash;只保留最近90天的日志&ndash;&gt;-->
+<!--            <maxHistory>90</maxHistory>-->
+<!--            &lt;!&ndash;用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志&ndash;&gt;-->
+<!--            &lt;!&ndash;<totalSizeCap>1GB</totalSizeCap>&ndash;&gt;-->
+<!--        </rollingPolicy>-->
         <!--日志输出编码格式化-->
         <encoder>
             <charset>UTF-8</charset>

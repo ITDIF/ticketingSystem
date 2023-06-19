@@ -32,15 +32,9 @@ public class TicketSuccess {
     public void process(Map map) {
         System.out.println("TicketSuccessQueue消费者收到消息  : " + map.toString());
         String orderNumber = (String) map.get("orderNumber");
-        OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
-        Order order = new Order(null,orderNumber,orderTemporary.getUsername(),orderTemporary.getRoute_number(),
-                orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
-                orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
-                "已付款",new Timestamp(System.currentTimeMillis()));
-        orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber);
-        orderMapper.addOrder(order);
-        String QQ = userMapper.queryQQByIdNumber(orderTemporary.getId_number());
-        mailService.ticketSuccessInform(QQ,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
+        Order order = orderMapper.queryOrder(orderNumber);
+        String qq = userMapper.queryQQByIdNumber(order.getId_number());
+        mailService.ticketSuccessInform(qq,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
     }
     @RabbitListener(queues = "CandidateSuccessQueue")
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})

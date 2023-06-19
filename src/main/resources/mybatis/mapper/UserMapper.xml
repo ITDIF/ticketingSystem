@@ -35,14 +35,45 @@
     <select id="queryUserByAccount" resultType="User" parameterType="String">
         select * from userinfo where account = #{account};
     </select>
-
+    <select id="queryUserInfoByAccount" resultMap="userInfoTwo" parameterType="String">
+        SELECT userinfo.account,userinfo.username,userinfo.phone_number,userinfo.id_number,userinfo.id_type,
+               userinfo.district,userinfo.email,user_verification.id_verification,
+               user_verification.phone_verification
+        FROM userinfo
+                 JOIN user_verification ON userinfo.account = user_verification.account
+        WHERE userinfo.account = #{account}
+    </select>
+    <resultMap id="userInfoTwo" type="HashMap">
+        <result column="account" property="account" javaType="String" />
+        <result column="username" property="username" javaType="String" />
+        <result column="phone_number" property="phone_number" javaType="string" />
+        <result column="id_type" property="id_type" javaType="String" />
+        <result column="id_number" property="id_number" javaType="String" />
+        <result column="district" property="district" javaType="String" />
+        <result column="email" property="email" javaType="String" />
+        <result column="id_verification" property="id_verification" javaType="String" />
+        <result column="phone_verification" property="phone_verification" javaType="String" />
+    </resultMap>
     <insert id="addUser" parameterType="User">
         insert into userinfo (id,account,password,username,phone_number,id_type,id_number,district,email,registration_time)
         values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{email},#{registration_time})
     </insert>
 
     <update id="updateUser" parameterType="User">
-
+        update userinfo
+            <set>
+                <if test="id!=null">id=#{id},</if>
+                <if test="account!=null">account=#{account},</if>
+                <if test="password!=null">password=#{password},</if>
+                <if test="username!=null">username=#{username},</if>
+                <if test="phone_number!=null">phone_number=#{phone_number},</if>
+                <if test="id_type!=null">id_type=#{id_type},</if>
+                <if test="id_number!=null">id_number=#{id_number},</if>
+                <if test="district!=null">district=#{district},</if>
+                <if test="registration_time!=null">registration_time=#{registration_time},</if>
+                <if test="email!=null">email=#{email},</if>
+            </set>
+        where account = #{account}
     </update>
 
     <delete id="deleteUserById" parameterType="int">

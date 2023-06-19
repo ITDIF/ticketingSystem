@@ -30,13 +30,20 @@ public class UserServiceTest {
     }
     @Test
     public void addUser(){
-        User user = new User(null,"aaaaaa","3333","ga33o",333,"333","333","333","333@qq.com",new Timestamp(new Date().getTime()));
+        User user = new User(null,"aaaaaa","3333","ga33o","333","333","333","333","333@qq.com",new Timestamp(new Date().getTime()));
         try {
             userService.addUser(user);
         }catch (Exception e){
             System.out.println("注册失败！");
         }
 //        System.out.println();
+    }
+    @Test
+    public void updateUser(){
+        User user = new User(null,"aaaaaa","1","2",
+                "3","4","5","6",
+                "7",null);
+        userService.updateUser(user);
     }
     @Test
     public void deleteUserById(){

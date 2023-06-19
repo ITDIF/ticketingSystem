@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jie
@@ -34,6 +35,11 @@ public class UserServiceImpl implements UserService {
             return "登录成功!";
         }
         return "密码错误！";
+    }
+
+    @Override
+    public Map<String, String> queryUserInfoByAccount(String account) {
+        return userMapper.queryUserInfoByAccount(account);
     }
 
     @Override

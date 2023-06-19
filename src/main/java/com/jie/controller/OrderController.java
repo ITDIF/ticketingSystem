@@ -47,10 +47,20 @@ public class OrderController {
     public List<OrderTemporary> queryOrderTemporaryByAccount(String account){
         return orderService.queryOrderTemporaryByAccount(account);
     }
+    @RequestMapping("/queryNotTravelOrderByPaging")
+    @ResponseBody
+    public List<Order> queryNotTravelOrderByPaging(String account, String start, String count){
+        return orderService.queryNotTravelOrderByPaging(account, start, count);
+    }
     @RequestMapping("/deleteOrderTemporaryAndTicket")
     @ResponseBody
     public int deleteOrderTemporaryAndTicket(String order_number, String date){
         return orderService.deleteOrderTemporaryAndTicket(order_number,date);
+    }
+    @RequestMapping("/upOrderAndDelTicket")
+    @ResponseBody
+    public int upOrderAndDelTicket(String order_number, String date){
+        return  orderService.upOrderAndDelTicket(order_number, date);
     }
     @RequestMapping("/addOrderAndDelTemporary")
     @ResponseBody
@@ -67,6 +77,16 @@ public class OrderController {
     public List<Order> queryHistoricalOrderByAccount(String account){
         return orderService.queryHistoricalOrderByAccount(account);
     }
+    @RequestMapping("/queryHistoricalOrderConditional")
+    @ResponseBody
+    public List<Order> queryHistoricalOrderConditional(String account, String startDate, String endDate, String key, String start, String count){
+        return orderService.queryHistoricalOrderConditional(account,startDate,endDate,key,start,count);
+    }
+    @RequestMapping("/queryHistoricalOrderConditionalCount")
+    @ResponseBody
+    public int queryHistoricalOrderConditionalCount(String account, String startDate, String endDate, String key){
+        return orderService.queryHistoricalOrderConditionalCount(account,startDate,endDate,key);
+    }
     @RequestMapping("/queryHistoricalOrderPaging")
     @ResponseBody
     public List<Order> queryHistoricalOrderPaging(String account, String start, String count){
@@ -76,6 +96,11 @@ public class OrderController {
     @ResponseBody
     public int queryHistoricalOrderCount(String account){
         return orderService.queryHistoricalOrderCount(account);
+    }
+    @RequestMapping("/queryNotTravelOrderCount")
+    @ResponseBody
+    public int queryNotTravelOrderCount(String account){
+        return orderService.queryNotTravelOrderCount(account);
     }
     @RequestMapping("/candidate")
     @ResponseBody

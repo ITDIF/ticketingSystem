@@ -35,14 +35,43 @@ public interface OrderMapper {
     List<OrderTemporary> queryOrderTemporaryByAccount(String account);
 
     /**
-     * 根据身份证查询历史订单（候补除外）
-     * @param account 身份证
+     * 根据账户查询历史订单（候补除外）
+     * @param account 账户
      * @return 历史订单
      */
     List<Order> queryHistoricalOrderByAccount(String account);
+    /**
+     * 根据多个条件查询历史订单（候补除外）
+     * @param account 账户
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param key 关键字（用户名，订单，车次）
+     * @param start 起点
+     * @param count count条订单
+     * @return 历史订单
+     */
+    List<Order> queryHistoricalOrderConditionalPaging(String account, String startDate, String endDate, String key, String start, String count);
+    /**
+     * 根据多个条件查询历史订单数量（候补除外）
+     * @param account 账户
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param key 关键字（用户名，订单，车次）
+     * @return 历史订单数量
+     */
+    int queryHistoricalOrderConditionalCount(String account, String startDate, String endDate, String key);
+    /**
+     * 根据身份证查询未出行订单
+     * @param account 身份证
+     * @param departure_time 出发时间
+     * @param start 起点
+     * @param count count条订单
+     * @return 未出行订单
+     */
+    List<Order> queryNotTravelOrderByPaging(String account, String departure_time, String start, String count);
 
     /**
-     * 根据身份证查询历史订单分页
+     * 根据账户查询历史订单分页
      * @param account 账户
      * @param start 起点
      * @param count count条订单
@@ -50,6 +79,13 @@ public interface OrderMapper {
      */
     List<Order> queryHistoricalOrderPaging(String account, String start, String count);
 
+    /**
+     * 查询未出发订单数量
+     * @param account 账户
+     * @param departure_time 出发时间
+     * @return 数量
+     */
+    int queryNotTravelOrderCount(String account, String departure_time);
     /**
      * 查询历史订单数量（候补订单除外）
      * @param account 账户
@@ -62,6 +98,13 @@ public interface OrderMapper {
      * @return 临时订单信息
      */
     OrderTemporary queryOrderTemporary(String order_number);
+
+    /**
+     * 根据订单编号查询
+     * @param order_number 订单编号
+     * @return 订单信息
+     */
+    Order queryOrder(String order_number);
 
     /**
      * 查询该订单号的车票是否存在
@@ -110,6 +153,13 @@ public interface OrderMapper {
      * @return int
      */
     int deleteOrderTemporaryByOrderNumber(String order_number);
+
+    /**
+     * 修改订单信息
+     * @param order 订单
+     * @return int
+     */
+    int updateOrder(Order order);
 
 
 }

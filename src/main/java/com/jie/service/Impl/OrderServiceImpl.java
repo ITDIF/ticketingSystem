@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -100,6 +101,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> queryHistoricalOrderConditional(String account, String startDate, String endDate, String key, String start, String count) {
+        return orderMapper.queryHistoricalOrderConditionalPaging(account,startDate,endDate,key,start,count);
+    }
+
+    @Override
+    public int queryHistoricalOrderConditionalCount(String account, String startDate, String endDate, String key) {
+        return orderMapper.queryHistoricalOrderConditionalCount(account,startDate,endDate,key);
+    }
+
+    @Override
+    public List<Order> queryNotTravelOrderByPaging(String account, String start, String count) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String departure_time = sdf.format(System.currentTimeMillis());
+        return orderMapper.queryNotTravelOrderByPaging(account, departure_time, start, count);
+    }
+
+    @Override
     public List<Order> queryHistoricalOrderPaging(String account, String start, String count) {
         return orderMapper.queryHistoricalOrderPaging(account,start,count);
     }
@@ -110,6 +128,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public int queryNotTravelOrderCount(String account) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String departure_time = sdf.format(System.currentTimeMillis());
+        return orderMapper.queryNotTravelOrderCount(account, departure_time);
+    }
+
+    @Override
     public Map<String, Object> queryOrderTimeAndSeatByOrderNumber(String order_number) {
         return orderMapper.queryOrderTimeAndSeatByOrderNumber(order_number);
     }
@@ -117,18 +142,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
     public int addOrderAndDelTemporary(String orderNumber) {
-//        OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
-//        Order order = new Order(null,String.valueOf(System.currentTimeMillis()),orderTemporary.getUsername(),orderTemporary.getRoute_number(),
-//                orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
-//                orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
-//                "已付款",new Timestamp(System.currentTimeMillis()));
-//        String QQ = userMapper.queryQQByIdNumber(orderTemporary.getId_number());
-//        mailService.ticketSuccessInform(QQ,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
-//
-//        return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) |
-//                orderMapper.addOrder(order);
+        OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
+        Order order = new Order(null,orderNumber,orderTemporary.getUsername(),orderTemporary.getRoute_number(),
+                orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
+                orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
+                "已付款",new Timestamp(System.currentTimeMillis()));
         rabbitService.sendDirectMessageTicket(orderNumber);
-        return 1;
+        return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) &
+                orderMapper.addOrder(order);
     }
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
@@ -166,6 +187,25 @@ public class OrderServiceImpl implements OrderService {
         ticketMapper.updateRemainingTicket(String.valueOf(remainingTicket+1),route_number,date);
         return orderMapper.deleteOrderTemporaryByOrderNumber(order_number) |
                 ticketMapper.deleteTicketByOrderNumber(table,order_number);
+    }
+
+    @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
+    public int upOrderAndDelTicket(String order_number, String date) {
+        String table = "ticket_"+date.replaceAll("-","");
+        Map<String, Object> map = ticketMapper.queryRemainingTicketAndRouteNumber(order_number,date);
+        int remainingTicket = (int) map.get("remaining_tickets");
+        System.out.println("-------"+map.get("remaining_tickets")+" "+map.get("route_number"));
+        ticketMapper.updateRemainingTicket(String.valueOf(remainingTicket+1), (String) map.get("route_number"),date);
+        int result =  ticketMapper.deleteTicketByOrderNumber(table,order_number) &
+                orderMapper.updateOrder(new Order(null,order_number,null,null,
+                        null,null,null,null,null,null,null,null,"已取消",null));
+        if(result == 1){
+            return 1;
+        }else{
+            return 0;
+        }
+
     }
 
     @Override

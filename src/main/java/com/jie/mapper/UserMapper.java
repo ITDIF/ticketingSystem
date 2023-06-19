@@ -22,6 +22,13 @@ public interface UserMapper {
      */
     String queryIdNumberByAccount(String account);
 
+    /**
+     * 通过账号查询两个表的部分信息（数据展示）
+     * @param account 账号
+     * @return 信息
+     */
+    Map<String, String> queryUserInfoByAccount(String account);
+
     User queryUserById(Integer id);
 
     User queryUserByNumber(long number);
@@ -34,6 +41,11 @@ public interface UserMapper {
     User queryUserByAccount(String account);
     int addUser(User user);
 
+    /**
+     * 修改用户信息
+     * @param user 用户
+     * @return int
+     */
     int updateUser(User user);
 
     int deleteUserById(Integer id);

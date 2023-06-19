@@ -19,6 +19,16 @@
         select remaining_tickets from route_remaining_ticket where route_number = #{route_number} and route_date = #{route_date}
     </select>
 
+    <select id="queryRemainingTicketAndRouteNumber" parameterType="String" resultMap="remainingTicketAndRouteNumber">
+        SELECT route_remaining_ticket.remaining_tickets,orderinfo.route_number
+        FROM route_remaining_ticket
+                 JOIN orderinfo ON orderinfo.route_number = route_remaining_ticket.route_number
+        WHERE orderinfo.order_number = #{order_number} AND route_remaining_ticket.route_date = #{route_date}
+    </select>
+    <resultMap id="remainingTicketAndRouteNumber" type="HashMap">
+        <result column="remaining_tickets" property="remaining_tickets" javaType="int" />
+        <result column="route_number" property="route_number" javaType="String" />
+    </resultMap>
     <select id="queryPassengerCapacityByRouteNumber" parameterType="String" resultType="int">
         SELECT passenger_capacity FROM car,car_route
             WHERE car.`car_number` = car_route.`car_number` AND route_number = #{route_number}

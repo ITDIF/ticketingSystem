@@ -17,7 +17,7 @@ public class User {
     private String account;
     private String password;
     private String username;
-    private long phone_number;
+    private String phone_number;
     private String id_type;
     private String id_number;
     private String district;

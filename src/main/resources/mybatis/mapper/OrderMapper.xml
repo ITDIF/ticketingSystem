@@ -8,20 +8,59 @@
     <select id="queryOrderList" resultType="Order">
         select * from orderinfo;
     </select>
+    <select id="queryNotTravelOrderByPaging" resultType="Order">
+        SELECT orderinfo.*
+        FROM orderinfo
+                 JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
+          AND orderinfo.departure_time > #{departure_time} AND orderinfo.state != '已取消'
+        ORDER BY orderinfo.departure_time
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryNotTravelOrderCount" resultType="int">
+        SELECT count(*)
+        FROM orderinfo
+                 JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
+          AND orderinfo.departure_time > #{departure_time} AND
+              orderinfo.state != '已取消'
+    </select>
     <select id="queryHistoricalOrderByAccount" resultType="Order">
         SELECT orderinfo.*
         FROM orderinfo
             JOIN userinfo ON orderinfo.id_number = userinfo.id_number
         WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
-        ORDER BY orderinfo.order_time DESC
+        ORDER BY orderinfo.departure_time DESC
     </select>
     <select id="queryHistoricalOrderPaging" resultType="Order">
         SELECT orderinfo.*
         FROM orderinfo
             JOIN userinfo ON orderinfo.id_number = userinfo.id_number
         WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
-        ORDER BY orderinfo.order_time DESC
+        ORDER BY orderinfo.departure_time DESC
         LIMIT ${start},${count}
+    </select>
+    <select id="queryHistoricalOrderConditionalPaging" resultType="Order">
+        SELECT orderinfo.* FROM orderinfo
+        JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
+        AND orderinfo.departure_time BETWEEN #{startDate} AND #{endDate}
+        <if test="key != ''">
+            AND (orderinfo.username = #{key} OR orderinfo.route_number = #{key}
+            OR orderinfo.order_number = #{key})
+        </if>
+        ORDER BY orderinfo.departure_time DESC
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryHistoricalOrderConditionalCount" resultType="int">
+        SELECT count(*) FROM orderinfo
+        JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
+        AND orderinfo.departure_time BETWEEN #{startDate} AND #{endDate}
+        <if test="key != ''">
+            AND (orderinfo.username = #{key} OR orderinfo.route_number = #{key}
+            OR orderinfo.order_number = #{key})
+        </if>
     </select>
     <select id="queryHistoricalOrderCount" resultType="int">
         SELECT count(*)
@@ -57,6 +96,9 @@
     <select id="queryOrderTemporary" parameterType="String" resultType="OrderTemporary">
         select * from orderinfo_temporary where order_number=${order_number}
     </select>
+    <select id="queryOrder" parameterType="String" resultType="Order">
+        select * from orderinfo where order_number=${order_number}
+    </select>
     <select id="queryRouteNumberByOrderNumber" resultType="String" parameterType="String">
         select route_number
         from orderinfo_temporary where order_number=#{order_number};
@@ -80,8 +122,24 @@
              #{from_station},#{to_station},#{seat_type},#{seat_id},#{price},#{order_time},#{state})
     </insert>
 
-    <update id="updateUser" parameterType="Order">
-
+    <update id="updateOrder" parameterType="Order">
+        update orderinfo
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="username!=null">username=#{username},</if>
+            <if test="route_number!=null">route_number=#{route_number},</if>
+            <if test="id_number!=null">id_number=#{id_number},</if>
+            <if test="departure_time!=null">departure_time=#{departure_time},</if>
+            <if test="from_station!=null">from_station=#{from_station},</if>
+            <if test="to_station!=null">to_station=#{to_station},</if>
+            <if test="seat_type!=null">seat_type=#{seat_type},</if>
+            <if test="seat_id!=null">seat_id=#{seat_id},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="order_time!=null">order_time=#{order_time},</if>
+            <if test="state!=null">state=#{state},</if>
+            <if test="pay_time!=null">pay_time=#{pay_time},</if>
+        </set>
+        where order_number = #{order_number}
     </update>
 
     <delete id="deleteOrderByOrderNumber" parameterType="String">

@@ -47,7 +47,33 @@ public interface OrderService {
      */
     List<Order> queryHistoricalOrderByAccount(String account);
     /**
-     * 根据身份证查询历史订单分页
+     * 根据多个条件查询历史订单（候补除外）
+     * @param account 账户
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param key 关键字（用户名，订单，车次）
+     * @return 历史订单
+     */
+    List<Order> queryHistoricalOrderConditional(String account, String startDate, String endDate, String key, String start, String count);
+    /**
+     * 根据多个条件查询历史订单数量（候补除外）
+     * @param account 账户
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param key 关键字（用户名，订单，车次）
+     * @return 历史订单数量
+     */
+    int queryHistoricalOrderConditionalCount(String account, String startDate, String endDate, String key);
+    /**
+     * 根据账户查询未出行订单
+     * @param account 账户
+     * @param start 起点
+     * @param count count条订单
+     * @return 未出行订单
+     */
+    List<Order> queryNotTravelOrderByPaging(String account, String start, String count);
+    /**
+     * 根据账户查询历史订单分页
      * @param account 账户
      * @param start 起点
      * @param count count条订单
@@ -60,6 +86,12 @@ public interface OrderService {
      * @return 数量
      */
     int queryHistoricalOrderCount(String account);
+    /**
+     * 查询未出发订单数量
+     * @param account 账户
+     * @return 数量
+     */
+    int queryNotTravelOrderCount(String account);
 
     /**
      * 根据订单编号查询下单时间和座位
@@ -99,7 +131,13 @@ public interface OrderService {
      * @return 结果
      */
     int deleteOrderTemporaryAndTicket(String order_number, String date);
-
+    /**
+     * 删除车票和修改订单（退票操作）
+     * @param order_number 订单编号
+     * @param date 订单时间
+     * @return 结果
+     */
+    int upOrderAndDelTicket(String order_number, String date);
     /**
      * 删除临时订单和候补（取消候补订单操作）
      * @param order_number 订单编号
