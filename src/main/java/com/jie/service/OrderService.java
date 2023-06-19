@@ -52,6 +52,8 @@ public interface OrderService {
      * @param startDate 开始时间
      * @param endDate 结束时间
      * @param key 关键字（用户名，订单，车次）
+     * @param start 开始
+     * @param count 数量
      * @return 历史订单
      */
     List<Order> queryHistoricalOrderConditional(String account, String startDate, String endDate, String key, String start, String count);

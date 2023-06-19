@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 public class T {
@@ -19,7 +20,7 @@ public class T {
 
     @Test
     void testOne() {
-        redisTemplate.opsForValue().set("name", "卷心菜");
+        redisTemplate.opsForValue().set("name", "卷心",20, TimeUnit.SECONDS);
     }
     @Test
     void testTwo() throws IOException {

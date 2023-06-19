@@ -8,6 +8,67 @@
     <select id="queryCandidateList" resultType="Candidate">
         select * from candidate;
     </select>
+    <select id="queryOrderTemporaryByAccount" resultType="OrderTemporary">
+        SELECT orderinfo_temporary.*
+        FROM orderinfo_temporary
+                 JOIN userinfo ON orderinfo_temporary.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo_temporary.seat_id IS NULL
+        ORDER BY orderinfo_temporary.order_time DESC
+    </select>
+    <select id="queryNotTravelCandidateByPaging" resultType="Order">
+        SELECT orderinfo.*
+        FROM orderinfo
+                 JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NULL
+          AND orderinfo.departure_time > #{departure_time} AND orderinfo.state != '已取消'
+        ORDER BY orderinfo.departure_time
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryNotTravelCandidateCount" resultType="int">
+        SELECT count(*)
+        FROM orderinfo
+                 JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NULL
+          AND orderinfo.departure_time > #{departure_time} AND
+            orderinfo.state != '已取消'
+    </select>
+    <select id="queryHistoricalCandidatePaging" resultType="Order">
+        SELECT orderinfo.*
+        FROM orderinfo
+                 JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.state like '%候补%'
+        ORDER BY orderinfo.departure_time DESC
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryHistoricalCandidateCount" resultType="int">
+        SELECT count(*)
+        FROM orderinfo
+                 JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.state like '%候补%'
+    </select>
+    <select id="queryHistoricalCandidateConditionalPaging" resultType="Order">
+        SELECT orderinfo.* FROM orderinfo
+        JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.state like '%候补%'
+        AND orderinfo.departure_time BETWEEN #{startDate} AND #{endDate}
+        <if test="key != ''">
+            AND (orderinfo.username = #{key} OR orderinfo.route_number = #{key}
+            OR orderinfo.order_number = #{key})
+        </if>
+        ORDER BY orderinfo.departure_time DESC
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryHistoricalCandidateConditionalCount" resultType="int">
+        SELECT count(*) FROM orderinfo
+        JOIN userinfo ON orderinfo.id_number = userinfo.id_number
+        WHERE userinfo.account = #{account} AND orderinfo.state like '%候补%'
+        AND orderinfo.departure_time BETWEEN #{startDate} AND #{endDate}
+        <if test="key != ''">
+            AND (orderinfo.username = #{key} OR orderinfo.route_number = #{key}
+            OR orderinfo.order_number = #{key})
+        </if>
+    </select>
+
     <select id="queryExistCandidateCount" resultType="int">
         SELECT COUNT(*) FROM candidate WHERE route_number = #{route_number} AND departure_time = #{departure_time}
     </select>
@@ -19,12 +80,23 @@
         select * from Candidate where order_number = #{order_number};
     </select>
     <insert id="addCandidate" parameterType="Candidate">
-        insert into candidate (id, route_number, order_number, id_number, departure_time, candidate_time,deadline)
-        values (#{id}, #{route_number}, #{order_number}, #{id_number}, #{departure_time}, #{candidate_time}, #{deadline})
+        insert into candidate (id, route_number, order_number, id_number, departure_time, candidate_time,deadline,state)
+        values (#{id}, #{route_number}, #{order_number}, #{id_number}, #{departure_time}, #{candidate_time}, #{deadline}, #{state})
     </insert>
 
-    <update id="updateCar" parameterType="Candidate">
-
+    <update id="updateCandidate" parameterType="Candidate">
+        update candidate
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="route_number!=null">route_number=#{route_number},</if>
+            <if test="order_number!=null">order_number=#{order_number},</if>
+            <if test="id_number!=null">id_number=#{id_number},</if>
+            <if test="departure_time!=null">departure_time=#{departure_time},</if>
+            <if test="candidate_time!=null">candidate_time=#{candidate_time},</if>
+            <if test="deadline!=null">deadline=#{deadline},</if>
+            <if test="state!=null">state=#{state},</if>
+        </set>
+        where order_number = #{order_number}
     </update>
 
     <delete id="deleteCandidateByOrderNumber" parameterType="String">

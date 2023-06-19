@@ -154,8 +154,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
     public int candidateSuccess(String orderNumber) {
+        OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
+        Order order = new Order(null,orderNumber,orderTemporary.getUsername(),orderTemporary.getRoute_number(),
+                orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
+                orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
+                "待兑现(候补)",new Timestamp(System.currentTimeMillis()));
+        candidateMapper.updateCandidate(new Candidate(null,null,orderNumber, null,null,null,null,"待兑现"));
         rabbitService.sendDirectMessageCandidate(orderNumber);
-        return 1;
+        return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber)&
+        orderMapper.addOrder(order);
     }
 
     @Override
@@ -165,7 +172,8 @@ public class OrderServiceImpl implements OrderService {
         String orderNumber = String.valueOf(System.currentTimeMillis());
         CarRoute carRoute = carRouteMapper.queryCarRouteByRouteNumber(route_number);
         String departureTime = route_date+" "+carRoute.getDeparture_time()+":00";
-        Candidate candidate = new Candidate(null,route_number,orderNumber,user.getId_number(), Timestamp.valueOf(departureTime), new Timestamp(System.currentTimeMillis()), deadline);
+        Candidate candidate = new Candidate(null,route_number,orderNumber,user.getId_number(),
+                Timestamp.valueOf(departureTime), new Timestamp(System.currentTimeMillis()), deadline,"待支付");
         candidateMapper.addCandidate(candidate);
         OrderTemporary orderTemporary = new OrderTemporary(null,orderNumber,user.getUsername(),route_number,user.getId_number(),
                 Timestamp.valueOf(departureTime),carRoute.getFrom_station(),carRoute.getTo_station(),null,null,carRoute.getPrice(),

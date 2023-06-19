@@ -21,4 +21,5 @@ public class Candidate {
     private Timestamp departure_time;
     private Timestamp candidate_time;
     private Integer deadline;
+    private String state;
 }
