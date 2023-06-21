@@ -2,6 +2,7 @@ package com.jie.service.Impl;
 
 import com.jie.mapper.CandidateMapper;
 import com.jie.mapper.OrderMapper;
+import com.jie.pojo.Candidate;
 import com.jie.pojo.Order;
 import com.jie.pojo.OrderTemporary;
 import com.jie.service.CandidateService;
@@ -63,5 +64,15 @@ public class CandidateServiceImpl implements CandidateService {
     public int delCandidateAndOrder(String orderNumber) {
         return orderMapper.deleteOrderByOrderNumber(orderNumber) &
                 candidateMapper.deleteCandidateByOrderNumber(orderNumber);
+    }
+
+    @Override
+    public int queryDeadlineOrderNumber(String orderNumber) {
+        return candidateMapper.queryDeadlineByOrderNumber(orderNumber);
+    }
+
+    @Override
+    public int updateCandidate(Candidate candidate) {
+        return candidateMapper.updateCandidate(candidate);
     }
 }

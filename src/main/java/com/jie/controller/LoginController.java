@@ -21,7 +21,7 @@ public class LoginController {
 
     @RequestMapping("/loginCheck")
     @ResponseBody
-    public String loginCheck(String account, String password) {
+    public Map<String,Object> loginCheck(String account, String password) {
         System.out.println("loginCon:"+account+" "+password);
         return userService.loginCheck(account,password);
     }
@@ -49,7 +49,6 @@ public class LoginController {
     @ResponseBody
     public int updateUser(String data){
         User user = JSON.parseObject(data,User.class);
-        System.out.println(user);
         try {
             return userService.updateUser(user);
         }catch (Exception e){

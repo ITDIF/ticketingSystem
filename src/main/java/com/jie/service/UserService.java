@@ -15,7 +15,7 @@ public interface UserService {
      * @param password 密码
      * @return
      */
-    String loginCheck(String account, String password);
+    Map<String, Object> loginCheck(String account, String password);
     /**
      * 通过账号查询两个表的部分信息（数据展示）
      * @param account 账号
@@ -41,7 +41,7 @@ public interface UserService {
      * @param number 号码
      * @return user对象
      */
-    User queryUserByNumber(long number);
+    User queryUserByNumber(String number);
 
     /**
      * 通过账号查询对象
@@ -49,6 +49,21 @@ public interface UserService {
      * @return user对象
      */
     User queryUserByAccount(String account);
+
+    /**
+     * 确认密码是否一致
+     * @param account 账户
+     * @param password 密码
+     * @return boolean
+     */
+    boolean checkPass(String account, String password);
+
+    /**
+     * 发送手机验证码
+     * @param account 账户
+     * @return int
+     */
+    int sendPhoneCode(String account);
 
     String queryUsernameByAccount(String account);
 
@@ -60,6 +75,14 @@ public interface UserService {
      * @return int
      */
     int updateUser(User user);
+
+    /**
+     * 修改密码（先确认手机验证码）
+     * @param code 验证码
+     * @param user 用户
+     * @return 结果
+     */
+    int checkCodeAndUpdateUser(int code,User user);
 
     int deleteUserById(Integer id);
 

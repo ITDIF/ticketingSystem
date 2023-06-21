@@ -24,11 +24,16 @@
     <select id="queryAccount" resultType="int" parameterType="String">
         select count(*) from userinfo where account = #{account};
     </select>
-
-    <select id="queryUserByNumber" resultType="User" parameterType="long">
-        select * from userinfo where phone_number = #{number};
+    <select id="queryPassword" resultType="String" parameterType="String">
+        select password from userinfo where account = #{account}
     </select>
 
+    <select id="queryUserByNumber" resultType="User" parameterType="String">
+        select * from userinfo where phone_number = #{number};
+    </select>
+    <select id="queryPhoneByAccount" resultType="String" parameterType="String">
+        select phone_number from userinfo where account = #{account}
+    </select>
     <select id="queryQQByIdNumber" resultType="String" parameterType="String">
         select email from userinfo where id_number = #{id_number}
     </select>

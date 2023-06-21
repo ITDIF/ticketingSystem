@@ -1,5 +1,6 @@
 package com.jie.controller;
 
+import com.jie.pojo.Candidate;
 import com.jie.pojo.Order;
 import com.jie.pojo.OrderTemporary;
 import com.jie.service.CandidateService;
@@ -60,5 +61,16 @@ public class CandidateController {
     @ResponseBody
     public int delCandidateAndOrder(String order_number) {
         return candidateService.delCandidateAndOrder(order_number);
+    }
+    @RequestMapping("/queryDeadlineOrderNumber")
+    @ResponseBody
+    public int queryDeadlineOrderNumber(String orderNumber) {
+        return candidateService.queryDeadlineOrderNumber(orderNumber);
+    }
+    @RequestMapping("/updateCandidateDeadline")
+    @ResponseBody
+    public int updateCandidateDeadline(String orderNumber, int deadline){
+        Candidate candidate = new Candidate(null,null,orderNumber,null,null,null,deadline,null);
+        return candidateService.updateCandidate(candidate);
     }
 }

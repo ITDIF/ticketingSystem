@@ -1,5 +1,6 @@
 package com.jie.service;
 
+import com.jie.pojo.Candidate;
 import com.jie.pojo.Order;
 import com.jie.pojo.OrderTemporary;
 
@@ -72,4 +73,18 @@ public interface CandidateService {
      * @return int
      */
     int delCandidateAndOrder(String orderNumber);
+
+    /**
+     * 查询截止兑票日期
+     * @param orderNumber 订单号
+     * @return 小时数
+     */
+    int queryDeadlineOrderNumber(String orderNumber);
+
+    /**
+     * 修改候补订单
+     * @param candidate 候补订单
+     * @return int
+     */
+    int updateCandidate(Candidate candidate);
 }

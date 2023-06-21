@@ -58,6 +58,14 @@ mybatis:
   type-aliases-package: com.jie.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml
 
+#阿里云 msg
+aliyun:
+  send-msg:
+    accessKeyId:  LTAI5tMnNaownHDXsf5hq3iL
+    accessKeySecret:  M0AxVhX8aJ7l2IiW3ZqBeKyzqO9Cxv
+    SignName:  阿里云短信测试
+    TemplateCode:  SMS_154950909
+
 
 server:
   port: 8081

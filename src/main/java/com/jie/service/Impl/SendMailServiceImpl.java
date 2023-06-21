@@ -4,7 +4,6 @@ import com.jie.pojo.MailRequest;
 import com.jie.service.SendMailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
@@ -23,8 +23,8 @@ import java.util.Date;
 public class SendMailServiceImpl implements SendMailService {
 
     //注入邮件工具类
-    @Autowired
-    private JavaMailSender javaMailSender;
+    @Resource
+    JavaMailSender javaMailSender;
     @Value("${spring.mail.username}")
     private String sendMailer;
 

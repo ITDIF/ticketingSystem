@@ -29,9 +29,23 @@ public interface UserMapper {
      */
     Map<String, String> queryUserInfoByAccount(String account);
 
+    /**
+     * 查询密码
+     * @param account 账户
+     * @return 密码
+     */
+    String queryPassword(String account);
+
+    /**
+     * 查手机号
+     * @param account 账户
+     * @return 手机号
+     */
+    String queryPhoneByAccount(String account);
+
     User queryUserById(Integer id);
 
-    User queryUserByNumber(long number);
+    User queryUserByNumber(String number);
 
     String queryQQByIdNumber(String id_number);
 
