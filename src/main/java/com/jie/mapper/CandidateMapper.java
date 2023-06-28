@@ -91,6 +91,13 @@ public interface CandidateMapper {
      * @return 截止兑现时间
      */
     int queryDeadlineByOrderNumber(String order_number);
+    /**
+     * 查询最小候补订单号
+     * @param route_number 线路编号
+     * @param departure_time 出发时间
+     * @return 订单号
+     */
+    String queryMinCandidate(String route_number, String departure_time);
 
     /**
      * 添加候补信息

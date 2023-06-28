@@ -59,11 +59,17 @@ public interface UserService {
     boolean checkPass(String account, String password);
 
     /**
-     * 发送手机验证码
+     * 发送手机验证码通过账户
      * @param account 账户
      * @return int
      */
     int sendPhoneCode(String account);
+    /**
+     * 给手机号码发送手机验证码
+     * @param phone 手机号
+     * @return int
+     */
+    int sendCode(String phone);
 
     String queryUsernameByAccount(String account);
 
@@ -83,6 +89,7 @@ public interface UserService {
      * @return 结果
      */
     int checkCodeAndUpdateUser(int code,User user);
+
 
     int deleteUserById(Integer id);
 

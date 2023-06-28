@@ -109,6 +109,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int sendPhoneCode(String account) {
         String phone = userMapper.queryPhoneByAccount(account);
+        return sendCode(phone);
+    }
+    @Override
+    public int sendCode(String phone) {
         int code = Random.getRandomPhoneCode4();
         Map<String,Integer> map = new HashMap<>();
         map.put("code",code);
@@ -135,7 +139,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int checkCodeAndUpdateUser(int code, User user) {
-        String phone = userMapper.queryPhoneByAccount(user.getAccount());
+        String phone = "";
+        System.out.println("+++++++++++++"+user);
+        if(user.getPhone_number() == null){
+            phone = userMapper.queryPhoneByAccount(user.getAccount());
+        }else{
+            phone = user.getPhone_number();
+        }
         if(!redisTemplate.hasKey(phone)){
             return -2;
         }

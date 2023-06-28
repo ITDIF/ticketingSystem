@@ -79,6 +79,12 @@
     <select id="queryCandidateByOrderNumber" resultType="Candidate" parameterType="int">
         select * from Candidate where order_number = #{order_number};
     </select>
+    <select id="queryMinCandidate" resultType="String" parameterType="String">
+        SELECT order_number
+        FROM candidate
+        WHERE route_number = #{route_number} AND departure_time = #{departure_time}
+        ORDER BY candidate_time LIMIT 1;
+    </select>
     <insert id="addCandidate" parameterType="Candidate">
         insert into candidate (id, route_number, order_number, id_number, departure_time, candidate_time,deadline,state)
         values (#{id}, #{route_number}, #{order_number}, #{id_number}, #{departure_time}, #{candidate_time}, #{deadline}, #{state})

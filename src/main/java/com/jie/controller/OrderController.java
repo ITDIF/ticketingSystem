@@ -4,9 +4,8 @@ import com.jie.pojo.Order;
 import com.jie.pojo.OrderTemporary;
 import com.jie.service.Impl.RabbitService;
 import com.jie.service.OrderService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Map;
 /**
  * @author jie
  */
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
     @Resource
@@ -24,7 +23,6 @@ public class OrderController {
     RabbitService rabbitService;
 
     @RequestMapping("/temporary")
-    @ResponseBody
     public String temporary(String route_number, String route_date, String account){
         String orderId = orderService.addOrderTemporary(route_number,route_date,account);
         if(!"-1".equals(orderId)){
@@ -33,89 +31,77 @@ public class OrderController {
         return orderId;
     }
     @RequestMapping("/queryOrderTimeByOrderNumber")
-    @ResponseBody
     public String queryOrderTimeByOrderNumber(String order_number){
         return orderService.queryOrderTimeByOrderNumber(order_number);
     }
     @RequestMapping("/queryOrderTimeAndSeatByOrderNumber")
-    @ResponseBody
     public Map<String,Object> queryOrderTimeAndSeat(String order_number){
         return orderService.queryOrderTimeAndSeatByOrderNumber(order_number);
     }
     @RequestMapping("/queryOrderTemporaryByAccount")
-    @ResponseBody
     public List<OrderTemporary> queryOrderTemporaryByAccount(String account){
         return orderService.queryOrderTemporaryByAccount(account);
     }
     @RequestMapping("/queryNotTravelOrderByPaging")
-    @ResponseBody
     public List<Order> queryNotTravelOrderByPaging(String account, String start, String count){
         return orderService.queryNotTravelOrderByPaging(account, start, count);
     }
     @RequestMapping("/deleteOrderTemporaryAndTicket")
-    @ResponseBody
     public int deleteOrderTemporaryAndTicket(String order_number, String date){
         return orderService.deleteOrderTemporaryAndTicket(order_number,date);
     }
     @RequestMapping("/upOrderAndDelTicket")
-    @ResponseBody
     public int upOrderAndDelTicket(String order_number, String date){
         return  orderService.upOrderAndDelTicket(order_number, date);
     }
     @RequestMapping("/addOrderAndDelTemporary")
-    @ResponseBody
     public int addOrderAndDelTemporary(String order_number){
-        return orderService.addOrderAndDelTemporary(order_number);
+        try {
+            return orderService.addOrderAndDelTemporary(order_number);
+        }catch (Exception e){
+            return 0;
+        }
+
     }
     @RequestMapping("/candidateSuccess")
-    @ResponseBody
     public int candidateSuccess(String order_number){
         return orderService.candidateSuccess(order_number);
     }
     @RequestMapping("/queryHistoricalOrderByAccount")
-    @ResponseBody
     public List<Order> queryHistoricalOrderByAccount(String account){
         return orderService.queryHistoricalOrderByAccount(account);
     }
     @RequestMapping("/queryHistoricalOrderConditional")
-    @ResponseBody
     public List<Order> queryHistoricalOrderConditional(String account, String startDate, String endDate, String key, String start, String count){
         return orderService.queryHistoricalOrderConditional(account,startDate,endDate,key,start,count);
     }
     @RequestMapping("/queryHistoricalOrderConditionalCount")
-    @ResponseBody
     public int queryHistoricalOrderConditionalCount(String account, String startDate, String endDate, String key){
         return orderService.queryHistoricalOrderConditionalCount(account,startDate,endDate,key);
     }
     @RequestMapping("/queryHistoricalOrderPaging")
-    @ResponseBody
     public List<Order> queryHistoricalOrderPaging(String account, String start, String count){
         return orderService.queryHistoricalOrderPaging(account,start,count);
     }
     @RequestMapping("/queryHistoricalOrderCount")
-    @ResponseBody
     public int queryHistoricalOrderCount(String account){
         return orderService.queryHistoricalOrderCount(account);
     }
     @RequestMapping("/queryNotTravelOrderCount")
-    @ResponseBody
     public int queryNotTravelOrderCount(String account){
         return orderService.queryNotTravelOrderCount(account);
     }
     @RequestMapping("/candidate")
-    @ResponseBody
     public String candidate(String route_number, String route_date, String account,int deadline){
         String orderNumber = orderService.addCandidate(route_number, route_date, account, deadline);
         rabbitService.cancelCandidateOrder(orderNumber);
         return orderNumber;
     }
     @RequestMapping("/existCandidate")
-    @ResponseBody
     public int existCandidate(String route_number, String departure_time){
         return orderService.queryExistCandidateCount(route_number,departure_time);
     }
     @RequestMapping("/deleteOrderTemporaryAndCandidate")
-    @ResponseBody
     public int deleteOrderTemporaryAndCandidate(String order_number){
         return orderService.deleteOrderTemporaryAndCandidate(order_number);
     }

@@ -59,7 +59,8 @@ public class RabbitMqConfig {
     public Queue CandidateSuccessQueue(){
         return new Queue("CandidateSuccessQueue",true);
     }
-
+    @Bean
+    public Queue WaitingSuccessQueue(){ return new Queue("WaitingSuccessQueue",true);}
 
     //Direct交换机 起名：TestDirectExchange
     @Bean
@@ -87,6 +88,10 @@ public class RabbitMqConfig {
     @Bean
     Binding candidateSuccessBinding() {
         return BindingBuilder.bind(CandidateSuccessQueue()).to(TicketSuccessExchange()).with("candidate_success_key");
+    }
+    @Bean
+    Binding waitingSuccessBinding() {
+        return BindingBuilder.bind(WaitingSuccessQueue()).to(TicketSuccessExchange()).with("waiting_success_key");
     }
 
 

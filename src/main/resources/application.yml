@@ -65,6 +65,8 @@ aliyun:
     accessKeySecret:  M0AxVhX8aJ7l2IiW3ZqBeKyzqO9Cxv
     SignName:  阿里云短信测试
     TemplateCode:  SMS_154950909
+#    SignName:  验证码短信
+#    TemplateCode:  SMS_279961611
 
 
 server:

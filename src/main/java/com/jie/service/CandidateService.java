@@ -68,6 +68,12 @@ public interface CandidateService {
     int queryHistoricalCandidateConditionalCount(String account, String startDate, String endDate, String key);
 
     /**
+     * 候补成功（删除候补订单，修改订单，添加车票）
+     * @param routeNumber 线路编号
+     * @param departure_time 出发时间
+     */
+    void candidateSuccess( String routeNumber, String departure_time);
+    /**
      * 删除订单和候补
      * @param orderNumber 订单号
      * @return int

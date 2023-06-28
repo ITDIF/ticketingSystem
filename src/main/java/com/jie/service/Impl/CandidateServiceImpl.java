@@ -22,6 +22,8 @@ public class CandidateServiceImpl implements CandidateService {
     CandidateMapper candidateMapper;
     @Resource
     OrderMapper orderMapper;
+    @Resource
+    RabbitService rabbitService;
     @Override
     public List<OrderTemporary> queryOrderTemporaryByAccount(String account) {
         return candidateMapper.queryOrderTemporaryByAccount(account);
@@ -57,6 +59,11 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public int queryHistoricalCandidateConditionalCount(String account, String startDate, String endDate, String key) {
         return candidateMapper.queryHistoricalCandidateConditionalCount(account,startDate,endDate,key);
+    }
+
+    @Override
+    public void candidateSuccess(String routeNumber, String departureTime) {
+        rabbitService.waitingSuccess(routeNumber,departureTime);
     }
 
     @Override

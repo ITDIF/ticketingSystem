@@ -2,6 +2,7 @@ package com.jie.service.Impl;
 
 import com.jie.mapper.*;
 import com.jie.pojo.*;
+import com.jie.service.CandidateService;
 import com.jie.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class OrderServiceImpl implements OrderService {
     RabbitService rabbitService;
     @Resource
     CandidateMapper candidateMapper;
+    @Resource
+    CandidateService candidateService;
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class, IllegalArgumentException.class})
@@ -68,7 +71,6 @@ public class OrderServiceImpl implements OrderService {
         String orderId = String.valueOf(System.currentTimeMillis());
         String seatType = carMapper.querySeatByCarNumber(carRoute.getCar_number());
         String departureTime = route_date+" "+carRoute.getDeparture_time()+":00";
-//        System.out.println("departure_time: "+departureTime);
         OrderTemporary orderTemporary = new OrderTemporary(null,orderId,user.getUsername(),route_number,user.getId_number(),
                 Timestamp.valueOf(departureTime),carRoute.getFrom_station(),carRoute.getTo_station(),seatType,seat,carRoute.getPrice(),
                 new Timestamp(System.currentTimeMillis()),"未付款");
@@ -193,8 +195,10 @@ public class OrderServiceImpl implements OrderService {
         String result = ticketMapper.queryRemainingTicket(route_number, date);
         int remainingTicket = Integer.parseInt(result);
         ticketMapper.updateRemainingTicket(String.valueOf(remainingTicket+1),route_number,date);
-        return orderMapper.deleteOrderTemporaryByOrderNumber(order_number) |
-                ticketMapper.deleteTicketByOrderNumber(table,order_number);
+        ticketMapper.deleteTicketByOrderNumber(table,order_number);
+        OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(order_number);
+        candidateService.candidateSuccess(orderTemporary.getRoute_number(), orderTemporary.getDeparture_time().toString());
+        return orderMapper.deleteOrderTemporaryByOrderNumber(order_number);
     }
 
     @Override
@@ -208,12 +212,9 @@ public class OrderServiceImpl implements OrderService {
         int result =  ticketMapper.deleteTicketByOrderNumber(table,order_number) &
                 orderMapper.updateOrder(new Order(null,order_number,null,null,
                         null,null,null,null,null,null,null,null,"已取消",null));
-        if(result == 1){
-            return 1;
-        }else{
-            return 0;
-        }
-
+        Order order = orderMapper.queryOrder(order_number);
+        candidateService.candidateSuccess(order.getRoute_number(), order.getDeparture_time().toString());
+        return result;
     }
 
     @Override

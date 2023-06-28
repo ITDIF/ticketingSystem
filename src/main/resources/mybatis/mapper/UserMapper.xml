@@ -34,6 +34,13 @@
     <select id="queryPhoneByAccount" resultType="String" parameterType="String">
         select phone_number from userinfo where account = #{account}
     </select>
+<!--    <select id="queryPhoneAndPhoneVerification" resultMap="" parameterType="String">-->
+
+<!--    </select>-->
+<!--    <resultMap id="phoneAndPhoneVerification" type="HashMap">-->
+<!--        <result column="phone_number" property="phone_number" javaType="string" />-->
+<!--        <result column="phone_verification" property="phone_verification" javaType="String" />-->
+<!--    </resultMap>-->
     <select id="queryQQByIdNumber" resultType="String" parameterType="String">
         select email from userinfo where id_number = #{id_number}
     </select>
@@ -62,6 +69,10 @@
     <insert id="addUser" parameterType="User">
         insert into userinfo (id,account,password,username,phone_number,id_type,id_number,district,email,registration_time)
         values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{email},#{registration_time})
+    </insert>
+
+    <insert id="addVerification" parameterType="String">
+
     </insert>
 
     <update id="updateUser" parameterType="User">
