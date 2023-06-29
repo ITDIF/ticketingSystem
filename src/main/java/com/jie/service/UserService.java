@@ -29,6 +29,7 @@ public interface UserService {
      * @return user对象
      */
     User login(String account);
+    String userEmail(String account);
     List<User> queryUserList();
 
     int queryIdNumberByAccount(String account);
@@ -65,6 +66,12 @@ public interface UserService {
      */
     int sendPhoneCode(String account);
     /**
+     * 发送邮箱验证码
+     * @param email 邮箱
+     * @return int
+     */
+    int sendMailCode(String email);
+    /**
      * 给手机号码发送手机验证码
      * @param phone 手机号
      * @return int
@@ -89,7 +96,13 @@ public interface UserService {
      * @return 结果
      */
     int checkCodeAndUpdateUser(int code,User user);
-
+    /**
+     * 修改邮箱（先确认邮箱验证码）
+     * @param code 验证码
+     * @param user 用户
+     * @return 结果
+     */
+    int checkMailCodeAndUpdateUser(int code,User user);
 
     int deleteUserById(Integer id);
 

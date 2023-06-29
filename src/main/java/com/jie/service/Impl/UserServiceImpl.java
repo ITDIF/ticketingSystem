@@ -2,11 +2,13 @@ package com.jie.service.Impl;
 
 import com.jie.mapper.UserMapper;
 import com.jie.pojo.User;
+import com.jie.pojo.UserVerification;
 import com.jie.service.SendMsgService;
 import com.jie.service.UserService;
 import com.jie.util.Random;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
     SendMsgService sendMsgService;
     @Resource
     RedisTemplate redisTemplate;
+    @Resource
+    MailService mailService;
 
 
     @Override
@@ -70,6 +74,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String userEmail(String account) {
+        return userMapper.queryEmailByAccount(account);
+    }
+
+    @Override
     public List<User> queryUserList(){
         return userMapper.queryUserList();
     }
@@ -111,6 +120,16 @@ public class UserServiceImpl implements UserService {
         String phone = userMapper.queryPhoneByAccount(account);
         return sendCode(phone);
     }
+
+    @Override
+    public int sendMailCode(String email) {
+        int code = Random.getRandomPhoneCode4();
+        Map<String,Integer> map = new HashMap<>();
+        map.put("code",code);
+        redisTemplate.opsForValue().set(email,map.get("code"),65, TimeUnit.SECONDS);
+        return mailService.code(email, code);
+    }
+
     @Override
     public int sendCode(String phone) {
         int code = Random.getRandomPhoneCode4();
@@ -129,8 +148,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.queryUsernameByAccount(account);
     }
 
+    @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class, IllegalArgumentException.class})
     public int addUser(User user){
-        return userMapper.addUser(user);
+        UserVerification userVerification = new UserVerification(null,user.getAccount(),"未核验","未核验");
+        return userMapper.addUser(user) & userMapper.addVerification(userVerification);
     }
 
     public int updateUser(User user){
@@ -144,12 +166,26 @@ public class UserServiceImpl implements UserService {
         if(user.getPhone_number() == null){
             phone = userMapper.queryPhoneByAccount(user.getAccount());
         }else{
+            //新手机号(修改手机操作)
             phone = user.getPhone_number();
         }
         if(!redisTemplate.hasKey(phone)){
             return -2;
         }
         int redisCode = (int) redisTemplate.opsForValue().get(phone);
+        if(code == redisCode){
+            return userMapper.updateUser(user);
+        }else{
+            return -1;
+        }
+    }
+
+    @Override
+    public int checkMailCodeAndUpdateUser(int code, User user) {
+        if(Boolean.FALSE.equals(redisTemplate.hasKey(user.getEmail()))){
+            return -2;
+        }
+        int redisCode = (int) redisTemplate.opsForValue().get(user.getEmail());
         if(code == redisCode){
             return userMapper.updateUser(user);
         }else{

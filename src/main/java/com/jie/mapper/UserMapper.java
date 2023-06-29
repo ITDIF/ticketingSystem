@@ -1,6 +1,7 @@
 package com.jie.mapper;
 
 import com.jie.pojo.User;
+import com.jie.pojo.UserVerification;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -49,6 +50,8 @@ public interface UserMapper {
 
     String queryQQByIdNumber(String id_number);
 
+    String queryEmailByAccount(String account);
+
     String queryUsernameByAccount(String account);
 
     int queryAccount(String account);
@@ -61,6 +64,7 @@ public interface UserMapper {
      * @return int
      */
     int updateUser(User user);
+    int addVerification(UserVerification userVerification);
 
     int deleteUserById(Integer id);
 }

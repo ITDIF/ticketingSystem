@@ -70,5 +70,21 @@ public class MailService {
         simpleMailMessage.setTo(toPeo);
         javaMailSender.send(simpleMailMessage);
     }
+    public int code(String toPeo, int code) {
+        if(toPeo == null || toPeo.indexOf("@qq.com")==-1) {
+            return 0;
+        }
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject(String.valueOf(code));
+        simpleMailMessage.setText("您的验证码是："+code);
+        simpleMailMessage.setFrom("2084220263@QQ.com");
+        simpleMailMessage.setTo(toPeo);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        }catch (Exception e){
+            return -1;
+        }
+        return 1;
+    }
 
 }

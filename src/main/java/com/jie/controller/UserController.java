@@ -29,12 +29,27 @@ public class UserController {
     public int sendNewPhoneCode(String phone) {
         return userService.sendCode(phone);
     }
+    @RequestMapping("/mailCode")
+    public int sendMailCode(String email) {
+        return userService.sendMailCode(email);
+    }
     @RequestMapping("/checkCodeAndUpdateUser")
     public int checkCodeAndUpdateUser(int code, String data) {
         System.out.println(code+" "+data);
         User user = JSON.parseObject(data,User.class);
         System.out.println(user);
         return userService.checkCodeAndUpdateUser(code,user);
+    }
+    @RequestMapping("/checkMailCodeAndUpdateUser")
+    public int checkMailCodeAndUpdateUser(int code, String data) {
+        System.out.println(code+" "+data);
+        User user = JSON.parseObject(data,User.class);
+        System.out.println(user);
+        return userService.checkMailCodeAndUpdateUser(code,user);
+    }
+    @RequestMapping("/userMail")
+    public String userEmail(String account) {
+        return userService.userEmail(account);
     }
 
 }
