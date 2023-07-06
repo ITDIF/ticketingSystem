@@ -81,7 +81,7 @@ public class TicketSuccess {
             Order order = orderMapper.queryOrder(orderNumber);
             CarRoute carRoute = carRouteMapper.queryCarRouteByRouteNumber(routeNumber);
             String seatType = carMapper.querySeatByCarNumber(carRoute.getCar_number());
-            Ticket ticket = new Ticket(null,orderNumber,routeNumber,order.getUsername(),order.getId_number(),order.getFrom_station(),carRoute.getTo_station(),
+            Ticket ticket = new Ticket(null,orderNumber,routeNumber,order.getUsername(),order.getId_number(),order.getDeparture_time(),order.getFrom_station(),carRoute.getTo_station(),
                     seatType,seat,order.getPrice(),new Timestamp(System.currentTimeMillis()));
             ticketMapper.addTicket(ticketTable,ticket);
             candidateMapper.deleteCandidateByOrderNumber(orderNumber);

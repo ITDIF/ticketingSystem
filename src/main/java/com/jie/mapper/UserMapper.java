@@ -56,6 +56,13 @@ public interface UserMapper {
 
     int queryAccount(String account);
     User queryUserByAccount(String account);
+
+    /**
+     * 查询已有表名（table之后）
+     * @param table 带查询表
+     * @return 表名集合
+     */
+    List<String> queryTableName(String table);
     int addUser(User user);
 
     /**

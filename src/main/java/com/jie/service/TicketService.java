@@ -1,5 +1,9 @@
 package com.jie.service;
 
+import com.jie.pojo.Ticket;
+
+import java.util.List;
+
 /**
  * @author jie
  */
@@ -15,6 +19,8 @@ public interface TicketService {
      * @return 与票数
      */
     int queryRemainingTicket(String route_number, String route_date);
+
+    List<Ticket> queryTicketByIdNumber(String date, String account);
 
 
 }

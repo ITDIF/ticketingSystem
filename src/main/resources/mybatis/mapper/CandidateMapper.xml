@@ -20,7 +20,7 @@
         FROM orderinfo
                  JOIN userinfo ON orderinfo.id_number = userinfo.id_number
         WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NULL
-          AND orderinfo.departure_time > #{departure_time} AND orderinfo.state != '已取消'
+          AND orderinfo.departure_time > #{departure_time} AND orderinfo.state = '待兑现(候补)'
         ORDER BY orderinfo.departure_time
         LIMIT ${start},${count}
     </select>
@@ -30,7 +30,7 @@
                  JOIN userinfo ON orderinfo.id_number = userinfo.id_number
         WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NULL
           AND orderinfo.departure_time > #{departure_time} AND
-            orderinfo.state != '已取消'
+            orderinfo.state = '待兑现(候补)'
     </select>
     <select id="queryHistoricalCandidatePaging" resultType="Order">
         SELECT orderinfo.*

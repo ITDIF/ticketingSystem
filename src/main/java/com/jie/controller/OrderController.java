@@ -3,6 +3,7 @@ package com.jie.controller;
 import com.jie.pojo.Order;
 import com.jie.pojo.OrderTemporary;
 import com.jie.service.Impl.RabbitService;
+import com.jie.service.Impl.RedisService;
 import com.jie.service.OrderService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +22,17 @@ public class OrderController {
     OrderService orderService;
     @Resource
     RabbitService rabbitService;
+    @Resource
+    RedisService redisService;
+
+    @RequestMapping("/queryOrder")
+    public Order queryOrderByOrderNumber(String orderNumber) {
+        return orderService.queryOrderByOrderNumber(orderNumber);
+    }
 
     @RequestMapping("/temporary")
-    public String temporary(String route_number, String route_date, String account){
-        String orderId = orderService.addOrderTemporary(route_number,route_date,account);
+    public String temporary(String route_number, String route_date, String account, String oldOrderNumber){
+        String orderId = orderService.addOrderTemporary(route_number,route_date,account,oldOrderNumber);
         if(!"-1".equals(orderId)){
             rabbitService.cancelOrder(orderId,route_date);
         }
@@ -55,13 +63,23 @@ public class OrderController {
         return  orderService.upOrderAndDelTicket(order_number, date);
     }
     @RequestMapping("/addOrderAndDelTemporary")
-    public int addOrderAndDelTemporary(String order_number){
+    public int addOrderAndDelTemporary(String orderNumber){
         try {
-            return orderService.addOrderAndDelTemporary(order_number);
+            return orderService.addOrderAndDelTemporary(orderNumber);
         }catch (Exception e){
             return 0;
         }
-
+    }
+    @RequestMapping("/addOrderAndDelTemporaryAndUpOldOrder")
+    public int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber) {
+        try {
+            if(oldOrderNumber == null){
+                oldOrderNumber = redisService.getRebookOrderNumber(orderNumber);
+            }
+            return orderService.addOrderAndDelTemporaryAndUpOldOrder(orderNumber, oldOrderNumber);
+        }catch (Exception e){
+            return 0;
+        }
     }
     @RequestMapping("/candidateSuccess")
     public int candidateSuccess(String order_number){
@@ -104,6 +122,10 @@ public class OrderController {
     @RequestMapping("/deleteOrderTemporaryAndCandidate")
     public int deleteOrderTemporaryAndCandidate(String order_number){
         return orderService.deleteOrderTemporaryAndCandidate(order_number);
+    }
+    @RequestMapping("/setRebookOrderNumber")
+    public void setRebookOrderNumber(String orderNumber, String rebookOrderNumber){
+        redisService.setRebookOrderNumber(orderNumber, rebookOrderNumber);
     }
 
 }

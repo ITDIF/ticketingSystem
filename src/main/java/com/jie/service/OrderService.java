@@ -10,14 +10,16 @@ import java.util.Map;
  * @author jie
  */
 public interface OrderService {
+    Order queryOrderByOrderNumber(String orderNumber);
     /**
      * 添加临时订单到临时表
      * @param route_number 车次编号
      * @param route_date 车次发车时间
      * @param account 账户
+     * @param oldOrderNumber 原订单号
      * @return 结果 -1 不成功、订单号
      */
-    String addOrderTemporary(String route_number, String route_date, String account);
+    String addOrderTemporary(String route_number, String route_date, String account, String oldOrderNumber);
 
     /**
      * 查询已有候补数量
@@ -108,6 +110,14 @@ public interface OrderService {
      * @return int
      */
     int addOrderAndDelTemporary(String orderNumber);
+
+    /**
+     *添加订单同时删除临时订单和修改订单删除票（改签支付成功操作）
+     * @param orderNumber 临时订单编号
+     * @param oldOrderNumber 待修改的订单编号
+     * @return int
+     */
+    int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber);
 
     /**
      * 添加订单同时删除临时订单（候补支付成功操作）

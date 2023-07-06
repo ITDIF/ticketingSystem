@@ -40,8 +40,10 @@ public class cancelOrder {
             orderService.deleteOrderTemporaryAndCandidate(order_number);
         }else{
             System.out.println(sdf.format(new Date())+"候补订单未兑现 "+order_number);
-            candidateMapper.deleteCandidateByOrderNumber(order_number);
-            orderMapper.deleteOrderByOrderNumber(order_number);
+            int result  = candidateMapper.deleteCandidateByOrderNumber(order_number);
+            if(result == 1) {
+                orderMapper.deleteOrderByOrderNumber(order_number);
+            }
         }
 
     }

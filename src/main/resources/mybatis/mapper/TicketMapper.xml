@@ -37,14 +37,31 @@
         select seat_id
         from ${ticket} where route_number=#{route_number} ORDER BY seat_id;
     </select>
+    <select id="queryTableName" parameterType="String" resultType="String">
+        SELECT table_name FROM information_schema.tables
+        WHERE table_name LIKE 'ticket_%'
+          AND table_schema = 'ticketingsystem' AND table_name >= #{table};
+    </select>
+    <select id="queryTicketByIdNumber" resultType="Ticket">
+        <foreach item="tableName" collection="tableNames" separator="UNION ALL">
+            SELECT * FROM ${tableName} where id_number = #{idNumber}
+        </foreach>
+    </select>
+    <select id="queryTicketCountByIdNumber" resultType="int">
+        SELECT count(*) from (
+        <foreach item="tableName" collection="tableNames" separator="UNION ALL">
+            SELECT * FROM ${tableName} where id_number = #{idNumber}
+        </foreach>
+        ) as count
+    </select>
     <insert id="insertRemainingTicketInfo" parameterType="String">
         insert into route_remaining_ticket (route_number, remaining_tickets, route_date)
             values (#{route_number},#{remaining_tickets},#{route_date})
     </insert>
 
     <insert id="addTicket">
-        insert into ${table} (id, order_number,route_number, username, id_number, from_station, to_station, seat_type, seat_id, price, ticket_issuance_time)
-        values (#{ticket.id}, #{ticket.order_number}, #{ticket.route_number}, #{ticket.username}, #{ticket.id_number}, #{ticket.from_station}, #{ticket.to_station}, #{ticket.seat_type}, #{ticket.seat_id}, #{ticket.price}, #{ticket.ticket_issuance_time})
+        insert into ${table} (id, order_number,route_number, username, id_number,departure_time, from_station, to_station, seat_type, seat_id, price, ticket_issuance_time)
+        values (#{ticket.id}, #{ticket.order_number}, #{ticket.route_number}, #{ticket.username}, #{ticket.id_number},#{ticket.departure_time}, #{ticket.from_station}, #{ticket.to_station}, #{ticket.seat_type}, #{ticket.seat_id}, #{ticket.price}, #{ticket.ticket_issuance_time})
     </insert>
 
     <update id="createTableIsNotExist" parameterType="String">
@@ -54,14 +71,14 @@
             `route_number` VARCHAR(20) DEFAULT NULL,
             `username` VARCHAR(20) DEFAULT NULL,
             `id_number` VARCHAR(20) DEFAULT NULL,
+            `departure_time` DATETIME DEFAULT NULL,
             `from_station` VARCHAR(20) DEFAULT NULL,
             `to_station` VARCHAR(20) DEFAULT NULL,
             `seat_type` VARCHAR(20) DEFAULT NULL,
             `seat_id` INT DEFAULT NULL,
             `price` DECIMAL(7,4) DEFAULT NULL,
             `ticket_issuance_time` DATETIME DEFAULT NULL,
-            PRIMARY KEY (`id`),
-            UNIQUE KEY `order_number` (`order_number`)
+            PRIMARY KEY (`id`)
         ) ENGINE=INNODB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     </update>
     <update id="updateRemainingTicket" parameterType="String">

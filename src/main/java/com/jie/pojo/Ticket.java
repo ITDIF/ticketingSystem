@@ -19,6 +19,7 @@ public class Ticket {
     private String route_number;
     private String username;
     private String id_number;
+    private Timestamp departure_time;
     private String from_station;
     private String to_station;
     private String seat_type;

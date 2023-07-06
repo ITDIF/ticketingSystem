@@ -4,6 +4,7 @@ import com.jie.mapper.*;
 import com.jie.pojo.*;
 import com.jie.service.CandidateService;
 import com.jie.service.OrderService;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author jie
@@ -36,10 +38,23 @@ public class OrderServiceImpl implements OrderService {
     CandidateMapper candidateMapper;
     @Resource
     CandidateService candidateService;
+    @Resource
+    RedisTemplate redisTemplate;
+    @Override
+    public Order queryOrderByOrderNumber(String orderNumber) {
+        return orderMapper.queryOrder(orderNumber);
+    }
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class, IllegalArgumentException.class})
-    public String addOrderTemporary(String route_number, String route_date, String account) {
+    public String addOrderTemporary(String route_number, String route_date, String account, String oldOrderNumber) {
+        String status = "";
+        System.out.println("00000000000000000"+oldOrderNumber);
+        if(oldOrderNumber == null){
+            status = "未付款";
+        }else{
+            status = "未付款(改签)";
+        }
         System.out.println("addOrderTemporary: "+route_number+" "+route_date+" "+account);
         String result = ticketMapper.queryRemainingTicket(route_number, route_date);
         int remainingTicket = 0;
@@ -73,12 +88,14 @@ public class OrderServiceImpl implements OrderService {
         String departureTime = route_date+" "+carRoute.getDeparture_time()+":00";
         OrderTemporary orderTemporary = new OrderTemporary(null,orderId,user.getUsername(),route_number,user.getId_number(),
                 Timestamp.valueOf(departureTime),carRoute.getFrom_station(),carRoute.getTo_station(),seatType,seat,carRoute.getPrice(),
-                new Timestamp(System.currentTimeMillis()),"未付款");
+                new Timestamp(System.currentTimeMillis()),status);
         orderMapper.addOrderTemporary(orderTemporary);
-        Ticket ticket = new Ticket(null,orderId,route_number,user.getUsername(),user.getId_number(),carRoute.getFrom_station(),carRoute.getTo_station(),
+        Ticket ticket = new Ticket(null,orderId,route_number,user.getUsername(),user.getId_number(),Timestamp.valueOf(departureTime),carRoute.getFrom_station(),carRoute.getTo_station(),
                 seatType,seat,carRoute.getPrice(),new Timestamp(System.currentTimeMillis()));
         ticketMapper.addTicket(ticketTable,ticket);
-
+        if(oldOrderNumber != null){
+            redisTemplate.opsForValue().set("toRebook"+orderId, oldOrderNumber,600, TimeUnit.SECONDS);
+        }
         return orderId;
     }
 
@@ -153,6 +170,29 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) &
                 orderMapper.addOrder(order);
     }
+
+    @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
+    public int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber) {
+        OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
+        Order order = new Order(null,orderNumber,orderTemporary.getUsername(),orderTemporary.getRoute_number(),
+                orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
+                orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
+                "已付款",new Timestamp(System.currentTimeMillis()));
+        Order oldOrder = orderMapper.queryOrder(oldOrderNumber);
+        String date = oldOrder.getDeparture_time().toString().substring(0,10).replaceAll("-","");
+        String table = "ticket_"+date;
+        Map<String, Object> map = ticketMapper.queryRemainingTicketAndRouteNumber(oldOrderNumber,date);
+        int remainingTicket = (int) map.get("remaining_tickets");
+        ticketMapper.updateRemainingTicket(String.valueOf(remainingTicket+1), (String) map.get("route_number"),date);
+        int result =  ticketMapper.deleteTicketByOrderNumber(table,oldOrderNumber) &
+                orderMapper.updateOrder(new Order(null,oldOrderNumber,null,null,
+                        null,null,null,null,null,null,null,null,"已改签",null));
+        candidateService.candidateSuccess(oldOrder.getRoute_number(), oldOrder.getDeparture_time().toString());
+        return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) &
+                orderMapper.addOrder(order) & result;
+    }
+
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
     public int candidateSuccess(String orderNumber) {
@@ -207,7 +247,6 @@ public class OrderServiceImpl implements OrderService {
         String table = "ticket_"+date.replaceAll("-","");
         Map<String, Object> map = ticketMapper.queryRemainingTicketAndRouteNumber(order_number,date);
         int remainingTicket = (int) map.get("remaining_tickets");
-        System.out.println("-------"+map.get("remaining_tickets")+" "+map.get("route_number"));
         ticketMapper.updateRemainingTicket(String.valueOf(remainingTicket+1), (String) map.get("route_number"),date);
         int result =  ticketMapper.deleteTicketByOrderNumber(table,order_number) &
                 orderMapper.updateOrder(new Order(null,order_number,null,null,

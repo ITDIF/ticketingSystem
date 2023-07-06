@@ -69,7 +69,8 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
     public int delCandidateAndOrder(String orderNumber) {
-        return orderMapper.deleteOrderByOrderNumber(orderNumber) &
+        return orderMapper.updateOrder(new Order(null,orderNumber,null,null,
+                null,null,null,null,null,null,null,null,"已取消(候补)",null)) &
                 candidateMapper.deleteCandidateByOrderNumber(orderNumber);
     }
 

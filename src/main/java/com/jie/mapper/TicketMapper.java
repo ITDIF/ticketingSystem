@@ -86,6 +86,26 @@ public interface TicketMapper {
     List<Integer> querySeat(String ticket,String route_number);
 
     /**
+     * 查询用户车票数量
+     * @param idNumber 身份证
+     * @return 数量
+     */
+    int queryTicketCountByIdNumber(List<String> tableNames, String idNumber);
+
+    /**
+     * 查询用户车票信息
+     * @param idNumber 身份证
+     * @return 车票集合
+     */
+    List<Ticket> queryTicketByIdNumber(List<String> tableNames, String idNumber);
+
+    /**
+     * 查询数据库表名
+     * @param table 表名（当前表名之后的表）
+     * @return 表名集合
+     */
+    List<String> queryTableName(String table);
+    /**
      * 根据订单编号删除车票
      * @param table 待删的表
      * @param order_number 订单编号
