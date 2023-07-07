@@ -22,7 +22,7 @@ public class TicketController {
         return ticketService.queryRemainingTicket(route_number,route_date);
     }
     @RequestMapping("/queryTicket")
-    public List<Ticket> queryTicket(String date, String account){
-        return ticketService.queryTicketByIdNumber(date,account);
+    public List<Ticket> queryTicket(String date, String account, String start, String end){
+        return ticketService.queryTicketByIdNumber(date,account,start, end);
     }
 }

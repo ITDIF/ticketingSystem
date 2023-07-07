@@ -20,7 +20,7 @@ public interface TicketService {
      */
     int queryRemainingTicket(String route_number, String route_date);
 
-    List<Ticket> queryTicketByIdNumber(String date, String account);
+    List<Ticket> queryTicketByIdNumber(String date, String account, String start, String end);
 
 
 }

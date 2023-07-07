@@ -42,9 +42,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> queryTicketByIdNumber(String date, String account) {
+    public List<Ticket> queryTicketByIdNumber(String date, String account, String start, String end) {
         List<String> tableNames = ticketMapper.queryTableName("ticket_"+date);
         String idNumber = userMapper.queryIdNumberByAccount(account);
-        return ticketMapper.queryTicketByIdNumber(tableNames,idNumber);
+        return ticketMapper.queryTicketByIdNumber(tableNames,idNumber, start, end);
     }
 }

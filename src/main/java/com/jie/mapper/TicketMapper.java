@@ -90,14 +90,14 @@ public interface TicketMapper {
      * @param idNumber 身份证
      * @return 数量
      */
-    int queryTicketCountByIdNumber(List<String> tableNames, String idNumber);
+    int queryTicketCountByIdNumber(List<String> tableNames, String idNumber, String start, String end);
 
     /**
      * 查询用户车票信息
      * @param idNumber 身份证
      * @return 车票集合
      */
-    List<Ticket> queryTicketByIdNumber(List<String> tableNames, String idNumber);
+    List<Ticket> queryTicketByIdNumber(List<String> tableNames, String idNumber, String start, String end);
 
     /**
      * 查询数据库表名

@@ -44,13 +44,19 @@
     </select>
     <select id="queryTicketByIdNumber" resultType="Ticket">
         <foreach item="tableName" collection="tableNames" separator="UNION ALL">
-            SELECT * FROM ${tableName} where id_number = #{idNumber}
+            <if test="start != null and tableName >= 'ticket_'+start and tableName lte 'ticket_'+end">
+                SELECT * FROM ${tableName} where id_number = #{idNumber}
+            </if>
         </foreach>
+        ORDER BY departure_time
     </select>
     <select id="queryTicketCountByIdNumber" resultType="int">
         SELECT count(*) from (
         <foreach item="tableName" collection="tableNames" separator="UNION ALL">
             SELECT * FROM ${tableName} where id_number = #{idNumber}
+            <if test="start != null">
+                AND BETWEEN #{start} AND #{end}
+            </if>
         </foreach>
         ) as count
     </select>
