@@ -3,6 +3,7 @@ package com.jie.listener;
 import com.jie.config.RabbitMqConfig;
 import com.jie.mapper.CandidateMapper;
 import com.jie.mapper.OrderMapper;
+import com.jie.pojo.Order;
 import com.jie.service.OrderService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,8 @@ public class cancelOrder {
             System.out.println(sdf.format(new Date())+"候补订单未兑现 "+order_number);
             int result  = candidateMapper.deleteCandidateByOrderNumber(order_number);
             if(result == 1) {
-                orderMapper.deleteOrderByOrderNumber(order_number);
+                orderMapper.updateOrder(new Order(null,order_number,null,null,null,
+                        null,null,null,null,null,null,null,"未兑现(候补)",null));
             }
         }
 
