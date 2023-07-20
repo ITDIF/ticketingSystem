@@ -40,6 +40,17 @@ public class OrderServiceImpl implements OrderService {
     CandidateService candidateService;
     @Resource
     RedisTemplate redisTemplate;
+
+    @Override
+    public List<Order> queryOrderListPaging(String start, String count) {
+        return orderMapper.queryOrderListPaging(start,count);
+    }
+
+    @Override
+    public int queryOrderCount() {
+        return orderMapper.queryOrderCount();
+    }
+
     @Override
     public Order queryOrderByOrderNumber(String orderNumber) {
         return orderMapper.queryOrder(orderNumber);

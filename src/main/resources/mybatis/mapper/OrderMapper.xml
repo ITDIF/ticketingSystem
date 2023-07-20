@@ -8,6 +8,14 @@
     <select id="queryOrderList" resultType="Order">
         select * from orderinfo;
     </select>
+    <select id="queryOrderListPaging" resultType="Order">
+        select * from orderinfo
+        ORDER BY orderinfo.order_time DESC
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryOrderCount" resultType="int">
+        select count(*) from orderinfo
+    </select>
     <select id="queryNotTravelOrderByPaging" resultType="Order">
         SELECT orderinfo.*
         FROM orderinfo

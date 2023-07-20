@@ -15,6 +15,19 @@ import java.util.Map;
 @Repository
 public interface OrderMapper {
     /**
+     * 分页查询订单
+     * @param start 开始
+     * @param count 每次查询数量
+     * @return 订单集合
+     */
+    List<Order> queryOrderListPaging(String start, String count);
+
+    /**
+     * 订单数量
+     * @return 数量
+     */
+    int queryOrderCount();
+    /**
      * 根据订单号查询下单时间
      * @param order_number 订单号
      * @return 下单时间

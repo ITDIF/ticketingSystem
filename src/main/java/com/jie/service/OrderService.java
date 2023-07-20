@@ -10,6 +10,19 @@ import java.util.Map;
  * @author jie
  */
 public interface OrderService {
+    /**
+     * 分页查询订单
+     * @param start 开始
+     * @param count 每次查询数量
+     * @return 订单集合
+     */
+    List<Order> queryOrderListPaging(String start, String count);
+    /**
+     * 订单数量
+     * @return 数量
+     */
+    int queryOrderCount();
+
     Order queryOrderByOrderNumber(String orderNumber);
     /**
      * 添加临时订单到临时表
