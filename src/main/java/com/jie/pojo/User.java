@@ -23,4 +23,5 @@ public class User {
     private String district;
     private String email;
     private Timestamp registration_time;
+    private String state;
 }
