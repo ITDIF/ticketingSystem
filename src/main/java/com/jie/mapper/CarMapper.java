@@ -17,6 +17,23 @@ public interface CarMapper {
      * @return car集合
      */
     List<Car> queryCarList();
+    /**
+     * 分页查询车辆
+     * @param start 开始
+     * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 车辆集合
+     */
+    List<Car> queryCarPaging(String start, String count, String key, String value);
+
+    /**
+     * 车辆数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 数量
+     */
+    int queryCarCount(String key, String value);
 
     /**
      * 通过id查car

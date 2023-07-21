@@ -8,6 +8,19 @@
     <select id="queryCarList" resultType="Car">
         select * from car;
     </select>
+    <select id="queryCarPaging" resultType="Car">
+        select * from car
+        <if test="key != ''">
+            where ${key} like CONCAT('%',#{value},'%')
+        </if>
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryCarCount" resultType="int">
+        select count(*) from car
+        <if test="key != ''">
+            where ${key} like CONCAT('%',#{value},'%')
+        </if>
+    </select>
 
     <select id="queryCarById" resultType="Car" parameterType="int">
         select * from car where id = #{id};
@@ -16,8 +29,8 @@
         select seat_type from car where car_number = #{car_number}
     </select>
     <insert id="addCar" parameterType="Car">
-        insert into car (id,car_number,car_type,seat_type,passenger_capacity)
-        values (#{id},#{car_number},#{car_type},#{seat_type},#{passenger_capacity})
+        insert into car (id,car_number,car_type,seat_type,passenger_capacity,state)
+        values (#{id},#{car_number},#{car_type},#{seat_type},#{passenger_capacity},#{state})
     </insert>
 
     <update id="updateCar" parameterType="Car">

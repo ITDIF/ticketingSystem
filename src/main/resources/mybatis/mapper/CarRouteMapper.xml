@@ -9,6 +9,20 @@
         select * from car_route;
     </select>
 
+    <select id="queryCarRoutePaging" resultType="CarRoute">
+        select * from car_route
+        <if test="key != ''">
+            where ${key} like CONCAT('%',#{value},'%')
+        </if>
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryCarRouteCount" resultType="int">
+        select count(*) from car_route
+        <if test="key != ''">
+            where ${key} like CONCAT('%',#{value},'%')
+        </if>
+    </select>
+
     <select id="queryCarRouteById" resultType="CarRoute" parameterType="int">
         select * from car_route where id = #{id};
     </select>
@@ -20,7 +34,6 @@
     <select id="queryCarRouteBySE" resultType="CarRoute" parameterType="String">
         SELECT * FROM car_route WHERE from_station LIKE CONCAT('%',#{start},'%') AND to_station LIKE concat('%',#{end},'%') order by departure_time
     </select>
-
 
 
     <insert id="addCarRoute" parameterType="CarRoute">

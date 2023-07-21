@@ -16,12 +16,12 @@ public interface OrderService {
      * @param count 每次查询数量
      * @return 订单集合
      */
-    List<Order> queryOrderListPaging(String start, String count);
+    List<Order> queryOrderListPaging(String start, String count,String key, String value);
     /**
      * 订单数量
      * @return 数量
      */
-    int queryOrderCount();
+    int queryOrderCount(String key, String value);
 
     Order queryOrderByOrderNumber(String orderNumber);
     /**

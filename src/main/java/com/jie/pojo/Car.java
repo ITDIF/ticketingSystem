@@ -17,4 +17,5 @@ public class Car {
     private String car_type;
     private String seat_type;
     private Integer passenger_capacity;
+    private String state;
 }

@@ -7,6 +7,7 @@ import com.jie.service.TicketService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +45,9 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> queryTicketByIdNumber(String date, String account, String start, String end) {
         List<String> tableNames = ticketMapper.queryTableName("ticket_"+date);
+        if(tableNames.size() == 0) {
+            return new ArrayList<Ticket>();
+        }
         String idNumber = userMapper.queryIdNumberByAccount(account);
         return ticketMapper.queryTicketByIdNumber(tableNames,idNumber, start, end);
     }

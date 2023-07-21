@@ -10,6 +10,23 @@ import java.util.Map;
  */
 public interface UserService {
     /**
+     * 分页查询用户
+     * @param start 开始
+     * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 用户集合
+     */
+    List<User> queryUserPaging(String start, String count, String key, String value);
+
+    /**
+     * 用户数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 数量
+     */
+    int queryUserCount(String key, String value);
+    /**
      *判断账户是否存在
      * @param account 账号（账户名/手机号）
      * @param password 密码

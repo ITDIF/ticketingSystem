@@ -7,6 +7,23 @@ import java.util.List;
 public interface CarRouteService {
 
     List<CarRoute> queryCarRouteList();
+    /**
+     * 分页查询线路
+     * @param start 开始
+     * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 线路集合
+     */
+    List<CarRoute> queryCarRoutePaging(String start, String count, String key, String value);
+
+    /**
+     * 线路数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 数量
+     */
+    int queryCarRouteCount(String key, String value);
 
     CarRoute queryCarRouteById(Integer id);
 

@@ -5,7 +5,8 @@ import com.jie.pojo.UserVerification;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author jie
@@ -15,6 +16,23 @@ import java.util.*;
 public interface UserMapper {
 
     List<User> queryUserList();
+    /**
+     * 分页查询用户
+     * @param start 开始
+     * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 用户集合
+     */
+    List<User> queryUserPaging(String start, String count, String key, String value);
+
+    /**
+     * 用户数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 数量
+     */
+    int queryUserCount(String key, String value);
 
     /**
      * 通过账号查身份证号

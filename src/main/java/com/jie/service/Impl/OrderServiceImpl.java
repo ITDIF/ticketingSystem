@@ -42,13 +42,13 @@ public class OrderServiceImpl implements OrderService {
     RedisTemplate redisTemplate;
 
     @Override
-    public List<Order> queryOrderListPaging(String start, String count) {
-        return orderMapper.queryOrderListPaging(start,count);
+    public List<Order> queryOrderListPaging(String start, String count,String key, String value) {
+        return orderMapper.queryOrderListPaging(start,count,key,value);
     }
 
     @Override
-    public int queryOrderCount() {
-        return orderMapper.queryOrderCount();
+    public int queryOrderCount(String key, String value) {
+        return orderMapper.queryOrderCount(key,value);
     }
 
     @Override

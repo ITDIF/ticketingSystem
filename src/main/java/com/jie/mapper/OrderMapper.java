@@ -18,15 +18,19 @@ public interface OrderMapper {
      * 分页查询订单
      * @param start 开始
      * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
      * @return 订单集合
      */
-    List<Order> queryOrderListPaging(String start, String count);
+    List<Order> queryOrderListPaging(String start, String count,String key, String value);
 
     /**
      * 订单数量
+     * @param key 字段
+     * @param value 字段值
      * @return 数量
      */
-    int queryOrderCount();
+    int queryOrderCount(String key, String value);
     /**
      * 根据订单号查询下单时间
      * @param order_number 订单号

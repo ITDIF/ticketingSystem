@@ -20,6 +20,16 @@ public class CarServiceImpl implements CarService {
         return carMapper.queryCarList();
     }
 
+    @Override
+    public List<Car> queryCarPaging(String start, String count, String key, String value) {
+        return carMapper.queryCarPaging(start, count, key, value);
+    }
+
+    @Override
+    public int queryCarCount(String key, String value) {
+        return carMapper.queryCarCount(key, value);
+    }
+
     public Car queryCarById(Integer id){
         return carMapper.queryCarById(id);
     }

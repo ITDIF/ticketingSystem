@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author jie
@@ -50,6 +51,14 @@ public class UserController {
     @RequestMapping("/userMail")
     public String userEmail(String account) {
         return userService.userEmail(account);
+    }
+    @RequestMapping("/queryUserPaging")
+    public List<User> queryUserPaging(String start, String count, String key, String value){
+        return userService.queryUserPaging(start,count,key,value);
+    }
+    @RequestMapping("/queryUserCount")
+    public int queryUserCount(String key, String value){
+        return userService.queryUserCount(key, value);
     }
 
 }

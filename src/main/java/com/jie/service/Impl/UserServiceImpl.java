@@ -32,6 +32,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public List<User> queryUserPaging(String start, String count, String key, String value) {
+        return userMapper.queryUserPaging(start, count, key, value);
+    }
+
+    @Override
+    public int queryUserCount(String key, String value) {
+        return userMapper.queryUserCount(key, value);
+    }
+
+    @Override
     public Map<String, Object> loginCheck(String account, String password) {
         User user;
         Map<String, Object> map = new HashMap<>();
@@ -162,7 +172,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int checkCodeAndUpdateUser(int code, User user) {
         String phone = "";
-        System.out.println("+++++++++++++"+user);
+//        System.out.println("+++++++++++++"+user);
         if(user.getPhone_number() == null){
             phone = userMapper.queryPhoneByAccount(user.getAccount());
         }else{

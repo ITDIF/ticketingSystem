@@ -3,65 +3,58 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.jie.mapper.UserMapper">
+<mapper namespace="com.jie.mapper.AdminMapper">
 
-    <select id="queryUserList" resultType="User">
-        select * from userinfo;
+    <select id="queryUserList" resultType="Admin">
+        select * from admin;
     </select>
-    <select id="queryUserPaging" resultType="User">
-        select * from userinfo
+    <select id="queryAdminPaging" resultType="Admin">
+        select * from admin
         <if test="key != ''">
             where ${key} like CONCAT('%',#{value},'%')
         </if>
         LIMIT ${start},${count}
     </select>
-    <select id="queryUserCount" resultType="int">
-        select count(*) from userinfo
+    <select id="queryAdminCount" resultType="int">
+        select count(*) from admin
         <if test="key != ''">
             where ${key} like CONCAT('%',#{value},'%')
         </if>
     </select>
 
-    <select id="queryUserById" resultType="User" parameterType="int">
-        select * from userinfo where id = #{id};
+    <select id="queryUserById" resultType="Admin" parameterType="int">
+        select * from admin where id = #{id};
     </select>
     <select id="queryIdNumberByAccount" parameterType="String" resultType="String">
         select id_number
-        from userinfo where account=#{account};
+        from admin where account=#{account};
     </select>
 
     <select id="queryUsernameByAccount" resultType="String" parameterType="String">
-        select username from userinfo where account=#{account}
+        select username from admin where account=#{account}
     </select>
 
     <select id="queryAccount" resultType="int" parameterType="String">
-        select count(*) from userinfo where account = #{account};
+        select count(*) from admin where account = #{account};
     </select>
     <select id="queryPassword" resultType="String" parameterType="String">
-        select password from userinfo where account = #{account}
+        select password from admin where account = #{account}
     </select>
 
-    <select id="queryUserByNumber" resultType="User" parameterType="String">
-        select * from userinfo where phone_number = #{number};
+    <select id="queryAdminByNumber" resultType="Admin" parameterType="String">
+        select * from admin where phone_number = #{number};
     </select>
     <select id="queryPhoneByAccount" resultType="String" parameterType="String">
-        select phone_number from userinfo where account = #{account}
+        select phone_number from admin where account = #{account}
     </select>
-<!--    <select id="queryPhoneAndPhoneVerification" resultMap="" parameterType="String">-->
-
-<!--    </select>-->
-<!--    <resultMap id="phoneAndPhoneVerification" type="HashMap">-->
-<!--        <result column="phone_number" property="phone_number" javaType="string" />-->
-<!--        <result column="phone_verification" property="phone_verification" javaType="String" />-->
-<!--    </resultMap>-->
     <select id="queryQQByIdNumber" resultType="String" parameterType="String">
-        select email from userinfo where id_number = #{id_number}
+        select email from admin where id_number = #{id_number}
     </select>
     <select id="queryEmailByAccount" resultType="String" parameterType="String">
-        select email from userinfo where account = #{account}
+        select email from admin where account = #{account}
     </select>
-    <select id="queryUserByAccount" resultType="User" parameterType="String">
-        select * from userinfo where account = #{account};
+    <select id="queryAdminByAccount" resultType="Admin" parameterType="String">
+        select * from admin where account = #{account};
     </select>
     <select id="queryUserInfoByAccount" resultMap="userInfoTwo" parameterType="String">
         SELECT userinfo.account,userinfo.username,userinfo.phone_number,userinfo.id_number,userinfo.id_type,
@@ -83,8 +76,8 @@
         <result column="phone_verification" property="phone_verification" javaType="String" />
     </resultMap>
     <insert id="addUser" parameterType="User">
-        insert into userinfo (id,account,password,username,phone_number,id_type,id_number,district,email,registration_time,state)
-        values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{email},#{registration_time},#{state})
+        insert into userinfo (id,account,password,username,phone_number,id_type,id_number,district,email,registration_time)
+        values (#{id},#{account},#{password},#{username},#{phone_number},#{id_type},#{id_number},#{district},#{email},#{registration_time})
     </insert>
 
     <insert id="addVerification" parameterType="UserVerification">
@@ -94,19 +87,18 @@
 
     <update id="updateUser" parameterType="User">
         update userinfo
-            <set>
-                <if test="id!=null">id=#{id},</if>
-                <if test="account!=null">account=#{account},</if>
-                <if test="password!=null">password=#{password},</if>
-                <if test="username!=null">username=#{username},</if>
-                <if test="phone_number!=null">phone_number=#{phone_number},</if>
-                <if test="id_type!=null">id_type=#{id_type},</if>
-                <if test="id_number!=null">id_number=#{id_number},</if>
-                <if test="district!=null">district=#{district},</if>
-                <if test="registration_time!=null">registration_time=#{registration_time},</if>
-                <if test="email!=null">email=#{email},</if>
-                <if test="state!=null">state=#{state},</if>
-            </set>
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="account!=null">account=#{account},</if>
+            <if test="password!=null">password=#{password},</if>
+            <if test="username!=null">username=#{username},</if>
+            <if test="phone_number!=null">phone_number=#{phone_number},</if>
+            <if test="id_type!=null">id_type=#{id_type},</if>
+            <if test="id_number!=null">id_number=#{id_number},</if>
+            <if test="district!=null">district=#{district},</if>
+            <if test="registration_time!=null">registration_time=#{registration_time},</if>
+            <if test="email!=null">email=#{email},</if>
+        </set>
         where account = #{account}
     </update>
 

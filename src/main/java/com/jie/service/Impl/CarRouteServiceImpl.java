@@ -31,6 +31,16 @@ public class CarRouteServiceImpl implements CarRouteService {
     }
 
     @Override
+    public List<CarRoute> queryCarRoutePaging(String start, String count, String key, String value) {
+        return carRouteMapper.queryCarRoutePaging(start, count, key, value);
+    }
+
+    @Override
+    public int queryCarRouteCount(String key, String value) {
+        return carRouteMapper.queryCarRouteCount(key, value);
+    }
+
+    @Override
     public CarRoute queryCarRouteById(Integer id) {
         return carRouteMapper.queryCarRouteById(id);
     }
