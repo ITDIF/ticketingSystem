@@ -21,7 +21,7 @@ public class CarServiceTest {
     }
     @Test
     public void addCar(){
-        Car car = new Car(null,"8","3","4",5);
+        Car car = new Car(null,"8","3","4",5,"");
         System.out.println(carService.addCar(car));
     }
     @Test

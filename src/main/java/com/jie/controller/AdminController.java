@@ -21,11 +21,11 @@ public class AdminController {
     AdminService adminService;
 
     @RequestMapping("/queryAdminPaging")
-    public List<Admin> queryUserPaging(String start, String count, String key, String value){
+    public List<Admin> queryAdminPaging(String start, String count, String key, String value){
         return adminService.queryAdminPaging(start,count,key,value);
     }
     @RequestMapping("/queryAdminCount")
-    public int queryUserCount(String key, String value){
+    public int queryAdminCount(String key, String value){
         return adminService.queryAdminCount(key, value);
     }
 }

@@ -8,6 +8,19 @@
     <select id="queryCandidateList" resultType="Candidate">
         select * from candidate;
     </select>
+    <select id="queryCandidatePaging" resultType="Candidate">
+        select * from candidate
+        <if test="key != ''">
+            where ${key} like CONCAT('%',#{value},'%')
+        </if>
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryCandidateCount" resultType="int">
+        select count(*) from candidate
+        <if test="key != ''">
+            where ${key} like CONCAT('%',#{value},'%')
+        </if>
+    </select>
     <select id="queryOrderTemporaryByAccount" resultType="OrderTemporary">
         SELECT orderinfo_temporary.*
         FROM orderinfo_temporary

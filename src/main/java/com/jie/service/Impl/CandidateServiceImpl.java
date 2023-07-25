@@ -24,6 +24,17 @@ public class CandidateServiceImpl implements CandidateService {
     OrderMapper orderMapper;
     @Resource
     RabbitService rabbitService;
+
+    @Override
+    public List<Candidate> queryCandidatePaging(String start, String count, String key, String value) {
+        return candidateMapper.queryCandidatePaging(start, count, key, value);
+    }
+
+    @Override
+    public int queryCandidateCount(String key, String value) {
+        return candidateMapper.queryCandidateCount(key, value);
+    }
+
     @Override
     public List<OrderTemporary> queryOrderTemporaryByAccount(String account) {
         return candidateMapper.queryOrderTemporaryByAccount(account);

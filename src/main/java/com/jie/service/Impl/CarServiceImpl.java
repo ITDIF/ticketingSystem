@@ -45,4 +45,14 @@ public class CarServiceImpl implements CarService {
     public int deleteCarById(Integer id){
         return carMapper.deleteCarById(id);
     }
+
+    @Override
+    public int delCarByCarNumber(String carNumber) {
+        return carMapper.delCarByCarNumber(carNumber);
+    }
+
+    @Override
+    public int batchDelCarByCarNumber(List<String> carNumbers) {
+        return carMapper.batchDelCarByCarNumber(carNumbers);
+    }
 }

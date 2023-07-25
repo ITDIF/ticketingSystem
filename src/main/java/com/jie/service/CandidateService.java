@@ -11,6 +11,23 @@ import java.util.List;
  */
 public interface CandidateService {
     /**
+     * 分页查询候补订单
+     * @param start 开始
+     * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 候补订单集合
+     */
+    List<Candidate> queryCandidatePaging(String start, String count, String key, String value);
+
+    /**
+     * 候补订单数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 数量
+     */
+    int queryCandidateCount(String key, String value);
+    /**
      * 根据账户查询所有的未完成订单
      * @param account 账户
      * @return 未完成订单

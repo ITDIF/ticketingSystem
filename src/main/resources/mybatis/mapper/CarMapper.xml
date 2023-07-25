@@ -34,11 +34,29 @@
     </insert>
 
     <update id="updateCar" parameterType="Car">
-        update car set name=#{name},pwd=#{pwd} where id=#{id}
+        update car
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="car_number!=null">car_number=#{car_number},</if>
+            <if test="car_type!=null">car_type=#{car_type},</if>
+            <if test="seat_type!=null">seat_type=#{seat_type},</if>
+            <if test="passenger_capacity!=null">passenger_capacity=#{passenger_capacity},</if>
+            <if test="state!=null">state=#{state},</if>
+        </set>
+        where car_number = #{car_number}
     </update>
 
     <delete id="deleteCarById" parameterType="int">
-        delete from car where id = #{id}
+        delete from Car where id = #{id}
+    </delete>
+    <delete id="delCarByCarNumber" parameterType="string">
+        delete from Car where car_number = #{car_number}
+    </delete>
+    <delete id="batchDelCarByCarNumber" parameterType="string">
+        delete from Car where car_number in
+        <foreach collection="carNumbers" item="carNumber" open="(" separator="," close=")">
+            #{carNumber}
+        </foreach>
     </delete>
 
 </mapper>

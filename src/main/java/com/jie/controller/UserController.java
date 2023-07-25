@@ -19,7 +19,6 @@ public class UserController {
     UserService userService;
     @RequestMapping("/checkPass")
     public boolean checkPass(String account, String password) {
-        System.out.println("checkPass:"+account);
         return userService.checkPass(account,password);
     }
     @RequestMapping("/phoneCode")
@@ -36,9 +35,7 @@ public class UserController {
     }
     @RequestMapping("/checkCodeAndUpdateUser")
     public int checkCodeAndUpdateUser(int code, String data) {
-        System.out.println(code+" "+data);
         User user = JSON.parseObject(data,User.class);
-        System.out.println(user);
         return userService.checkCodeAndUpdateUser(code,user);
     }
     @RequestMapping("/checkMailCodeAndUpdateUser")
@@ -60,5 +57,11 @@ public class UserController {
     public int queryUserCount(String key, String value){
         return userService.queryUserCount(key, value);
     }
+    @RequestMapping("/updateUser")
+    public int updateUser(String data){
+        User user = JSON.parseObject(data,User.class);
+        return userService.updateUser(user);}
+    @RequestMapping("/delUser")
+    public int delUser(String account){return userService.delUserByAccount(account);}
 
 }

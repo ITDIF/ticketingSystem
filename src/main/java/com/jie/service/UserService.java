@@ -122,5 +122,17 @@ public interface UserService {
     int checkMailCodeAndUpdateUser(int code,User user);
 
     int deleteUserById(Integer id);
+    /**
+     * 删除用户
+     * @param account 账号
+     * @return 结果
+     */
+    int delUserByAccount(String account);
+    /**
+     * 批量删除用户
+     * @param accounts 账号列表
+     * @return 结果
+     */
+    int batchDelUserByAccount(List<String> accounts);
 
 }

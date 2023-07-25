@@ -3,21 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.jie.mapper.UserMapper">
+<mapper namespace="com.jie.mapper.OrderTemporaryMapper">
 
-    <select id="queryUserList" resultType="User">
-        select * from userinfo;
+    <select id="queryOrderTemporaryList" resultType="OrderTemporary">
+        select * from orderinfo_temporary;
     </select>
-    <select id="queryUserPaging" resultType="User">
-        select * from userinfo
+    <select id="queryOrderTemporaryPaging" resultType="OrderTemporary">
+        select * from orderinfo_temporary
         <if test="key != ''">
             where ${key} like CONCAT('%',#{value},'%')
         </if>
-        ORDER BY registration_time DESC
         LIMIT ${start},${count}
     </select>
-    <select id="queryUserCount" resultType="int">
-        select count(*) from userinfo
+    <select id="queryOrderTemporaryCount" resultType="int">
+        select count(*) from orderinfo_temporary
         <if test="key != ''">
             where ${key} like CONCAT('%',#{value},'%')
         </if>
@@ -48,13 +47,13 @@
     <select id="queryPhoneByAccount" resultType="String" parameterType="String">
         select phone_number from userinfo where account = #{account}
     </select>
-<!--    <select id="queryPhoneAndPhoneVerification" resultMap="" parameterType="String">-->
+    <!--    <select id="queryPhoneAndPhoneVerification" resultMap="" parameterType="String">-->
 
-<!--    </select>-->
-<!--    <resultMap id="phoneAndPhoneVerification" type="HashMap">-->
-<!--        <result column="phone_number" property="phone_number" javaType="string" />-->
-<!--        <result column="phone_verification" property="phone_verification" javaType="String" />-->
-<!--    </resultMap>-->
+    <!--    </select>-->
+    <!--    <resultMap id="phoneAndPhoneVerification" type="HashMap">-->
+    <!--        <result column="phone_number" property="phone_number" javaType="string" />-->
+    <!--        <result column="phone_verification" property="phone_verification" javaType="String" />-->
+    <!--    </resultMap>-->
     <select id="queryQQByIdNumber" resultType="String" parameterType="String">
         select email from userinfo where id_number = #{id_number}
     </select>
@@ -95,33 +94,24 @@
 
     <update id="updateUser" parameterType="User">
         update userinfo
-            <set>
-                <if test="id!=null">id=#{id},</if>
-                <if test="account!=null">account=#{account},</if>
-                <if test="password!=null">password=#{password},</if>
-                <if test="username!=null">username=#{username},</if>
-                <if test="phone_number!=null">phone_number=#{phone_number},</if>
-                <if test="id_type!=null">id_type=#{id_type},</if>
-                <if test="id_number!=null">id_number=#{id_number},</if>
-                <if test="district!=null">district=#{district},</if>
-                <if test="registration_time!=null">registration_time=#{registration_time},</if>
-                <if test="email!=null">email=#{email},</if>
-                <if test="state!=null">state=#{state},</if>
-            </set>
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="account!=null">account=#{account},</if>
+            <if test="password!=null">password=#{password},</if>
+            <if test="username!=null">username=#{username},</if>
+            <if test="phone_number!=null">phone_number=#{phone_number},</if>
+            <if test="id_type!=null">id_type=#{id_type},</if>
+            <if test="id_number!=null">id_number=#{id_number},</if>
+            <if test="district!=null">district=#{district},</if>
+            <if test="registration_time!=null">registration_time=#{registration_time},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="state!=null">state=#{state},</if>
+        </set>
         where account = #{account}
     </update>
 
     <delete id="deleteUserById" parameterType="int">
         delete from userinfo where id = #{id}
-    </delete>
-    <delete id="delUserByAccount" parameterType="string">
-        delete from userinfo where account = #{account}
-    </delete>
-    <delete id="batchDelUserByAccount" parameterType="string">
-        delete from userinfo where account in
-        <foreach collection="accounts" item="account" open="(" separator="," close=")">
-            #{account}
-        </foreach>
     </delete>
 
 </mapper>

@@ -4,6 +4,9 @@ import com.jie.pojo.Car;
 
 import java.util.List;
 
+/**
+ * @author jie
+ */
 public interface CarService {
     List<Car> queryCarList();
     /**
@@ -31,4 +34,17 @@ public interface CarService {
     int updateCar(Car car);
 
     int deleteCarById(Integer id);
+    /**
+     * 删除car
+     * @param carNumber 账号
+     * @return 结果
+     */
+    int delCarByCarNumber(String carNumber);
+
+    /**
+     * 批量删除car
+     * @param carNumbers car列表
+     * @return 结果
+     */
+    int batchDelCarByCarNumber(List<String> carNumbers);
 }

@@ -206,4 +206,14 @@ public class UserServiceImpl implements UserService {
     public int deleteUserById(Integer id){
         return userMapper.deleteUserById(id);
     }
+
+    @Override
+    public int delUserByAccount(String account) {
+        return userMapper.delUserByAccount(account);
+    }
+
+    @Override
+    public int batchDelUserByAccount(List<String> accounts) {
+        return userMapper.batchDelUserByAccount(accounts);
+    }
 }

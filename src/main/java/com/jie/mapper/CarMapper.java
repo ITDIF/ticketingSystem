@@ -69,4 +69,17 @@ public interface CarMapper {
      * @return 座位类型
      */
     String querySeatByCarNumber(String car_number);
+    /**
+     * 删除car
+     * @param carNumber 账号
+     * @return 结果
+     */
+    int delCarByCarNumber(String carNumber);
+
+    /**
+     * 批量删除car
+     * @param carNumbers car列表
+     * @return 结果
+     */
+    int batchDelCarByCarNumber(List<String> carNumbers);
 }
