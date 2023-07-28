@@ -15,6 +15,25 @@ import java.util.Map;
 @Repository
 public interface TicketMapper {
     /**
+     * 分页查询
+     * @param tableNames 表名
+     * @param start 开始
+     * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 集合
+     */
+    List<Ticket> queryTicketListPaging(List<String> tableNames, String start, String count, String key, String value);
+
+    /**
+     * 数量
+     * @param tableNames 表名
+     * @param key 字段
+     * @param value 字段值
+     * @return 数量
+     */
+    int queryTicketCount(List<String> tableNames, String key, String value);
+    /**
      * 查询车票表（ticket）是否存在
      * @param table 需要查询的表
      * @return string
@@ -105,6 +124,26 @@ public interface TicketMapper {
      * @return 表名集合
      */
     List<String> queryTableName(String table);
+    /**
+     * 查询所有数据库表名
+     * @return 表名集合
+     */
+    List<String> queryAllTableName();
+
+    /**
+     * 查询所有车票
+     * @param tableNames 表名
+     * @return 结果
+     */
+    List<Ticket> queryAllTicket(List<String> tableNames);
+
+    /**
+     * 修改
+     * @param ticket 车票
+     * @param table 车票表
+     * @return 结果
+     */
+    int updateTicket(Ticket ticket, String table);
     /**
      * 根据订单编号删除车票
      * @param table 待删的表

@@ -163,6 +163,14 @@ public interface OrderService {
      * @return 结果
      */
     int upOrderAndDelTicket(String order_number, String date);
+
+    /**
+     * 修改订单和车票
+     * @param order 订单
+     * @param date 日期
+     * @return 结果
+     */
+    int upOrderAndTicket(Order order, String date);
     /**
      * 删除临时订单和候补（取消候补订单操作）
      * @param order_number 订单编号

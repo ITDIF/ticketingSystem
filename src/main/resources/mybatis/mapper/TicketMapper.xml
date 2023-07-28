@@ -8,6 +8,27 @@
     <select id="queryTicketList" resultType="Ticket">
         select * from ticket;
     </select>
+    <select id="queryTicketListPaging" resultType="Ticket">
+        <foreach item="tableName" collection="tableNames" separator="UNION ALL">
+            SELECT * FROM ${tableName}
+            <if test="key != ''">
+                where ${key} like CONCAT('%',#{value},'%')
+            </if>
+        </foreach>
+        ORDER BY ticket_issuance_time DESC
+        LIMIT ${start},${count}
+    </select>
+    <select id="queryTicketCount" resultType="int">
+        SELECT SUM(count) AS total_count FROM (
+        <foreach item="tableName" collection="tableNames" separator="UNION ALL">
+            SELECT count(*) as count FROM ${tableName}
+            <if test="key != ''">
+                where ${key} like CONCAT('%',#{value},'%')
+            </if>
+        </foreach>
+        ) AS count_table
+
+    </select>
 
     <select id="queryTicketById" resultType="Ticket" parameterType="int">
         select * from ticket where id = #{id};
@@ -41,6 +62,17 @@
         SELECT table_name FROM information_schema.tables
         WHERE table_name LIKE 'ticket_%'
           AND table_schema = 'ticketingsystem' AND table_name >= #{table};
+    </select>
+    <select id="queryAllTableName" parameterType="String" resultType="String">
+        SELECT table_name FROM information_schema.tables
+        WHERE table_name LIKE 'ticket_%'
+          AND table_schema = 'ticketingsystem'
+    </select>
+    <select id="queryAllTicket" resultType="Ticket">
+        <foreach item="tableName" collection="tableNames" separator="UNION ALL">
+            SELECT * FROM ${tableName}
+        </foreach>
+        ORDER BY departure_time
     </select>
     <select id="queryTicketByIdNumber" resultType="Ticket">
         <foreach item="tableName" collection="tableNames" separator="UNION ALL">
@@ -91,8 +123,23 @@
         update route_remaining_ticket set remaining_tickets=#{remaining_tickets} where route_number = #{route_number} and route_date = #{route_date}
     </update>
 
-    <update id="updateUser" parameterType="User">
-#         update user set name=#{name},pwd=#{pwd} where id=#{id}
+    <update id="updateTicket" parameterType="Ticket">
+        update ${table}
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="order_number!=order_number">order_number=#{order_number},</if>
+            <if test="username!=null">username=#{username},</if>
+            <if test="route_number!=null">route_number=#{route_number},</if>
+            <if test="id_number!=null">id_number=#{id_number},</if>
+            <if test="departure_time!=null">departure_time=#{departure_time},</if>
+            <if test="from_station!=null">from_station=#{from_station},</if>
+            <if test="to_station!=null">to_station=#{to_station},</if>
+            <if test="seat_type!=null">seat_type=#{seat_type},</if>
+            <if test="seat_id!=null">seat_id=#{seat_id},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="ticket_issuance_time!=null">ticket_issuance_time=#{ticket_issuance_time},</if>
+        </set>
+        where order_number = #{order_number}
     </update>
 
     <delete id="deleteTicketByOrderNumber" parameterType="String">

@@ -25,4 +25,12 @@ public class TicketController {
     public List<Ticket> queryTicket(String date, String account, String start, String end){
         return ticketService.queryTicketByIdNumber(date,account,start, end);
     }
+    @RequestMapping("/queryTicketListPaging")
+    public List<Ticket> queryTicketListPaging(String start, String count, String key, String value){
+        return ticketService.queryTicketListPaging(start,count,key,value);
+    }
+    @RequestMapping("/queryTicketCount")
+    public int queryTicketCount(String key, String value){
+        return ticketService.queryTicketCount(key, value);
+    }
 }

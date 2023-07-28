@@ -8,6 +8,23 @@ import java.util.List;
  * @author jie
  */
 public interface TicketService {
+    /**
+     * 分页查询
+     * @param start 开始
+     * @param count 每次查询数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 集合
+     */
+    List<Ticket> queryTicketListPaging(String start, String count, String key, String value);
+
+    /**
+     * 数量
+     * @param key 字段
+     * @param value 字段值
+     * @return 数量
+     */
+    int queryTicketCount(String key, String value);
     String tableIsTrue(String table);
 
     int createTableIsNotExist(String table);
@@ -23,4 +40,9 @@ public interface TicketService {
     List<Ticket> queryTicketByIdNumber(String date, String account, String start, String end);
 
 
+    /**
+     * 查询所有车票
+     * @return 结果
+     */
+    List<Ticket> queryAllTicket();
 }

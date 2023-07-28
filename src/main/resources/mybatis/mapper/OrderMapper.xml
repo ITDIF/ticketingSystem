@@ -17,10 +17,13 @@
         LIMIT ${start},${count}
     </select>
     <select id="queryOrderCount" resultType="int">
-        select count(*) from orderinfo
-        <if test="key != ''">
-            where ${key} like CONCAT('%',#{value},'%')
-        </if>
+        SELECT SUM(count) AS total_count FROM (
+            select count(*) as count from orderinfo
+            <if test="key != ''">
+                where ${key} like CONCAT('%',#{value},'%')
+            </if>
+        ) AS count_table
+
     </select>
 <!--    <select id="queryConditionOrderPaging" resultType="Order">-->
 <!--        select * from orderinfo where-->
@@ -148,6 +151,7 @@
         update orderinfo
         <set>
             <if test="id!=null">id=#{id},</if>
+            <if test="order_number!=null">order_number=#{order_number},</if>
             <if test="username!=null">username=#{username},</if>
             <if test="route_number!=null">route_number=#{route_number},</if>
             <if test="id_number!=null">id_number=#{id_number},</if>

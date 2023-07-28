@@ -19,6 +19,25 @@ public class TicketServiceImpl implements TicketService {
     TicketMapper ticketMapper;
     @Resource
     UserMapper userMapper;
+
+    @Override
+    public List<Ticket> queryTicketListPaging(String start, String count, String key, String value) {
+        List<String> tableNames = ticketMapper.queryAllTableName();
+        if(tableNames.size() == 0) {
+            return new ArrayList<Ticket>();
+        }
+        return ticketMapper.queryTicketListPaging(tableNames, start, count, key, value);
+    }
+
+    @Override
+    public int queryTicketCount(String key, String value) {
+        List<String> tableNames = ticketMapper.queryAllTableName();
+        if(tableNames.size() == 0) {
+            return 0;
+        }
+        return ticketMapper.queryTicketCount(tableNames, key, value);
+    }
+
     @Override
     public String tableIsTrue(String table) {
         return ticketMapper.tableIsTrue(table);
@@ -50,5 +69,11 @@ public class TicketServiceImpl implements TicketService {
         }
         String idNumber = userMapper.queryIdNumberByAccount(account);
         return ticketMapper.queryTicketByIdNumber(tableNames,idNumber, start, end);
+    }
+
+    @Override
+    public List<Ticket> queryAllTicket() {
+        List<String> tableNames = ticketMapper.queryAllTableName();
+        return ticketMapper.queryAllTicket(tableNames);
     }
 }

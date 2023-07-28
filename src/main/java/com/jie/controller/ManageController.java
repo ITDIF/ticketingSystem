@@ -83,4 +83,8 @@ public class ManageController {
         List<String> list = mapper.readValue(carNumbers, new TypeReference<>() {});
         return carService.batchDelCarByCarNumber(list);
     }
+    @RequestMapping("/upOrderAndTicket")
+    public int upOrderAndTicket(String data, String date){
+        return orderService.upOrderAndTicket(JSON.parseObject(data, Order.class),date);
+    }
 }

@@ -44,9 +44,33 @@
     <update id="updateCarRouteTime" parameterType="CarRoute">
         update car_route set departure_time=#{departure_time} where id=#{id}
     </update>
+    <update id="updateCarRoute" parameterType="CarRoute">
+        update car_route
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="route_number!=null">route_number=#{route_number},</if>
+            <if test="car_number!=null">car_number=#{car_number},</if>
+            <if test="from_station!=null">from_station=#{from_station},</if>
+            <if test="to_station!=null">to_station=#{to_station},</if>
+            <if test="departure_time!=null">departure_time=#{departure_time},</if>
+            <if test="shift!=null">shift=#{shift},</if>
+            <if test="mileage!=null">mileage=#{mileage},</if>
+            <if test="price!=null">price=#{price},</if>
+        </set>
+        where route_number = #{route_number}
+    </update>
 
     <delete id="deleteCarRouteById" parameterType="int">
         delete from car_route where id = #{id}
+    </delete>
+    <delete id="delByRouteNumber" parameterType="string">
+        delete from car_route where route_number = #{routeNumber}
+    </delete>
+    <delete id="batchDelByRouteNumber" parameterType="string">
+        delete from car_route where route_number in
+        <foreach collection="routeNumbers" item="routeNumber" open="(" separator="," close=")">
+            #{routeNumber}
+        </foreach>
     </delete>
 
 </mapper>

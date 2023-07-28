@@ -90,4 +90,14 @@ public class CarRouteServiceImpl implements CarRouteService {
         return carRouteMapper.deleteCarRouteById(id);
     }
 
+    @Override
+    public int delByRouteNumber(String routeNumber) {
+        return carRouteMapper.delByRouteNumber(routeNumber);
+    }
+
+    @Override
+    public int batchDelByRouteNumber(List<String> routeNumbers) {
+        return carRouteMapper.batchDelByRouteNumber(routeNumbers);
+    }
+
 }

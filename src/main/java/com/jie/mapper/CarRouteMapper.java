@@ -49,7 +49,26 @@ public interface CarRouteMapper {
 
     int addCarRoute(CarRoute carRoute);
 
+    /**
+     * 修改
+     * @param carRoute 编号
+     * @return 结果
+     */
     int updateCarRoute(CarRoute carRoute);
 
     int deleteCarRouteById(Integer id);
+    /**
+     * 删除
+     * @param routeNumber 编号
+     * @return 结果
+     */
+    int delByRouteNumber(String routeNumber);
+
+    /**
+     * 批量删除
+     * @param routeNumbers 编号集合
+     * @return 结果
+     */
+    int batchDelByRouteNumber(List<String> routeNumbers);
+
 }
