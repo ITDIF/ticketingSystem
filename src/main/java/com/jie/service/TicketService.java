@@ -45,4 +45,12 @@ public interface TicketService {
      * @return 结果
      */
     List<Ticket> queryAllTicket();
+
+    /**
+     * 修改
+     * @param ticket 车票
+     * @param date 时间
+     * @return 结果
+     */
+    int updateTicket(Ticket ticket, String date);
 }

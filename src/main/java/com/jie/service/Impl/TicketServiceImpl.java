@@ -76,4 +76,10 @@ public class TicketServiceImpl implements TicketService {
         List<String> tableNames = ticketMapper.queryAllTableName();
         return ticketMapper.queryAllTicket(tableNames);
     }
+
+    @Override
+    public int updateTicket(Ticket ticket, String date) {
+        String table = "ticket_"+date.replaceAll("-","");
+        return ticketMapper.updateTicket(ticket,date);
+    }
 }

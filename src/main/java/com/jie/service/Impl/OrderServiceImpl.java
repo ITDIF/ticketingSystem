@@ -272,6 +272,7 @@ public class OrderServiceImpl implements OrderService {
         String table = "ticket_"+date.replaceAll("-","");
         Ticket ticket = new Ticket(null,order.getOrder_number(),order.getRoute_number(),order.getUsername(),order.getId_number(),
                 order.getDeparture_time(),order.getFrom_station(),order.getTo_station(),order.getSeat_type(),order.getSeat_id(),order.getPrice(),order.getOrder_time());
+//        return orderMapper.updateOrder(order);
         return orderMapper.updateOrder(order) & ticketMapper.updateTicket(ticket,table);
     }
 

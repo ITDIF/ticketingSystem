@@ -124,12 +124,12 @@
     </update>
 
     <update id="updateTicket" parameterType="Ticket">
-        update ${table}
+        update #{table}
         <set>
             <if test="id!=null">id=#{id},</if>
             <if test="order_number!=order_number">order_number=#{order_number},</if>
-            <if test="username!=null">username=#{username},</if>
             <if test="route_number!=null">route_number=#{route_number},</if>
+            <if test="username!=null">username=#{username},</if>
             <if test="id_number!=null">id_number=#{id_number},</if>
             <if test="departure_time!=null">departure_time=#{departure_time},</if>
             <if test="from_station!=null">from_station=#{from_station},</if>

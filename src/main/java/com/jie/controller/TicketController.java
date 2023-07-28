@@ -1,5 +1,6 @@
 package com.jie.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.jie.pojo.Ticket;
 import com.jie.service.TicketService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,5 +33,9 @@ public class TicketController {
     @RequestMapping("/queryTicketCount")
     public int queryTicketCount(String key, String value){
         return ticketService.queryTicketCount(key, value);
+    }
+    @RequestMapping("/update")
+    public int update(String data, String date){
+        return ticketService.updateTicket(JSON.parseObject(data, Ticket.class),date);
     }
 }
