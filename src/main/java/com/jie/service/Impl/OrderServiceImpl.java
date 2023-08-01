@@ -268,12 +268,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
     public int upOrderAndTicket(Order order, String date) {
         String table = "ticket_"+date.replaceAll("-","");
         Ticket ticket = new Ticket(null,order.getOrder_number(),order.getRoute_number(),order.getUsername(),order.getId_number(),
                 order.getDeparture_time(),order.getFrom_station(),order.getTo_station(),order.getSeat_type(),order.getSeat_id(),order.getPrice(),order.getOrder_time());
-//        return orderMapper.updateOrder(order);
-        return orderMapper.updateOrder(order) & ticketMapper.updateTicket(ticket,table);
+        return orderMapper.updateOrder(order) & ticketMapper.updateTicket(table,ticket);
     }
 
     @Override
@@ -284,5 +284,15 @@ public class OrderServiceImpl implements OrderService {
         }
         return orderMapper.deleteOrderTemporaryByOrderNumber(order_number) &
                 candidateMapper.deleteCandidateByOrderNumber(order_number);
+    }
+
+    @Override
+    public int deleteOrderByOrderNumber(String order_number) {
+        return orderMapper.deleteOrderByOrderNumber(order_number);
+    }
+
+    @Override
+    public int batchDelByOrderNumber(List<String> orderNumbers) {
+        return orderMapper.batchDelByOrderNumber(orderNumbers);
     }
 }

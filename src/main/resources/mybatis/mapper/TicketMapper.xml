@@ -123,23 +123,23 @@
         update route_remaining_ticket set remaining_tickets=#{remaining_tickets} where route_number = #{route_number} and route_date = #{route_date}
     </update>
 
-    <update id="updateTicket" parameterType="Ticket">
-        update #{table}
+    <update id="updateTicket">
+        update ${table}
         <set>
-            <if test="id!=null">id=#{id},</if>
-            <if test="order_number!=order_number">order_number=#{order_number},</if>
-            <if test="route_number!=null">route_number=#{route_number},</if>
-            <if test="username!=null">username=#{username},</if>
-            <if test="id_number!=null">id_number=#{id_number},</if>
-            <if test="departure_time!=null">departure_time=#{departure_time},</if>
-            <if test="from_station!=null">from_station=#{from_station},</if>
-            <if test="to_station!=null">to_station=#{to_station},</if>
-            <if test="seat_type!=null">seat_type=#{seat_type},</if>
-            <if test="seat_id!=null">seat_id=#{seat_id},</if>
-            <if test="price!=null">price=#{price},</if>
-            <if test="ticket_issuance_time!=null">ticket_issuance_time=#{ticket_issuance_time},</if>
+            <if test="ticket.id!=null">id=#{ticket.id},</if>
+            <if test="ticket.order_number!=null">order_number=#{ticket.order_number},</if>
+            <if test="ticket.route_number!=null">route_number=#{ticket.route_number},</if>
+            <if test="ticket.username!=null">username=#{ticket.username},</if>
+            <if test="ticket.id_number!=null">id_number=#{ticket.id_number},</if>
+            <if test="ticket.departure_time!=null">departure_time=#{ticket.departure_time},</if>
+            <if test="ticket.from_station!=null">from_station=#{ticket.from_station},</if>
+            <if test="ticket.to_station!=null">to_station=#{ticket.to_station},</if>
+            <if test="ticket.seat_type!=null">seat_type=#{ticket.seat_type},</if>
+            <if test="ticket.seat_id!=null">seat_id=#{ticket.seat_id},</if>
+            <if test="ticket.price!=null">price=#{ticket.price},</if>
+            <if test="ticket.ticket_issuance_time!=null">ticket_issuance_time=#{ticket.ticket_issuance_time},</if>
         </set>
-        where order_number = #{order_number}
+        where order_number = #{ticket.order_number}
     </update>
 
     <delete id="deleteTicketByOrderNumber" parameterType="String">

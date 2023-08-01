@@ -45,6 +45,13 @@ public interface TicketService {
      * @return 结果
      */
     List<Ticket> queryAllTicket();
+    /**
+     * 添加车票到table表中
+     * @param date
+     * @param ticket
+     * @return int
+     */
+    int addTicket(String date, Ticket ticket);
 
     /**
      * 修改
@@ -53,4 +60,12 @@ public interface TicketService {
      * @return 结果
      */
     int updateTicket(Ticket ticket, String date);
+
+    /**
+     * 根据订单编号删除车票
+     * @param date 时间
+     * @param order_number 订单编号
+     * @return int
+     */
+    int deleteTicketByOrderNumber(String date, String order_number);
 }

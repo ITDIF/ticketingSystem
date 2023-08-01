@@ -178,5 +178,12 @@ public interface OrderMapper {
      */
     int updateOrder(Order order);
 
+    /**
+     * 批量删除订单
+     * @param orderNumbers 订单集合
+     * @return 结果
+     */
+    int batchDelByOrderNumber(List<String> orderNumbers);
+
 
 }

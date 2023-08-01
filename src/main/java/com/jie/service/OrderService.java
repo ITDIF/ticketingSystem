@@ -177,5 +177,17 @@ public interface OrderService {
      * @return 结果
      */
     int deleteOrderTemporaryAndCandidate(String order_number);
+    /**
+     * 删除订单
+     * @param order_number 订单编号
+     * @return 结果
+     */
+    int deleteOrderByOrderNumber(String order_number);
+    /**
+     * 批量删除订单
+     * @param orderNumbers 订单集合
+     * @return 结果
+     */
+    int batchDelByOrderNumber(List<String> orderNumbers);
 
 }

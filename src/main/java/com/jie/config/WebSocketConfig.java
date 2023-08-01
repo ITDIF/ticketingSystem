@@ -2,6 +2,7 @@ package com.jie.config;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
@@ -10,7 +11,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @Configurable
 //@Configuration
-//@Component
+@Component
 public class WebSocketConfig {
     /**
      * 	注入ServerEndpointExporter，

@@ -34,8 +34,16 @@ public class TicketController {
     public int queryTicketCount(String key, String value){
         return ticketService.queryTicketCount(key, value);
     }
+    @RequestMapping("/add")
+    public int addTicket(String data, String date) {
+        return ticketService.addTicket(date,JSON.parseObject(data, Ticket.class));
+    }
     @RequestMapping("/update")
     public int update(String data, String date){
         return ticketService.updateTicket(JSON.parseObject(data, Ticket.class),date);
+    }
+    @RequestMapping("/del")
+    public int deleteTicketByOrderNumber(String date, String order_number) {
+        return ticketService.deleteTicketByOrderNumber(date,order_number);
     }
 }

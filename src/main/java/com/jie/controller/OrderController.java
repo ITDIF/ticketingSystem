@@ -1,5 +1,8 @@
 package com.jie.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jie.pojo.Order;
 import com.jie.pojo.OrderTemporary;
 import com.jie.service.Impl.RabbitService;
@@ -126,6 +129,16 @@ public class OrderController {
     @RequestMapping("/setRebookOrderNumber")
     public void setRebookOrderNumber(String orderNumber, String rebookOrderNumber){
         redisService.setRebookOrderNumber(orderNumber, rebookOrderNumber);
+    }
+    @RequestMapping("/deleteOrderByOrderNumber")
+    public int deleteOrderByOrderNumber(String order_number) {
+        return orderService.deleteOrderByOrderNumber(order_number);
+    }
+    @RequestMapping("/batchDel")
+    public int batchDelByOrderNumber(String orderNumbers) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> list = mapper.readValue(orderNumbers, new TypeReference<>() {});
+        return orderService.batchDelByOrderNumber(list);
     }
 
 }

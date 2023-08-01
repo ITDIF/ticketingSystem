@@ -78,8 +78,20 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public int addTicket(String date, Ticket ticket) {
+        String table = "ticket_"+date.replaceAll("-","");
+        return ticketMapper.addTicket(table,ticket);
+    }
+
+    @Override
     public int updateTicket(Ticket ticket, String date) {
         String table = "ticket_"+date.replaceAll("-","");
-        return ticketMapper.updateTicket(ticket,date);
+        return ticketMapper.updateTicket(table,ticket);
+    }
+
+    @Override
+    public int deleteTicketByOrderNumber(String date, String order_number) {
+        String table = "ticket_"+date.replaceAll("-","");
+        return ticketMapper.deleteTicketByOrderNumber(table, order_number);
     }
 }

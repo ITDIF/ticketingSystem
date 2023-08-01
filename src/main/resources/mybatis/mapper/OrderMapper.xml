@@ -178,5 +178,11 @@
     <delete id="deleteOrderTemporaryById" parameterType="int">
         delete from orderinfo_temporary where id = #{id}
     </delete>
+    <delete id="batchDelByOrderNumber" parameterType="string">
+        delete from orderinfo where orderinfo.order_number in
+        <foreach collection="orderNumbers" item="orderNumber" open="(" separator="," close=")">
+            #{orderNumber}
+        </foreach>
+    </delete>
 
 </mapper>

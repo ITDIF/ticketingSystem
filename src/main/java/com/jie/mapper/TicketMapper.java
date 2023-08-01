@@ -143,7 +143,7 @@ public interface TicketMapper {
      * @param table 车票表
      * @return 结果
      */
-    int updateTicket(Ticket ticket, String table);
+    int updateTicket(@Param("table") String table, @Param("ticket")Ticket ticket);
     /**
      * 根据订单编号删除车票
      * @param table 待删的表
