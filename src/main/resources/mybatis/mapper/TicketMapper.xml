@@ -61,7 +61,10 @@
     <select id="queryTableName" parameterType="String" resultType="String">
         SELECT table_name FROM information_schema.tables
         WHERE table_name LIKE 'ticket_%'
-          AND table_schema = 'ticketingsystem' AND table_name >= #{table};
+          AND table_schema = 'ticketingsystem' AND table_name >= #{table}
+        <if test="start != null">
+            AND table_name BETWEEN concat('ticket_',#{start}) AND concat('ticket_',#{end})
+        </if>
     </select>
     <select id="queryAllTableName" parameterType="String" resultType="String">
         SELECT table_name FROM information_schema.tables
@@ -87,7 +90,7 @@
         <foreach item="tableName" collection="tableNames" separator="UNION ALL">
             SELECT * FROM ${tableName} where id_number = #{idNumber}
             <if test="start != null">
-                AND BETWEEN #{start} AND #{end}
+                AND ${tableName} BETWEEN #{start} AND #{end}
             </if>
         </foreach>
         ) as count

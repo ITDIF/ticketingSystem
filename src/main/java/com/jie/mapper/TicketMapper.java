@@ -123,7 +123,7 @@ public interface TicketMapper {
      * @param table 表名（当前表名之后的表）
      * @return 表名集合
      */
-    List<String> queryTableName(String table);
+    List<String> queryTableName(String table, String start, String end);
     /**
      * 查询所有数据库表名
      * @return 表名集合

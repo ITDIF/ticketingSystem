@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Component
 @Slf4j
-@ServerEndpoint("/ticket/{userId}")  // 接口路径 ws://localhost:8087/webSocket/userId;
+@ServerEndpoint("/ticket/{userId}")  // 接口路径 ws://localhost:8081/ticket/userId;
 
 public class TicketWebSocket {
 

@@ -1,9 +1,14 @@
 package com.jie.config;
 
+import com.jie.service.UserService;
+import com.jie.webSocket.ManualCustomerWebSocket;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
+
+import javax.annotation.Resource;
 
 /**
  * @author jie
@@ -22,4 +27,12 @@ public class WebSocketConfig {
         return new ServerEndpointExporter();
     }
 
+    @Resource
+    public void setUserService(UserService userService) {
+        ManualCustomerWebSocket.userService = userService;
+    }
+    @Resource
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        ManualCustomerWebSocket.redisTemplate = redisTemplate;
+    }
 }

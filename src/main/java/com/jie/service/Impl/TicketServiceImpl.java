@@ -63,10 +63,11 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> queryTicketByIdNumber(String date, String account, String start, String end) {
-        List<String> tableNames = ticketMapper.queryTableName("ticket_"+date);
+        List<String> tableNames = ticketMapper.queryTableName("ticket_"+date,start,end);
         if(tableNames.size() == 0) {
             return new ArrayList<Ticket>();
         }
+        System.out.println("tableNames "+tableNames);
         String idNumber = userMapper.queryIdNumberByAccount(account);
         return ticketMapper.queryTicketByIdNumber(tableNames,idNumber, start, end);
     }

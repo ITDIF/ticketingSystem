@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
 
 @SpringBootTest
 public class MapperTest {
@@ -71,8 +70,8 @@ public class MapperTest {
     }
     @Test
     public void queryTicketCountByIdNumber(){
-        List<String> tableNames = ticketMapper.queryTableName("ticket_20230701");
-        System.out.println(tableNames);
+//        List<String> tableNames = ticketMapper.queryTableName("ticket_20230701");
+//        System.out.println(tableNames);
 //        System.out.println(ticketMapper.queryTicketCountByIdNumber(tableNames,"1111111"));
 //        System.out.println(ticketMapper.queryTicketByIdNumber(tableNames,"1111111"));
     }
