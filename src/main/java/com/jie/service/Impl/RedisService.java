@@ -4,6 +4,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,5 +21,8 @@ public class RedisService {
     }
     public String getRebookOrderNumber(String orderNumber){
         return (String) redisTemplate.opsForValue().get("toRebook"+orderNumber);
+    }
+    public List<Map<String,String>> userMessage(String listName){
+        return redisTemplate.opsForList().range(listName,0,-1);
     }
 }

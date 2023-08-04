@@ -38,7 +38,7 @@
         FROM orderinfo
                  JOIN userinfo ON orderinfo.id_number = userinfo.id_number
         WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
-          AND orderinfo.departure_time > #{departure_time} AND orderinfo.state = '已付款'
+          AND orderinfo.departure_time >= #{departure_time} AND orderinfo.state = '已付款'
         ORDER BY orderinfo.departure_time
         LIMIT ${start},${count}
     </select>
@@ -47,7 +47,7 @@
         FROM orderinfo
                  JOIN userinfo ON orderinfo.id_number = userinfo.id_number
         WHERE userinfo.account = #{account} AND orderinfo.seat_id IS NOT NULL
-          AND orderinfo.departure_time > #{departure_time} AND
+          AND orderinfo.departure_time >= #{departure_time} AND
               orderinfo.state = '已付款'
     </select>
     <select id="queryHistoricalOrderByAccount" resultType="Order">

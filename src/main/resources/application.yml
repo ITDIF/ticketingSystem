@@ -54,6 +54,10 @@ spring:
         min-idle: 0
         # 连接池中最大连接数，负数表示没有限制
         max-active: 20
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
 mybatis:
   type-aliases-package: com.jie.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml
@@ -68,6 +72,18 @@ aliyun:
 #    SignName:  验证码短信
 #    TemplateCode:  SMS_279961611
 
+#七牛云
+qiniu:
+  # 公钥
+  accessKey: 27ovtGosJGti8dewx3yxcINBSwYqNEoBXrtdgTuO
+  # 私钥
+  secretKey: eKOz9fcLlCbfkolS0aJRV3abTd_q5b60vhRaTt0O
+  # 存储空间名
+  bucketName: image-bucket1
+  # 域名/路径
+  path: http://ryrlaksut.hn-bkt.clouddn.com/
+  # 空间里存储的文件名 不需要可以删除
+  documentName: serviceImage/
 
 server:
   port: 8081

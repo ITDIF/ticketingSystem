@@ -126,4 +126,15 @@ public class ManualCustomerWebSocket {
             redisTemplate.opsForList().remove("userHelpOnline",0,account);
         }
     }
+
+    public void msgToRedis(Map<String, String> map){
+        String listName = "";
+        if("user".equals(map.get("belong"))){
+            listName = "message-"+map.get("account");
+        }else{
+            listName = "message-"+map.get("toPeo");
+        }
+        redisTemplate.opsForList().rightPush(listName,map);
+    }
+
 }
