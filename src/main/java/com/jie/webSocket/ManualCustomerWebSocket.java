@@ -92,6 +92,7 @@ public class ManualCustomerWebSocket {
         }
         // 点对点发送数据（给指定用户发送消息）
         Map<String, String> map = (Map<String, String>) JSON.parse(message);
+        msgToRedis(map);
         Session toSession = sessionPool.get(map.get("toPeo"));
         if (toSession != null && toSession.isOpen()) {
             toSession.getBasicRemote().sendText(map.toString());
