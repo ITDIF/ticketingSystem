@@ -26,6 +26,9 @@
     <select id="queryUserById" resultType="User" parameterType="int">
         select * from userinfo where id = #{id};
     </select>
+    <select id="checkPhoneTrue" parameterType="String" resultType="int">
+        select count(*) from userinfo where phone_number = ${phoneNumber}
+    </select>
     <select id="queryIdNumberByAccount" parameterType="String" resultType="String">
         select id_number
         from userinfo where account=#{account};
@@ -109,6 +112,23 @@
                 <if test="state!=null">state=#{state},</if>
             </set>
         where account = #{account}
+    </update>
+    <update id="updateUserByPhone" parameterType="User">
+        update userinfo
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="account!=null">account=#{account},</if>
+            <if test="password!=null">password=#{password},</if>
+            <if test="username!=null">username=#{username},</if>
+            <if test="phone_number!=null">phone_number=#{phone_number},</if>
+            <if test="id_type!=null">id_type=#{id_type},</if>
+            <if test="id_number!=null">id_number=#{id_number},</if>
+            <if test="district!=null">district=#{district},</if>
+            <if test="registration_time!=null">registration_time=#{registration_time},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="state!=null">state=#{state},</if>
+        </set>
+        where phone_number = #{phone_number}
     </update>
 
     <delete id="deleteUserById" parameterType="int">

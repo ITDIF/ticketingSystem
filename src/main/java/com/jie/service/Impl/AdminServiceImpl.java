@@ -47,4 +47,9 @@ public class AdminServiceImpl implements AdminService {
     public Admin login(String account) {
         return adminMapper.queryAdminByAccount(account);
     }
+
+    @Override
+    public int updateAdmin(Admin admin) {
+        return adminMapper.updateAdmin(admin);
+    }
 }

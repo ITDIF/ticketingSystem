@@ -42,4 +42,11 @@ public interface AdminService {
      * @return 管理员信息
      */
     Admin login(String account);
+
+    /**
+     * 修改管理员信息
+     * @param admin
+     * @return
+     */
+    int updateAdmin(Admin admin);
 }

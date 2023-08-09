@@ -53,4 +53,11 @@ public interface AdminMapper {
      */
     Admin queryAdminByAccount(String account);
 
+    /**
+     * 修改管理员信息
+     * @param admin
+     * @return
+     */
+    int updateAdmin(Admin admin);
+
 }

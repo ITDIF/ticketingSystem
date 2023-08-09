@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,7 +37,7 @@ public class UtilsController {
         return redisService.userMessage(listName);
     }
     @RequestMapping("/userOnline")
-    public List<String> userMessage(){
+    public Set<String> userMessage(){
         return redisService.getUserOnline();
     }
     @RequestMapping("/userOnlineAndMessage")

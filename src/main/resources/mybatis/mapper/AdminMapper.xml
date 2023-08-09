@@ -85,8 +85,8 @@
         VALUES (#{id},#{account},#{id_verification},#{phone_verification})
     </insert>
 
-    <update id="updateUser" parameterType="User">
-        update userinfo
+    <update id="updateAdmin" parameterType="Admin">
+        update admin
         <set>
             <if test="id!=null">id=#{id},</if>
             <if test="account!=null">account=#{account},</if>
@@ -97,7 +97,9 @@
             <if test="id_number!=null">id_number=#{id_number},</if>
             <if test="district!=null">district=#{district},</if>
             <if test="registration_time!=null">registration_time=#{registration_time},</if>
+            <if test="grade!=null">grade=#{grade},</if>
             <if test="email!=null">email=#{email},</if>
+            <if test="state!=null">state=#{state},</if>
         </set>
         where account = #{account}
     </update>

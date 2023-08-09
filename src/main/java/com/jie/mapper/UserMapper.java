@@ -62,6 +62,13 @@ public interface UserMapper {
      */
     String queryPhoneByAccount(String account);
 
+    /**
+     * 确认手机号已注册
+     * @param phoneNumber 手机号
+     * @return
+     */
+    int checkPhoneTrue(String phoneNumber);
+
     User queryUserById(Integer id);
 
     User queryUserByNumber(String number);
@@ -89,6 +96,12 @@ public interface UserMapper {
      * @return int
      */
     int updateUser(User user);
+    /**
+     * 修改用户信息(手机号)
+     * @param user 用户
+     * @return int
+     */
+    int updateUserByPhone(User user);
     int addVerification(UserVerification userVerification);
 
     int deleteUserById(Integer id);

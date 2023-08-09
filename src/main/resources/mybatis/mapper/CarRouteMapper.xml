@@ -37,7 +37,7 @@
 
 
     <insert id="addCarRoute" parameterType="CarRoute">
-        insert into car_route (id,route_number,car_number,from_station,to_station,departure_time,shift,mileage,price)
+        insert ignore into car_route (id,route_number,car_number,from_station,to_station,departure_time,shift,mileage,price)
         values (#{id},#{route_number},#{car_number},#{from_station},#{to_station},#{departure_time},#{shift},#{mileage},#{price})
     </insert>
 

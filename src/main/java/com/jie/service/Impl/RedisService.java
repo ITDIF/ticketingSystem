@@ -4,10 +4,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,18 +27,18 @@ public class RedisService {
         }
         return redisTemplate.opsForList().range(listName,0,-1);
     }
-    public List<String> getUserOnline(){
+    public Set<String> getUserOnline(){
         if(!redisTemplate.hasKey("userHelpOnline")){
-            return new ArrayList<>();
+            return new HashSet<>();
         }
-        return redisTemplate.opsForList().range("userHelpOnline",0,-1);
+        return redisTemplate.opsForSet().members("userHelpOnline");
     }
     public Object getUserLastMessage(String account){
         String listName = "message-" + account;
         return redisTemplate.opsForList().index(listName,-1);
     }
     public List<Map<String,Object>> onlineUserAndMessage(){
-        List<String> userOnline = getUserOnline();
+        Set<String> userOnline = getUserOnline();
         List<Map<String,Object>> ans = new ArrayList<>();
         for(String e : userOnline){
             Map<String,Object> map = new HashMap<>();

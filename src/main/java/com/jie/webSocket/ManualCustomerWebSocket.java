@@ -114,7 +114,7 @@ public class ManualCustomerWebSocket {
      */
     public void addToRedisOnline(String account){
         if(userService.queryAccount(account)){
-            redisTemplate.opsForList().rightPush("userHelpOnline",account);
+            redisTemplate.opsForSet().add("userHelpOnline",account);
         }
     }
 
@@ -124,7 +124,7 @@ public class ManualCustomerWebSocket {
      */
     public void removeAccount(String account){
         if(userService.queryAccount(account)){
-            redisTemplate.opsForList().remove("userHelpOnline",0,account);
+            redisTemplate.opsForSet().remove("userHelpOnline",account);
         }
     }
 

@@ -29,7 +29,7 @@
         select seat_type from car where car_number = #{car_number}
     </select>
     <insert id="addCar" parameterType="Car">
-        insert into car (id,car_number,car_type,seat_type,passenger_capacity,state)
+        insert ignore into car (id,car_number,car_type,seat_type,passenger_capacity,state)
         values (#{id},#{car_number},#{car_type},#{seat_type},#{passenger_capacity},#{state})
     </insert>
 

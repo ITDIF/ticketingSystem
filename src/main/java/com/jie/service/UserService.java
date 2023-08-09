@@ -50,6 +50,19 @@ public interface UserService {
     List<User> queryUserList();
 
     int queryIdNumberByAccount(String account);
+    /**
+     * 确认手机号
+     * @param account 账户
+     * @param phone 手机号
+     * @return 是否一致
+     */
+    boolean checkPhoneByAccount(String account, String phone);
+    /**
+     * 确认手机号已注册
+     * @param phoneNumber 手机号
+     * @return
+     */
+    boolean checkPhoneTrue(String phoneNumber);
 
     boolean queryAccount(String account);
     User queryUserById(Integer id);
@@ -113,6 +126,13 @@ public interface UserService {
      * @return 结果
      */
     int checkCodeAndUpdateUser(int code,User user);
+    /**
+     * 修改密码（先确认手机验证码）(手机号)
+     * @param code 验证码
+     * @param user 用户
+     * @return 结果
+     */
+    int checkCodeAndUpdateUserByPhone(int code,User user);
     /**
      * 修改邮箱（先确认邮箱验证码）
      * @param code 验证码

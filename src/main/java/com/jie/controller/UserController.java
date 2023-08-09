@@ -38,6 +38,11 @@ public class UserController {
         User user = JSON.parseObject(data,User.class);
         return userService.checkCodeAndUpdateUser(code,user);
     }
+    @RequestMapping("/checkCodeAndUpdateUserByPhone")
+    public int checkCodeAndUpdateUserByPhone(int code, String data) {
+        User user = JSON.parseObject(data,User.class);
+        return userService.checkCodeAndUpdateUserByPhone(code,user);
+    }
     @RequestMapping("/checkMailCodeAndUpdateUser")
     public int checkMailCodeAndUpdateUser(int code, String data) {
         System.out.println(code+" "+data);

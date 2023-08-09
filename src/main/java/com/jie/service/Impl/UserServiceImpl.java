@@ -104,6 +104,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean checkPhoneByAccount(String account, String phone) {
+        return userMapper.queryPhoneByAccount(account).equals(phone);
+    }
+
+    @Override
+    public boolean checkPhoneTrue(String phoneNumber) {
+        return userMapper.checkPhoneTrue(phoneNumber) == 1;
+    }
+
+    @Override
     public boolean queryAccount(String account) {
         int ans = userMapper.queryAccount(account);
         return ans == 1;
@@ -185,6 +195,21 @@ public class UserServiceImpl implements UserService {
         int redisCode = (int) redisTemplate.opsForValue().get(phone);
         if(code == redisCode){
             return userMapper.updateUser(user);
+        }else{
+            return -1;
+        }
+    }
+
+    @Override
+    public int checkCodeAndUpdateUserByPhone(int code, User user) {
+        String phone = user.getPhone_number();
+//        System.out.println("+++++++++++++"+user);
+        if(!redisTemplate.hasKey(phone)){
+            return -2;
+        }
+        int redisCode = (int) redisTemplate.opsForValue().get(phone);
+        if(code == redisCode){
+            return userMapper.updateUserByPhone(user);
         }else{
             return -1;
         }
