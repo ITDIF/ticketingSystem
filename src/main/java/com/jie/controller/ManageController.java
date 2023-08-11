@@ -87,4 +87,8 @@ public class ManageController {
     public int upOrderAndTicket(String data, String date){
         return orderService.upOrderAndTicket(JSON.parseObject(data, Order.class),date);
     }
+    @RequestMapping("/notUseCar")
+    public List<String> queryNotUseCar() {
+        return carService.queryNotUseCar();
+    }
 }

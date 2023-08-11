@@ -1,6 +1,7 @@
 package com.jie.mapper;
 
 import com.jie.pojo.Car;
+import com.jie.pojo.CarRentalFees;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,13 @@ public interface CarMapper {
      * @return Car
      */
     Car queryCarById(Integer id);
+    List<CarRentalFees> queryCarRentalFees();
+
+    /**
+     * 未使用车辆
+     * @return 车辆编号集合
+     */
+    List<String> queryNotUseCar();
 
     /**
      * 添加car

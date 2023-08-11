@@ -35,7 +35,6 @@
         SELECT * FROM car_route WHERE from_station LIKE CONCAT('%',#{start},'%') AND to_station LIKE concat('%',#{end},'%') order by departure_time
     </select>
 
-
     <insert id="addCarRoute" parameterType="CarRoute">
         insert ignore into car_route (id,route_number,car_number,from_station,to_station,departure_time,shift,mileage,price)
         values (#{id},#{route_number},#{car_number},#{from_station},#{to_station},#{departure_time},#{shift},#{mileage},#{price})

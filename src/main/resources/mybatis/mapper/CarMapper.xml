@@ -21,6 +21,14 @@
             where ${key} like CONCAT('%',#{value},'%')
         </if>
     </select>
+    <select id="queryCarRentalFees" resultType="CarRentalFees">
+        select * from car_rental_fees
+    </select>
+    <select id="queryNotUseCar" resultType="String">
+        SELECT car_number FROM car
+        WHERE car_number NOT IN (SELECT car_number FROM car_route)
+            AND car_number NOT IN (SELECT car_number FROM chartered_bus)
+    </select>
 
     <select id="queryCarById" resultType="Car" parameterType="int">
         select * from car where id = #{id};

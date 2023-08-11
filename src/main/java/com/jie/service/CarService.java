@@ -1,6 +1,7 @@
 package com.jie.service;
 
 import com.jie.pojo.Car;
+import com.jie.pojo.CarRentalFees;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface CarService {
      */
     List<Car> queryCarPaging(String start, String count, String key, String value);
 
+    List<CarRentalFees> queryCarRentalFees();
+
     /**
      * 车辆数量
      * @param key 字段
@@ -28,6 +31,11 @@ public interface CarService {
     int queryCarCount(String key, String value);
 
     Car queryCarById(Integer id);
+    /**
+     * 未使用车辆
+     * @return 车辆编号集合
+     */
+    List<String> queryNotUseCar();
 
     int addCar(Car car);
 
