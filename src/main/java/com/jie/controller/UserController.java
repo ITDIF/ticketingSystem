@@ -21,6 +21,10 @@ public class UserController {
     public boolean checkPass(String account, String password) {
         return userService.checkPass(account,password);
     }
+    @RequestMapping("/loginPhoneCodeCheck")
+    public int loginPhoneCodeCheck(String code, String phone) {
+        return userService.loginPhoneCodeCheck(code,phone);
+    }
     @RequestMapping("/phoneCode")
     public int sendPhoneCode(String account) {
         return userService.sendPhoneCode(account);

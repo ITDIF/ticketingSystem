@@ -33,6 +33,8 @@ public interface UserService {
      * @return
      */
     Map<String, Object> loginCheck(String account, String password);
+
+    int loginPhoneCodeCheck(String code, String phone);
     /**
      * 通过账号查询两个表的部分信息（数据展示）
      * @param account 账号

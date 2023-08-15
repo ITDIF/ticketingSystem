@@ -29,6 +29,31 @@
         WHERE car_number NOT IN (SELECT car_number FROM car_route)
             AND car_number NOT IN (SELECT car_number FROM chartered_bus)
     </select>
+    <select id="queryNotUseCarByType" resultType="Car">
+        SELECT car_number,passenger_capacity,seat_type FROM car
+        WHERE car_number NOT IN (SELECT car_number FROM car_route)
+            AND car_number NOT IN (SELECT car_number FROM chartered_bus)
+            AND car_type = #{carType}
+    </select>
+    <select id="queryCharteredBusInfo" resultMap="CharteredBusInfo">
+        SELECT chartered_bus.car_number,chartered_bus.start_time,chartered_bus.end_time,
+               chartered_bus.cost,chartered_bus.notes,chartered_bus.id_number,car.car_type,
+               car.passenger_capacity,car.seat_type FROM chartered_bus
+        JOIN car ON chartered_bus.car_number = car.car_number
+        WHERE chartered_bus.id_number = #{id_number}
+    </select>
+    <resultMap id="CharteredBusInfo" type="HashMap">
+        <result column="car_number" property="car_number" javaType="String" />
+        <result column="start_time" property="start_time" javaType="String" />
+        <result column="end_time" property="end_time" javaType="String" />
+        <result column="cost" property="cost" javaType="String" />
+        <result column="notes" property="notes" javaType="String" />
+        <result column="id_number" property="id_number" javaType="String" />
+        <result column="car_type" property="car_type" javaType="String" />
+        <result column="passenger_capacity" property="passenger_capacity" javaType="String" />
+        <result column="seat_type" property="seat_type" javaType="String" />
+
+    </resultMap>
 
     <select id="queryCarById" resultType="Car" parameterType="int">
         select * from car where id = #{id};
@@ -39,6 +64,10 @@
     <insert id="addCar" parameterType="Car">
         insert ignore into car (id,car_number,car_type,seat_type,passenger_capacity,state)
         values (#{id},#{car_number},#{car_type},#{seat_type},#{passenger_capacity},#{state})
+    </insert>
+    <insert id="addCharteredBus" parameterType="CharteredBus">
+        insert ignore into chartered_bus (id, car_number, id_number, start_time, end_time, notes, cost, status)
+        values (#{id},#{car_number},#{id_number},#{start_time},#{end_time},#{notes},#{cost},#{status})
     </insert>
 
     <update id="updateCar" parameterType="Car">
@@ -59,6 +88,9 @@
     </delete>
     <delete id="delCarByCarNumber" parameterType="string">
         delete from Car where car_number = #{car_number}
+    </delete>
+    <delete id="delCharteredBusByCarNumber" parameterType="String">
+        delete from chartered_bus where car_number = #{carNumber}
     </delete>
     <delete id="batchDelCarByCarNumber" parameterType="string">
         delete from Car where car_number in

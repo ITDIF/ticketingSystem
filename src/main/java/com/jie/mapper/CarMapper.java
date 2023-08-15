@@ -2,10 +2,12 @@ package com.jie.mapper;
 
 import com.jie.pojo.Car;
 import com.jie.pojo.CarRentalFees;
+import com.jie.pojo.CharteredBus;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jie
@@ -44,11 +46,14 @@ public interface CarMapper {
     Car queryCarById(Integer id);
     List<CarRentalFees> queryCarRentalFees();
 
+    List<Map<String, String>> queryCharteredBusInfo(String id_number);
+
     /**
      * 未使用车辆
      * @return 车辆编号集合
      */
     List<String> queryNotUseCar();
+    List<Car> queryNotUseCarByType(String carType);
 
     /**
      * 添加car
@@ -56,6 +61,7 @@ public interface CarMapper {
      * @return int
      */
     int addCar(Car car);
+    int addCharteredBus(CharteredBus charteredBus);
 
     /**
      * 修改car
@@ -83,6 +89,8 @@ public interface CarMapper {
      * @return 结果
      */
     int delCarByCarNumber(String carNumber);
+
+    int delCharteredBusByCarNumber(String carNumber);
 
     /**
      * 批量删除car

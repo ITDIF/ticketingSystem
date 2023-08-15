@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> loginCheck(String account, String password) {
         User user;
         Map<String, Object> map = new HashMap<>();
-        System.out.println("login: " + account+" "+password);
+//        System.out.println("login: " + account+" "+password);
         //判断账号是手机号登录还是账号登录
         if(account.charAt(0)>='0' && account.charAt(0)<='9' && account.length()==11){
             user = userMapper.queryUserByNumber(account);
@@ -64,6 +64,19 @@ public class UserServiceImpl implements UserService {
         }
         map.put("code",-1);
         return map;
+    }
+
+    @Override
+    public int loginPhoneCodeCheck(String code, String phone) {
+        if(!redisTemplate.hasKey(phone)){
+            return -2;
+        }
+        int redisCode = (int) redisTemplate.opsForValue().get(phone);
+        if(redisCode == Integer.parseInt(code)){
+            return 1;
+        }else{
+            return -1;
+        }
     }
 
     @Override

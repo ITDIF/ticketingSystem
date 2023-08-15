@@ -4,6 +4,7 @@ import com.jie.pojo.Car;
 import com.jie.pojo.CarRentalFees;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jie
@@ -36,10 +37,16 @@ public interface CarService {
      * @return 车辆编号集合
      */
     List<String> queryNotUseCar();
+    List<Car> queryNotUseCarByType(String carType);
+
+    List<Map<String, String>> queryCharteredBusInfo(String account);
 
     int addCar(Car car);
+    int addCharteredBus(String data, String account);
 
     int updateCar(Car car);
+
+    int delCharteredBusByCarNumber(String carNumber);
 
     int deleteCarById(Integer id);
     /**

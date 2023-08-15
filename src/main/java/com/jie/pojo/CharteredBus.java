@@ -23,6 +23,6 @@ public class CharteredBus {
     private Date start_time;
     private Date end_time;
     private String notes;
-    private BigDecimal price;
+    private BigDecimal cost;
     private String status;
 }
