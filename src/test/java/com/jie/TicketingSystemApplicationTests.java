@@ -12,7 +12,6 @@ class TicketingSystemApplicationTests {
     @Test
     void sqlTest() {
 
-
         System.out.println(userService.queryUserList());
     }
 

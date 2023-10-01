@@ -4,6 +4,7 @@ import com.jie.mapper.*;
 import com.jie.pojo.*;
 import com.jie.service.CandidateService;
 import com.jie.service.OrderService;
+import com.jie.service.UserService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
     CarMapper carMapper;
     @Resource
     MailService mailService;
+    @Resource
+    UserService userService;
     @Resource
     RabbitService rabbitService;
     @Resource
@@ -171,12 +174,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-    public int addOrderAndDelTemporary(String orderNumber) {
+    public int addOrderAndDelTemporary(String orderNumber, String account) {
         OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
         Order order = new Order(null,orderNumber,orderTemporary.getUsername(),orderTemporary.getRoute_number(),
                 orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
                 orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
                 "已付款",new Timestamp(System.currentTimeMillis()));
+        userService.updateMoneyAndIntegral(account,order.getPrice().negate(),order.getPrice().intValue()*100);
         rabbitService.sendDirectMessageTicket(orderNumber);
         return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) &
                 orderMapper.addOrder(order);
@@ -184,13 +188,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-    public int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber) {
+    public int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber, String account) {
         OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
         Order order = new Order(null,orderNumber,orderTemporary.getUsername(),orderTemporary.getRoute_number(),
                 orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
                 orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
                 "已付款",new Timestamp(System.currentTimeMillis()));
         Order oldOrder = orderMapper.queryOrder(oldOrderNumber);
+        userService.updateMoneyAndIntegral(account,oldOrder.getPrice().subtract(order.getPrice()),order.getPrice().intValue()*100-oldOrder.getPrice().intValue()*100);
         String date = oldOrder.getDeparture_time().toString().substring(0,10).replaceAll("-","");
         String table = "ticket_"+date;
         Map<String, Object> map = ticketMapper.queryRemainingTicketAndRouteNumber(oldOrderNumber,date);
@@ -199,23 +204,25 @@ public class OrderServiceImpl implements OrderService {
         int result =  ticketMapper.deleteTicketByOrderNumber(table,oldOrderNumber) &
                 orderMapper.updateOrder(new Order(null,oldOrderNumber,null,null,
                         null,null,null,null,null,null,null,null,"已改签",null));
-        candidateService.candidateSuccess(oldOrder.getRoute_number(), oldOrder.getDeparture_time().toString());
-        return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) &
+        int result2 = orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) &
                 orderMapper.addOrder(order) & result;
+        candidateService.candidateSuccess(oldOrder.getRoute_number(), oldOrder.getDeparture_time().toString());
+        return result2;
     }
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-    public int candidateSuccess(String orderNumber) {
+    public int candidateSuccess(String orderNumber, String account) {
         OrderTemporary orderTemporary = orderMapper.queryOrderTemporary(orderNumber);
         Order order = new Order(null,orderNumber,orderTemporary.getUsername(),orderTemporary.getRoute_number(),
                 orderTemporary.getId_number(),orderTemporary.getDeparture_time(),orderTemporary.getFrom_station(),orderTemporary.getTo_station(),
                 orderTemporary.getSeat_type(),orderTemporary.getSeat_id(),orderTemporary.getPrice(),orderTemporary.getOrder_time(),
                 "待兑现(候补)",new Timestamp(System.currentTimeMillis()));
+        userService.updateMoneyAndIntegral(account,order.getPrice().negate(),order.getPrice().intValue()*100);
         candidateMapper.updateCandidate(new Candidate(null,null,orderNumber, null,null,null,null,"待兑现"));
+        int result =  orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber) & orderMapper.addOrder(order);
         rabbitService.sendDirectMessageCandidate(orderNumber);
-        return orderMapper.deleteOrderTemporaryByOrderNumber(orderNumber)&
-        orderMapper.addOrder(order);
+        return result;
     }
 
     @Override
@@ -254,7 +261,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-    public int upOrderAndDelTicket(String order_number, String date) {
+    public int upOrderAndDelTicket(String order_number, String date, String account) {
         String table = "ticket_"+date.replaceAll("-","");
         Map<String, Object> map = ticketMapper.queryRemainingTicketAndRouteNumber(order_number,date);
         int remainingTicket = (int) map.get("remaining_tickets");
@@ -263,6 +270,7 @@ public class OrderServiceImpl implements OrderService {
                 orderMapper.updateOrder(new Order(null,order_number,null,null,
                         null,null,null,null,null,null,null,null,"已取消",null));
         Order order = orderMapper.queryOrder(order_number);
+        userService.updateMoneyAndIntegral(account,order.getPrice(),-order.getPrice().intValue()*100);
         candidateService.candidateSuccess(order.getRoute_number(), order.getDeparture_time().toString());
         return result;
     }

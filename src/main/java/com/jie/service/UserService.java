@@ -1,7 +1,9 @@
 package com.jie.service;
 
 import com.jie.pojo.User;
+import com.jie.pojo.UserMoneyIntegral;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +85,8 @@ public interface UserService {
      */
     User queryUserByAccount(String account);
 
+    UserMoneyIntegral queryUserMoneyAndIntegralByAccount(String account);
+
     /**
      * 确认密码是否一致
      * @param account 账户
@@ -120,6 +124,15 @@ public interface UserService {
      * @return int
      */
     int updateUser(User user);
+
+    /**
+     * 余额和积分修改
+     * @param account 账户
+     * @param money 余额
+     * @param integral 积分
+     * @return
+     */
+    int updateMoneyAndIntegral(String account, BigDecimal money, int integral);
 
     /**
      * 修改密码（先确认手机验证码）

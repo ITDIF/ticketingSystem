@@ -62,31 +62,31 @@ public class OrderController {
         return orderService.deleteOrderTemporaryAndTicket(order_number,date);
     }
     @RequestMapping("/upOrderAndDelTicket")
-    public int upOrderAndDelTicket(String order_number, String date){
-        return  orderService.upOrderAndDelTicket(order_number, date);
+    public int upOrderAndDelTicket(String order_number, String date, String account){
+        return  orderService.upOrderAndDelTicket(order_number, date, account);
     }
     @RequestMapping("/addOrderAndDelTemporary")
-    public int addOrderAndDelTemporary(String orderNumber){
+    public int addOrderAndDelTemporary(String orderNumber, String account){
         try {
-            return orderService.addOrderAndDelTemporary(orderNumber);
+            return orderService.addOrderAndDelTemporary(orderNumber,account);
         }catch (Exception e){
             return 0;
         }
     }
     @RequestMapping("/addOrderAndDelTemporaryAndUpOldOrder")
-    public int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber) {
+    public int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber, String account) {
         try {
             if(oldOrderNumber == null){
                 oldOrderNumber = redisService.getRebookOrderNumber(orderNumber);
             }
-            return orderService.addOrderAndDelTemporaryAndUpOldOrder(orderNumber, oldOrderNumber);
+            return orderService.addOrderAndDelTemporaryAndUpOldOrder(orderNumber, oldOrderNumber, account);
         }catch (Exception e){
             return 0;
         }
     }
     @RequestMapping("/candidateSuccess")
-    public int candidateSuccess(String order_number){
-        return orderService.candidateSuccess(order_number);
+    public int candidateSuccess(String order_number, String account){
+        return orderService.candidateSuccess(order_number,account);
     }
     @RequestMapping("/queryHistoricalOrderByAccount")
     public List<Order> queryHistoricalOrderByAccount(String account){

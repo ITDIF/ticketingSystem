@@ -1,6 +1,7 @@
 package com.jie.mapper;
 
 import com.jie.pojo.User;
+import com.jie.pojo.UserMoneyIntegral;
 import com.jie.pojo.UserVerification;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -102,7 +103,11 @@ public interface UserMapper {
      * @return int
      */
     int updateUserByPhone(User user);
+    int updateUserMoneyAndIntegral(UserMoneyIntegral userMoneyIntegral);
     int addVerification(UserVerification userVerification);
+
+    int addMoneyAndIntegral(UserMoneyIntegral userMoneyIntegral);
+    UserMoneyIntegral queryUserMoneyAndIntegralByAccount(String account);
 
     int deleteUserById(Integer id);
 

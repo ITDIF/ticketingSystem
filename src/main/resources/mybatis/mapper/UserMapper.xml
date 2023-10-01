@@ -67,12 +67,17 @@
     <select id="queryUserByAccount" resultType="User" parameterType="String">
         select * from userinfo where account = #{account};
     </select>
+    <select id="queryUserMoneyAndIntegralByAccount" resultType="UserMoneyIntegral" parameterType="String">
+        select * from user_money_integral where account = #{account};
+    </select>
     <select id="queryUserInfoByAccount" resultMap="userInfoTwo" parameterType="String">
         SELECT userinfo.account,userinfo.username,userinfo.phone_number,userinfo.id_number,userinfo.id_type,
                userinfo.district,userinfo.email,user_verification.id_verification,
-               user_verification.phone_verification
+               user_verification.phone_verification,user_money_integral.integral,
+               user_money_integral.money
         FROM userinfo
                  JOIN user_verification ON userinfo.account = user_verification.account
+                 JOIN user_money_integral ON userinfo.account = user_money_integral.account
         WHERE userinfo.account = #{account}
     </select>
     <resultMap id="userInfoTwo" type="HashMap">
@@ -85,6 +90,8 @@
         <result column="email" property="email" javaType="String" />
         <result column="id_verification" property="id_verification" javaType="String" />
         <result column="phone_verification" property="phone_verification" javaType="String" />
+        <result column="integral" property="integral" javaType="String" />
+        <result column="money" property="money" javaType="String" />
     </resultMap>
     <insert id="addUser" parameterType="User">
         insert into userinfo (id,account,password,username,phone_number,id_type,id_number,district,email,registration_time,state)
@@ -92,8 +99,12 @@
     </insert>
 
     <insert id="addVerification" parameterType="UserVerification">
-        insert into user_verification (id,account, id_verification, phone_verification)
+        insert ignore into user_verification (id,account, id_verification, phone_verification)
         VALUES (#{id},#{account},#{id_verification},#{phone_verification})
+    </insert>
+    <insert id="addMoneyAndIntegral" parameterType="UserMoneyIntegral">
+        insert ignore into user_money_integral (id, account, money, integral, state)
+        values (#{id},#{account},#{money},#{integral},#{state})
     </insert>
 
     <update id="updateUser" parameterType="User">
@@ -129,6 +140,17 @@
             <if test="state!=null">state=#{state},</if>
         </set>
         where phone_number = #{phone_number}
+    </update>
+    <update id="updateUserMoneyAndIntegral" parameterType="UserMoneyIntegral">
+        update user_money_integral
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="account!=null">account=#{account},</if>
+            <if test="money!=null">money=#{money},</if>
+            <if test="integral!=null">integral=#{integral},</if>
+            <if test="state!=null">state=#{state},</if>
+        </set>
+        where account = #{account}
     </update>
 
     <delete id="deleteUserById" parameterType="int">

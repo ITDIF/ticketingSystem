@@ -2,6 +2,7 @@ package com.jie.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.jie.pojo.User;
+import com.jie.pojo.UserMoneyIntegral;
 import com.jie.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,6 +62,10 @@ public class UserController {
     @RequestMapping("/queryUserPaging")
     public List<User> queryUserPaging(String start, String count, String key, String value){
         return userService.queryUserPaging(start,count,key,value);
+    }
+    @RequestMapping("/queryUserMoneyAndIntegralByAccount")
+    public UserMoneyIntegral queryUserMoneyAndIntegralByAccount(String account) {
+        return userService.queryUserMoneyAndIntegralByAccount(account);
     }
     @RequestMapping("/queryUserCount")
     public int queryUserCount(String key, String value){

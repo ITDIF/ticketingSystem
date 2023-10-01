@@ -122,7 +122,7 @@ public interface OrderService {
      * @param orderNumber 临时订单编号
      * @return int
      */
-    int addOrderAndDelTemporary(String orderNumber);
+    int addOrderAndDelTemporary(String orderNumber, String account);
 
     /**
      *添加订单同时删除临时订单和修改订单删除票（改签支付成功操作）
@@ -130,14 +130,14 @@ public interface OrderService {
      * @param oldOrderNumber 待修改的订单编号
      * @return int
      */
-    int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber);
+    int addOrderAndDelTemporaryAndUpOldOrder(String orderNumber, String oldOrderNumber, String account);
 
     /**
      * 添加订单同时删除临时订单（候补支付成功操作）
      * @param orderNumber 临时订单编号
      * @return int
      */
-    int candidateSuccess(String orderNumber);
+    int candidateSuccess(String orderNumber, String account);
 
     /**
      * 候补
@@ -162,7 +162,7 @@ public interface OrderService {
      * @param date 订单时间
      * @return 结果
      */
-    int upOrderAndDelTicket(String order_number, String date);
+    int upOrderAndDelTicket(String order_number, String date, String account);
 
     /**
      * 修改订单和车票

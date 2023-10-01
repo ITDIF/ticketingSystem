@@ -58,8 +58,8 @@ public class CandidateController {
         return candidateService.queryHistoricalCandidateConditionalCount(account,startDate,endDate,key);
     }
     @RequestMapping("/delCandidateAndOrder")
-    public int delCandidateAndOrder(String order_number) {
-        return candidateService.delCandidateAndOrder(order_number);
+    public int delCandidateAndOrder(String order_number, String account) {
+        return candidateService.delCandidateAndOrder(order_number, account);
     }
     @RequestMapping("/queryDeadlineOrderNumber")
     public int queryDeadlineOrderNumber(String orderNumber) {

@@ -43,7 +43,11 @@ public class TicketSuccess {
         String orderNumber = (String) map.get("orderNumber");
         Order order = orderMapper.queryOrder(orderNumber);
         String qq = userMapper.queryQQByIdNumber(order.getId_number());
-        mailService.ticketSuccessInform(qq,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
+        try {
+            mailService.ticketSuccessInform(qq,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
+        }catch (Exception e){
+            System.out.println("短信发送失败！");
+        }
     }
     @RabbitListener(queues = "CandidateSuccessQueue")
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
@@ -53,7 +57,11 @@ public class TicketSuccess {
         Order order = orderMapper.queryOrder(orderNumber);
         rabbitService.deadlineCandidate(orderNumber,order.getDeparture_time());
         String QQ = userMapper.queryQQByIdNumber(order.getId_number());
-        mailService.candidateSuccessInform(QQ,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
+        try {
+            mailService.candidateSuccessInform(QQ,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
+        }catch (Exception e){
+            System.out.println("短信发送失败！");
+        }
     }
     @RabbitListener(queues = "WaitingSuccessQueue")
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
@@ -64,7 +72,7 @@ public class TicketSuccess {
         String orderNumber = candidateMapper.queryMinCandidate(routeNumber,departureTime);
         String routeDate = departureTime.substring(0,10);
         String result = ticketMapper.queryRemainingTicket(routeNumber, routeDate);
-        System.out.println("候补"+routeNumber+" "+routeDate+"--------------");
+        System.out.println("候补"+routeNumber+" "+routeDate+"--------------"+result);
         if(orderNumber != null && !"0".equals(result)){
             int remainingTicket = Integer.parseInt(result) - 1;
             ticketMapper.updateRemainingTicket(String.valueOf(remainingTicket),routeNumber,routeDate);
@@ -88,7 +96,11 @@ public class TicketSuccess {
             orderMapper.updateOrder(new Order(null,orderNumber,null,null,null,null,null,null,seatType,seat,
                     null,null,"已付款(候补)",null));
             String QQ = userMapper.queryQQByIdNumber(order.getId_number());
-            mailService.waitingSuccess(QQ,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
+            try {
+                mailService.waitingSuccess(QQ,order.getFrom_station(),order.getTo_station(),order.getDeparture_time().toString());
+            }catch (Exception e){
+                System.out.println("短信发送失败！");
+            }
         }
     }
 

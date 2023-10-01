@@ -6,6 +6,7 @@ import com.jie.pojo.Candidate;
 import com.jie.pojo.Order;
 import com.jie.pojo.OrderTemporary;
 import com.jie.service.CandidateService;
+import com.jie.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ public class CandidateServiceImpl implements CandidateService {
     CandidateMapper candidateMapper;
     @Resource
     OrderMapper orderMapper;
+    @Resource
+    UserService userService;
     @Resource
     RabbitService rabbitService;
 
@@ -79,7 +82,9 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-    public int delCandidateAndOrder(String orderNumber) {
+    public int delCandidateAndOrder(String orderNumber, String account) {
+        Order order = orderMapper.queryOrder(orderNumber);
+        userService.updateMoneyAndIntegral(account,order.getPrice(),-order.getPrice().intValue()*100);
         return orderMapper.updateOrder(new Order(null,orderNumber,null,null,
                 null,null,null,null,null,null,null,null,"已取消(候补)",null)) &
                 candidateMapper.deleteCandidateByOrderNumber(orderNumber);

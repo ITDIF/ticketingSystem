@@ -2,6 +2,7 @@ package com.jie.service.Impl;
 
 import com.jie.mapper.UserMapper;
 import com.jie.pojo.User;
+import com.jie.pojo.UserMoneyIntegral;
 import com.jie.pojo.UserVerification;
 import com.jie.service.SendMsgService;
 import com.jie.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,6 +146,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserMoneyIntegral queryUserMoneyAndIntegralByAccount(String account) {
+        return userMapper.queryUserMoneyAndIntegralByAccount(account);
+    }
+
+    @Override
     public boolean checkPass(String account, String password) {
         return password.equals(userMapper.queryPassword(account));
     }
@@ -185,11 +192,21 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor={RuntimeException.class, Exception.class, IllegalArgumentException.class})
     public int addUser(User user){
         UserVerification userVerification = new UserVerification(null,user.getAccount(),"未核验","未核验");
-        return userMapper.addUser(user) & userMapper.addVerification(userVerification);
+        UserMoneyIntegral userMoneyIntegral = new UserMoneyIntegral(null,user.getAccount(),new BigDecimal(10000),1000000,"");
+        return userMapper.addUser(user) & userMapper.addVerification(userVerification) &
+                userMapper.addMoneyAndIntegral(userMoneyIntegral);
     }
 
     public int updateUser(User user){
         return userMapper.updateUser(user);
+    }
+
+    @Override
+    public int updateMoneyAndIntegral(String account, BigDecimal money, int integral) {
+        UserMoneyIntegral userMoneyIntegral = userMapper.queryUserMoneyAndIntegralByAccount(account);
+        userMoneyIntegral.setMoney(userMoneyIntegral.getMoney().add(money));
+        userMoneyIntegral.setIntegral(userMoneyIntegral.getIntegral()+integral);
+        return userMapper.updateUserMoneyAndIntegral(userMoneyIntegral);
     }
 
     @Override

@@ -86,8 +86,8 @@
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
-    <!--指定最基础的日志输出级别-->
-    <root level="debug">
+    <!--指定最基础的日志输出级别debug -->
+    <root level="WARN">
         <!--appender将会添加到这个loger-->
         <appender-ref ref="consoleLog"/>
         <appender-ref ref="fileDEBUGLog"/>

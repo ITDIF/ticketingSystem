@@ -29,7 +29,7 @@ public class T {
     }
     @Test
     void testTwo() throws IOException {
-        Car car = new Car(null,"KK0001","大型客车","硬座",40);
+        Car car = new Car(null,"KK0001","大型客车","硬座",40,"");
 //        redisTemplate.opsForValue().set("car",car);
         //  手动序列化
         String json = mapper.writeValueAsString(car);

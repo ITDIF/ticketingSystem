@@ -95,7 +95,7 @@ public interface CandidateService {
      * @param orderNumber 订单号
      * @return int
      */
-    int delCandidateAndOrder(String orderNumber);
+    int delCandidateAndOrder(String orderNumber, String account);
 
     /**
      * 查询截止兑票日期
